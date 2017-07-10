@@ -42,7 +42,7 @@ void test_sscanf(void)
   char iHexLine[] = "060023002c45ab38949c45";
   int value;
   
-  sscanf(&iHexLine[0] , "%2x" , &value);
+  sscanf(&iHexLine[2] , "%2x" , &value);
   TEST_ASSERT_EQUAL_HEX32(0x00000006, value);
 }
 //*/
@@ -56,15 +56,22 @@ void test_sprintf_()
   free(buffer);
 }
 //*/
-/*//trying fgets()
+//*//trying fgets()
 void test_intel_hex_getLength(void)
 {
-   char *line = ":020000040000FA";
-   int iHexGetLength(":020000040000FA");
-   TEST_ASSERT_EQUAL_STRING(":020000040000FA", \
-              iHexGetLength(":020000040000FA"));
-   
+  
+  char iHexLine[] = "020000040000FA";
+  int value;
+  //iHexGetLength(":020000040000FA");
+  //char *line = ":020000040000FA";
+  //TEST_ASSERT_EQUAL_STRING(":020000040000FA", \
+              iHexGetLength(":020000040000FA"));            
+  //int iHexGetLength(":020000040000FA");
+  sscanf(&iHexLine[0] , "%2x" , &value);
+  printf(">>>>>>>>>>>>>>>>>>>>>>>>>");
+  printf("start of the String: %s\n",&value); 
+  TEST_ASSERT_EQUAL_HEX32(0x00000008, value);
 }
-*/
+//*/
 
 //*/

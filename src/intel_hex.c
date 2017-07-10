@@ -73,17 +73,21 @@ char handler()
   return file;
 }
 */
-/*// fgets()
+//*// fgets() only read the starting cade.
 int iHexGetLength(char * line)
 {
-  FILE *file;
-  char *line[50];
+  //FILE *file;
+  char * str[7] = {':','02','00','00','04','00','00','FA'};
   //file = fopen("doc/Blinky.X.production.hex" , "r");
-  fgets(line , 50 , file);
-  fclose(file);
-  return line;
+  
+  //fgets(str , 50 , line);
+  //puts(str);
+  //maximum = str[0];
+  
+  //fclose(file);
+  return str;
 }
-*/
+//*/
 /*/try find length of string 
 int find_length(char *file)
 {
