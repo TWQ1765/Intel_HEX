@@ -60,14 +60,16 @@ void test_sprintf_()
 void test_intel_hex_getLength(void)
 {
   
-  char iHexLine[] = "020000040000FA";
+  char iHexLine[] = ":020000040000FA";
   int value;
+  /*
   //iHexGetLength(":020000040000FA");
   //char *line = ":020000040000FA";
   //TEST_ASSERT_EQUAL_STRING(":020000040000FA", \
               iHexGetLength(":020000040000FA"));            
   //int iHexGetLength(":020000040000FA");
-  sscanf(&iHexLine[0] , "%2x" , &value);
+  */
+  sscanf(&iHexLine[1] , "%2x" , &value);
   printf(">>>>>>>>>>>>>>>>>>>>>>>>>");
   printf("start of the String: %s\n",&value); 
   TEST_ASSERT_EQUAL_HEX32(0x00000008, value);
