@@ -5,8 +5,8 @@ struct point {
   int x; 
 };
 
+
 int iHexGetLength(char * line);
- 
 int iHexGetAddress(char * line);
 int iHexGetCode(char *line);
 int iHexGetArrayOfData(char * line , char *buffer);

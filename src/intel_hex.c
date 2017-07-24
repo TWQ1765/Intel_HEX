@@ -1,6 +1,7 @@
 #include "intel_hex.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 /*//try1
 int hex_file_line_count(FILE * file_to_count)
 {
@@ -49,21 +50,38 @@ int main(){
   printf("This is a test value must be int : %d\n" , x);
 }
 */
-///*get length
-int iHexGetLength(char * line)
+
+///*//test Hex is right or not. :10000000560E08EC00F0020E020E020E06EF00F094
+int iHexVerifyLine(char * line)
 {
-  char *linePtr = line;
- // for (int i=0; i<10; i++)
- // {
-  int iHexLine = line[1]; 
- // }
-   
-  //char iHexLine[] = line;//":020000040000FA";
+  char *lineptr = line;
+  char tempHex;
+  int i =0;
+  int test=0;
+  int sumHex=0;
+  int getHex= 0x123;
+  int startsimbol = 0;
   
-  //sscanf(&iHexLine[1] , "%2x" , &line);
-  return iHexLine;
-}
+  sscanf(&line[0] , "%c" , &startsimbol);//read simbol ':'
+  if (startsimbol != 0x3a)//if 1st are not start with ':' return test=0
+  { 
+    return test = 0;
+  }
+  else 
+  {    
+    while(line[i+1] != NULL)//read the code until the end of line
+    {
+      sscanf(&line[i+1], "%2c" , &tempHex);
+      sscanf(&line[i+1], "%2x" , &getHex);
+      i=i+2;
+      sumHex=sumHex+getHex;
+      test = ((sumHex & 0xff)<=0);//check value of test should = 1
+    }
+  }
+ return test;
+}  
 //*/ 
+
 /* //open file not needed 
 char handler()
 {
@@ -171,7 +189,7 @@ int iHexGetArrayofData(char *line, char*buffer)
 }
 */
 
-///*//try iHexGetAddress
+/*//try iHexGetAddress
 int iHexGetAddress(char * line)
 {
   char iHexLine[] = ":020000040000FA";
@@ -179,4 +197,4 @@ int iHexGetAddress(char * line)
   return line;
 }  
 
-//*/
+*/
