@@ -11,7 +11,7 @@ int iHexGetAddress(char * line);
 int iHexGetCode(char *line);
 int iHexGetArrayOfData(char * line , char *buffer);
 int iHexVerifyLine(char * line);
-
+FILE handler(char *file);
 
 
 

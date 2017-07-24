@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 /*//try1
 int hex_file_line_count(FILE * file_to_count)
 {
@@ -82,20 +83,17 @@ int iHexVerifyLine(char * line)
 }  
 //*/ 
 
-/* //open file not needed 
-char handler()
+///* //open file not needed ?
+long handler(char *file)
 {
-  FILE *file;
+  FILE *fileHandler;
   //char file[];
-  file = fopen("doc/Blinky.X.production.hex" , "r");
-  if (file == NULL)
-  {
-    return -1;
-  }
-  else
-  return file;
+  fileHandler = fopen(file , "r");
+ 
+  return *fileHandler;
 }
-*/
+///*/
+
 /*// fgets() only read the starting cade.
 int iHexGetLength(char * line)
 {

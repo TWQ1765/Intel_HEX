@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 //#include "mock_iHexGetLength.h"
 void setUp(void)
 {
@@ -11,13 +12,21 @@ void setUp(void)
 void tearDown(void)
 {
 }
+//test fopen ok
+void test_intel_file_fopen(void)
+{  
+    FILE *filehandler;
+    filehandler = fopen("doc/Blinky.X.production.hex","r");
+    TEST_ASSERT_NOT_NULL(filehandler);
+}
 
-///*//test2: file Blinky.X.production occur or not?
-void test_intel_hex2_fopen(void)
+//*//test file Blinky.X.production occur or not? not ok?????
+void test_intelfile_fopen(void)
 {
-    FILE *file;
-    file = fopen("doc/Blinky.X.production.hex","r");
-    TEST_ASSERT_NOT_NULL(file);
+    FILE *filehandler;
+    filehandler = handler("doc/Blinky.X.production.hex");
+    
+    TEST_ASSERT_NOT_NULL(filehandler);
 }
 //*/
 
