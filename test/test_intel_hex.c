@@ -12,19 +12,13 @@ void setUp(void)
 void tearDown(void)
 {
 }
-//test fopen ok
-void test_intel_file_fopen(void)
-{  
-    FILE *filehandler;
-    filehandler = fopen("doc/Blinky.X.production.hex","r");
-    TEST_ASSERT_NOT_NULL(filehandler);
-}
 
-//*//test file Blinky.X.production occur or not? not ok?????
-void test_intelfile_fopen(void)
+
+//*//test file Blinky.X.production occur or not? 
+void test_intelfile_fopen_expect_and_return_true(void)
 {
-    FILE *filehandler;
-    filehandler = handler("doc/Blinky.X.production.hex");
+    FILE *filehandler; //pointer
+    filehandler = handler("doc/Blinky.X.production.hex"); //pointer=pointer
     
     TEST_ASSERT_NOT_NULL(filehandler);
 }

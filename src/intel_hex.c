@@ -83,14 +83,14 @@ int iHexVerifyLine(char * line)
 }  
 //*/ 
 
-///* //open file not needed ?
-long handler(char *file)
+///* //function open file not needed ?
+FILE* handler(char *file)//return as pointer type FILE
 {
-  FILE *fileHandler;
+  FILE *fileHandler;              //pointer fileHandler
   //char file[];
   fileHandler = fopen(file , "r");
  
-  return *fileHandler;
+  return fileHandler;             // pointer return
 }
 ///*/
 
