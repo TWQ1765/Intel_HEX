@@ -84,7 +84,7 @@ int iHexVerifyLine(char * line)
 //*/ 
 
 ///* //function open file not needed ?
-FILE* handler(char *file)//return as pointer type FILE
+FILE* handler(char *file)//return as pointer type FILE 'FILE *'
 {
   FILE *fileHandler;              //pointer fileHandler
   //char file[];
