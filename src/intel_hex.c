@@ -94,13 +94,15 @@ FILE* handler(char *file)//return as pointer type FILE 'FILE *'
 }
 ///*/
 
-/*// fgets() only read the starting cade.
-int iHexGetLength(char * line)
+//*// fgets() 
+char* getiHexLine(FILE * fileHandler)
 {
+  char hexline[1028];
   
-  return ;
+  return fgets(hexline,1028, fileHandler);
 }
-*/
+//*/
+
 /*/try find length of string 
 int find_length(char *file)
 {

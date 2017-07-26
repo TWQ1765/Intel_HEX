@@ -24,6 +24,17 @@ void test_intelfile_fopen_expect_and_return_true(void)
 }
 //*/
 
+//*//test function getiHexline()
+void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
+{
+    FILE *filehandler; //pointer
+    filehandler = handler("doc/Blinky.X.production.hex"); //pointer=pointer
+    char* iHex = getiHexLine(filehandler);
+    
+    TEST_ASSERT_EQUAL_STRING(":020000040000FA\n", iHex);
+}
+//*/
+
 /*//trying scanf ()
 void test_scanf(void)
 {

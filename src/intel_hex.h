@@ -12,7 +12,7 @@ int iHexGetCode(char *line);
 int iHexGetArrayOfData(char * line , char *buffer);
 int iHexVerifyLine(char * line);
 FILE* handler(char *file);
-
+char* getiHexLine(FILE * fileHandler);
 
 
 #endif // _INTEL_HEX_H
