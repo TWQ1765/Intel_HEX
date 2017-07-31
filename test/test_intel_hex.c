@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-//#include "mock_iHexGetLength.h"
+
 void setUp(void)
 {
 }
@@ -170,3 +170,39 @@ void test_iHexGetLength_given_020000040000FA_expect_2(void)
     TEST_ASSERT_EQUAL(1, sumHex);
   } 
 //*/
+//*//Try test convert intel_Hex to array in 16-bits. 
+  void test_iHexGetArrayofData_expect_array_data_return_true(void)
+  { 
+    uint8_t arrayData[]= {0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
+    char *iHex = ":10000000560E08EC00F0020E020E020E06EF00F093";
+    uint8_t* iHexArray = iHexGetArrayofData(iHex);
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(arrayData, iHexArray, 21);
+    free (iHexArray); //deallocate allocated memory
+  } 
+//*/
+//*//Try test convert intel_Hex to array in 16-bits. 
+  void test_iHexGetArrayofData_expect_array_data_return_error(void)
+  { 
+    uint8_t arrayData[]= {0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
+    char *iHex = ":10000000560E08EC00F0020E020E020E06EF00F094";
+    uint8_t* iHexArray = iHexGetArrayofData(iHex);
+    TEST_ASSERT_EQUAL_INT8(arrayData[4], 0x56);//test only one set data
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(arrayData, iHexArray, 21);
+    free (iHexArray); //deallocate allocated memory
+  } 
+//*/
+
+/*//Try swap value not needed
+  void test_swapvalue_given_0x20_and_0x98_expect_0x98_and_0x20(void)
+  { 
+    uint8_t* highbit = 0x20;
+    uint8_t* lowbit  = 0x98;
+    uint16_t* iHexArray = swapvalue(highbit,lowbit);
+    //struct value* function(highbit,lowbit);
+    
+    TEST_ASSERT_EQUAL(0x20, iHexArray);
+    TEST_ASSERT_EQUAL(0x98, iHexArray);
+  } 
+*/
+
+

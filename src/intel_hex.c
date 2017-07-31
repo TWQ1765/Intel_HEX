@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+
+//#define SWAP(a, b) do { typeof(a) temp = a; a = b; b = temp; } while (0)//swap function
+
+
+
 /*//try1
 int hex_file_line_count(FILE * file_to_count)
 {
@@ -52,6 +57,35 @@ int main(){
 }
 */
 
+/* //swap value  test value:  0x20                0x98       //not needed
+uint8_t* swapvalue(uint8_t* hexvaluehigh,uint8_t* hexvaluelow)//return as pointer type FILE 'FILE *'
+{
+ 
+  //hexvalue.hexvaluehigh;        //a
+  //hexvalue.hexvaluelow;         //b
+  
+  SWAP(hexvaluehigh,hexvaluelow); //defined
+                                  //printed:         0x98        0x20
+  printf("hexvaluehigh = %x , hexvaluelow = %x",hexvaluehigh,hexvaluelow);
+  return hexvaluehigh;//*return one value
+}
+*/
+
+/* //real allocate high byte & low byte format************not needed
+uint8_t* realdata(char *data)//return as pointer type FILE 'FILE *'
+{
+  uint8_t* hexvalue[];
+  uint8_t* hexvaluehigh;  //a
+  uint8_t* hexvaluelow;   //b
+  hexvalue[]  =iHexGetArrayofData(data);
+  for(int i=4 ; i< ; i+=2)
+  {
+    sscanf(&hexvalue [i+1], "%2x", &hexvaluehigh[i/2]);
+    
+  }
+}
+*/
+
 ///*//test Hex is right or not. :10000000560E08EC00F0020E020E020E06EF00F094
 int iHexVerifyLine(char * line)
 {
@@ -98,10 +132,20 @@ FILE* handler(char *file)//return as pointer type FILE 'FILE *'
 char* getiHexLine(FILE * fileHandler)
 {
   char hexline[1028];
-  
   return fgets(hexline,1028, fileHandler);
 }
 //*/
+
+/*// fgets()2 
+char* getiHexLine(FILE * fileHandler)
+{
+  int length;
+  char *hexline = malloc(length+1);
+  length = fgets(hexline,0, fileHandler);
+  printf("length requred:%d\n",length);
+  return fgets(hexline,length, fileHandler);
+}
+*/
 
 /*/try find length of string 
 int find_length(char *file)
@@ -126,13 +170,14 @@ int find_length(char *file)
     fclose(file);  
     */
     
-/*//Record type
-int Record_type()
+//*//Record type****************
+int Record_type(char* line)
 {
-  case(record_type)
-  return 
+  uint8_t* arraydata[]=iHexGetArrayofData(line);
+  arraydata[2],[3]
+  return line;
 }  
-*/
+//*/
 
 /*//read byte from file
 uint8_t read_byte_from_file(FILE * file, uint8_t * char_to_put, int * total_chars_read)
@@ -159,41 +204,37 @@ uint8_t read_byte_from_file(FILE * file, uint8_t * char_to_put, int * total_char
 
 */
 
-/*//read all element from file
-int iHexGetArrayofData(char *line, char*buffer)
+///*//read all element from file
+uint8_t* iHexGetArrayofData(char *line)
 {
-  FILE*file = fopen("doc/Blinky.X.production.hex","r");
+  int length = 0;
+  char temp;
+  uint8_t *result;
   
-  if(file)
-  {
-    char buffer[4096] = {0};
-    unsigned int line = 0;
+  while(1){
+    sscanf(&line[length+1], "%2c", &temp);
     
-    while(fgets(buffer, sizeof(buffer),file))
-    {
-      for(const char*ptr = buffer; *ptr!= '/0'; ptr++)
-      {
-        if(*ptr == '/n' || *ptr == '/r');
-      }
-    line = line + 1;
+    if(line[length+1] != NULL){
+      length = length + 2;
     }
-  
-  fprintf(stdout, "There are %u lines in the file %s.\n", line, file);
+    else{
+      result = malloc(length/2);
+      break;
+    }
   }
-  else
-    {
-      fprintf(stderr, "Failed to open file %s\n", file);
-      return -1;
-    }
-  return 0;
+  for(int i=0;i<length;i+=2){
+    sscanf(&line [i+1], "%2x", &result[i/2]);
+  }
+  return result;
+  
 }
-*/
+//*/
 
-/*//try iHexGetAddress
+/*//try iHexGetAddress*****************
 int iHexGetAddress(char * line)
 {
-  char iHexLine[] = ":020000040000FA";
-  sscanf(&iHexLine[3] , "%4x" , &line);
+   uint8_t* arraydata[]=iHexGetArrayofData(line);
+  arraydata[4] 
   return line;
 }  
 
