@@ -173,9 +173,10 @@ int find_length(char *file)
 //*//Record type****************
 int Record_type(char* line)
 {
-  uint8_t* arraydata[]=iHexGetArrayofData(line);
-  arraydata[2],[3]
-  return line;
+ // uint8_t* iHexGetArrayofData();
+  uint8_t* arraydata=iHexGetArrayofData(line);
+  int r_type = arraydata[3];
+  return r_type;
 }  
 //*/
 
@@ -230,7 +231,7 @@ uint8_t* iHexGetArrayofData(char *line)
 }
 //*/
 
-/*//try iHexGetAddress*****************
+/*//try iHexGetAddress*****************function r_type()
 int iHexGetAddress(char * line)
 {
    uint8_t* arraydata[]=iHexGetArrayofData(line);

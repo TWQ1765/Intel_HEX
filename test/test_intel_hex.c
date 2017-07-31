@@ -205,4 +205,15 @@ void test_iHexGetLength_given_020000040000FA_expect_2(void)
   } 
 */
 
+//*//Try Record_type************
+  void test_Record_type_given_04_expect_00_return_error(void)
+  { 
+    
+    char *iHex = ":10000004560E08EC00F0020E020E020E06EF00F093";
+    int r_type = Record_type(iHex);
+    TEST_ASSERT_EQUAL(00, r_type);
+    //TEST_ASSERT_EQUAL(0x98, iHexArray);
+  } 
+//*/
 
+//TEST_ASSERT_EQUAL_INT8_ARRAY last test
