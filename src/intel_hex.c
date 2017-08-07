@@ -90,15 +90,15 @@ uint8_t* realdata(char *data)//return as pointer type FILE 'FILE *'
 int iHexVerifyLine(char * line)
 {
   char *lineptr = line;
-  char tempHex;
+  char temp_hex;
   int i =0;
   int test=0;
-  int sumHex=0;
-  int getHex= 0x123;
-  int startsimbol = 0;
+  int sum_hex=0;
+  int get_hex= 0x123;
+  int start_simbol = 0;
   
-  sscanf(&line[0] , "%c" , &startsimbol);//read simbol ':'
-  if (startsimbol != 0x3a)//if 1st are not start with ':' return test=0
+  sscanf(&line[0] , "%c" , &start_simbol);//read simbol ':'
+  if (start_simbol != 0x3a)//if 1st are not start with ':' return test=0
   { 
     return test = 0;
   }
@@ -106,11 +106,11 @@ int iHexVerifyLine(char * line)
   {    
     while(line[i+1] != NULL)//read the code until the end of line
     {
-      sscanf(&line[i+1], "%2c" , &tempHex);
-      sscanf(&line[i+1], "%2x" , &getHex);
+      sscanf(&line[i+1], "%2c" , &temp_hex);
+      sscanf(&line[i+1], "%2x" , &get_hex);
       i=i+2;
-      sumHex=sumHex+getHex;
-      test = ((sumHex & 0xff)<=0);//check value of test should = 1
+      sum_hex=sum_hex+get_hex;
+      test = ((sum_hex & 0xff)<=0);//check value of test should = 1
     }
   }
  return test;
@@ -120,45 +120,104 @@ int iHexVerifyLine(char * line)
 ///* //function open file not needed ?
 FILE* handler(char *file)//return as pointer type FILE 'FILE *'
 {
-  FILE *fileHandler;              //pointer fileHandler
-  //char file[];
-  fileHandler = fopen(file , "r");
+  FILE *file_handler;              //pointer fileHandler
+  
+  file_handler = fopen(file , "r");
  
-  return fileHandler;             // pointer return
+  return file_handler;             // pointer return
 }
 ///*/
 
 //*// fgets() 
-char* getiHexLine(FILE * fileHandler)
+char* getiHexLine(FILE * file_handler)
 {
-  char hexline[1028];
-  return fgets(hexline,1028, fileHandler);
+  char hex_line[1028];
+  return fgets(hex_line,1028, file_handler);
 }
 //*/
 
-/*// fgets()2 
-char* getiHexLine(FILE * fileHandler)
+//*// fgets()2 read all element
+char* iHexLineGet(FILE * file_handler) //:04001000230E1200A9\n
 {
-  int length;
-  char *hexline = malloc(length+1);
-  length = fgets(hexline,0, fileHandler);
-  printf("length requred:%d\n",length);
-  return fgets(hexline,length, fileHandler);
+  /*
+  char str[100];
+  int i = 0;
+  int length_of_ihex;
+  if(file_handler)
+  {
+    while (fscanf(file_handler, "%s", str[i+1]) != EOF)
+    {
+     // strcpy(str[i],getiHexLine(file_handler) );//getiHexLine(file_handler)
+      length_of_ihex = strlen(str);
+      printf("number %d length of the i_hex is %d\n",i,length_of_ihex);
+    }i++;
+  }
+  return *str;
+  */
+  
+  int len,i;
+  int buf_size = 1000; 
+  char *str[10];
+  char *i_hex[i];
+  FILE *fptr;
+  fptr = fopen(file_handler,"r");
+  if (fptr)
+  {
+    i_hex[i] = malloc(buf_size);
+    while (fgets(i_hex[i], buf_size , fptr))
+    {
+      i++;
+      i_hex[i] = malloc(buf_size);
+    }
+    printf("Output :\n");
+    srand(time(NULL));
+    int j = rand()%i;
+    int k = (j+1)%i;
+    fflush(stdout);
+    printf("%d - %s%d - %s",j, i_hex[j],k,i_hex[k]);
+    int x;
+    for(x=0 ; x<i ; x++)
+    {
+      free(i_hex[x]);
+      scanf("%d",x);
+      fclose(fptr);
+    return 0;
+    }
+    
+    printf("Data (intel_Hex) from  the Hex file\n");
+    printf("_______________________________________________\n");
+    while((len = getc(fptr))!=EOF)
+    //fscanf(fptr, "%[^\n]",str);//read until the newline
+    //printf("Data from file:\n%s",str);
+    
+    putchar(len);
+    fclose(fptr);
+    printf("_______________________________________________\n");
+    printf("length of the row of data is %d\n", len); // len=-1 ?
+    return str;
+  }
+  
+  //char hex_line[1028];
+  //return fgets(hex_line,1028, file_handler);
 }
-*/
+//*/
 
-/*/try find length of string 
-int find_length(char *file)
+//*/try fseek();
+   
+//*
+
+/*/try read all element at file 
+int readAll(char *file)
 {
-    char s[1000], i;
-    char file = s;
-    for(i = 0; s[i] != '\0'; ++i);
+    
+    for(int i = 0; s[i] != '\0'; ++i);
+    for(int j = 0: )
 
     printf("Length of string: %d", i);
     
     return i;
 }  
-*/
+//*/
 /* 
  FILE *file;
     char str[60];
@@ -171,11 +230,11 @@ int find_length(char *file)
     */
     
 //*//Record type****************
-int Record_type(char* line)
+int recordType(char* line)
 {
  // uint8_t* iHexGetArrayofData();
-  uint8_t* arraydata=iHexGetArrayofData(line);
-  int r_type = arraydata[3];
+  uint8_t* array_data=iHexGetArrayofData(line);
+  int r_type = array_data[3];
   return r_type;
 }  
 //*/
@@ -205,7 +264,7 @@ uint8_t read_byte_from_file(FILE * file, uint8_t * char_to_put, int * total_char
 
 */
 
-///*//read all element from file
+///*//read as 0xXX (8byte) element from file
 uint8_t* iHexGetArrayofData(char *line)
 {
   int length = 0;
@@ -234,9 +293,23 @@ uint8_t* iHexGetArrayofData(char *line)
 /*//try iHexGetAddress*****************function r_type()
 int iHexGetAddress(char * line)
 {
-   uint8_t* arraydata[]=iHexGetArrayofData(line);
-  arraydata[4] 
-  return line;
+  uint8_t* array_data[][]=iHexGetArrayofData(line);
+  int r_type = recordType(line);
+  
+  switch(r_type)
+  {
+    case 0:
+      uint8_t* address = &array_data[4];
+      break;
+    case 1:
+      uint8_t* address = NULL;
+      break;
+    case 4:
+     uint8_t* address = &array_data[4];
+     break; 
+    case   
+  }
+ 
+  return address;
 }  
-
 */

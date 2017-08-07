@@ -17,21 +17,21 @@ void tearDown(void)
 //*//test file Blinky.X.production occur or not? 
 void test_intelfile_fopen_expect_and_return_true(void)
 {
-    FILE *filehandler; //pointer
-    filehandler = handler("doc/Blinky.X.production.hex"); //pointer=pointer
+    FILE *file_handler; //pointer
+    file_handler = handler("doc/Blinky.X.production.hex"); //pointer=pointer
     
-    TEST_ASSERT_NOT_NULL(filehandler);
+    TEST_ASSERT_NOT_NULL(file_handler);
 }
 //*/
 
 //*//test function getiHexline()
 void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 {
-    FILE *filehandler; //pointer
-    filehandler = handler("doc/Blinky.X.production.hex"); //pointer=pointer
-    char* iHex = getiHexLine(filehandler);
+    FILE *file_handler; //pointer
+    file_handler = handler("doc/Blinky.X.production.hex"); //pointer=pointer
+    char* i_hex = getiHexLine(file_handler);
     
-    TEST_ASSERT_EQUAL_STRING(":020000040000FA\n", iHex);
+    TEST_ASSERT_EQUAL_STRING(":020000040000FA\n", i_hex);
 }
 //*/
 
@@ -55,7 +55,7 @@ void test_sscanf(void)
 }
 */
 
-/*trying sprintf
+/*trying sprintf()
 void test_sprintf_()
 {
   char *buffer;
@@ -141,54 +141,54 @@ void test_iHexGetLength_given_020000040000FA_expect_2(void)
 //*//Try test valid intel_Hex right
   void test_iHexVerifyLine_given_right_expect_return_1(void)
   { 
-    int sumHex;
-    char *iHex = ":10000000560E08EC00F0020E020E020E06EF00F093";
-    sumHex = iHexVerifyLine(iHex);
-    printf("the sum of intel_Hex is %d\n", sumHex);
-    TEST_ASSERT_EQUAL(0, sumHex);
+    int sum_hex;
+    char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F093";
+    sum_hex = iHexVerifyLine(i_hex);
+    printf("the sum of intel_Hex is %d\n", sum_hex);
+    TEST_ASSERT_EQUAL(0, sum_hex);
   } 
 //*/
 
 //*//Try test valid intel_Hex error code
   void test_iHexVerifyLine_given_error_code_expect_return_0(void)
   { 
-    int sumHex;
-    char *iHex = ":10000000560E08EC00F0020E020E020E06EF00F094";
-    sumHex = iHexVerifyLine(iHex);
-    printf("the sum of intel_Hex is %d\n", sumHex);
-    TEST_ASSERT_EQUAL(1, sumHex);
+    int sum_hex;
+    char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F094";
+    sum_hex = iHexVerifyLine(i_hex);
+    printf("the sum of intel_Hex is %d\n", sum_hex);
+    TEST_ASSERT_EQUAL(1, sum_hex);
   } 
 //*/
 
 //*//Try test valid intel_not_have_startSimbol ':'
   void test_iHexVerifyLine_given_not_have_startSimbol_expect_return_0(void)
   { 
-    int sumHex;
-    char *iHex = "10000000560E08EC00F0020E020E020E06EF00F094";
-    sumHex = iHexVerifyLine(iHex);
-    printf("the sum of intel_Hex is %d\n", sumHex);
-    TEST_ASSERT_EQUAL(1, sumHex);
+    int sum_hex;
+    char *i_hex = "10000000560E08EC00F0020E020E020E06EF00F094";
+    sum_hex = iHexVerifyLine(i_hex);
+    printf("the sum of intel_Hex is %d\n", sum_hex);
+    TEST_ASSERT_EQUAL(1, sum_hex);
   } 
 //*/
 //*//Try test convert intel_Hex to array in 16-bits. 
   void test_iHexGetArrayofData_expect_array_data_return_true(void)
   { 
-    uint8_t arrayData[]= {0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
-    char *iHex = ":10000000560E08EC00F0020E020E020E06EF00F093";
-    uint8_t* iHexArray = iHexGetArrayofData(iHex);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(arrayData, iHexArray, 21);
-    free (iHexArray); //deallocate allocated memory
+    uint8_t array_data[]= {0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
+    char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F093";
+    uint8_t* i_hex_array = iHexGetArrayofData(i_hex);
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21);
+    free (i_hex_array); //deallocate allocated memory
   } 
 //*/
 //*//Try test convert intel_Hex to array in 16-bits. 
   void test_iHexGetArrayofData_expect_array_data_return_error(void)
   { 
-    uint8_t arrayData[]= {0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
-    char *iHex = ":10000000560E08EC00F0020E020E020E06EF00F094";
-    uint8_t* iHexArray = iHexGetArrayofData(iHex);
-    TEST_ASSERT_EQUAL_INT8(arrayData[4], 0x56);//test only one set data
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(arrayData, iHexArray, 21);
-    free (iHexArray); //deallocate allocated memory
+    uint8_t array_data[]= {0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
+    char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F094";
+    uint8_t* i_hex_array = iHexGetArrayofData(i_hex);
+    TEST_ASSERT_EQUAL_INT8(array_data[4], 0x56);//test only one set data
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21);
+    free (i_hex_array); //deallocate allocated memory
   } 
 //*/
 
@@ -205,15 +205,55 @@ void test_iHexGetLength_given_020000040000FA_expect_2(void)
   } 
 */
 
-//*//Try Record_type************
-  void test_Record_type_given_04_expect_00_return_error(void)
+//*//Try Record type
+  void test_recordType_given_04_expect_00_return_error(void)
   { 
     
-    char *iHex = ":10000004560E08EC00F0020E020E020E06EF00F093";
-    int r_type = Record_type(iHex);
+    char *i_hex = ":10000004560E08EC00F0020E020E020E06EF00F093";
+    int r_type = recordType(i_hex);
     TEST_ASSERT_EQUAL(00, r_type);
     //TEST_ASSERT_EQUAL(0x98, iHexArray);
   } 
 //*/
 
+//*//Try read all from file************
+  void test_iHexLineGet_given(void)
+  { 
+    FILE *file_handler; //pointer
+    //file_handler = handler("doc/Blinky.X.production.hex");//pointer=pointer
+    char* i_hex = iHexLineGet("doc/Blinky.X.production.hex");
+    
+    TEST_ASSERT_EQUAL_STRING(":04001000230E1200A9\n", i_hex);//the 3 line from file
+  } 
+//*/
+
 //TEST_ASSERT_EQUAL_INT8_ARRAY last test
+
+/*/try fseek()******************check output (false)
+void test_fseek_trying(void)
+{
+  char *data[61];  //try put value *data[60]; other value show 0
+  FILE *file_handler; 
+  
+  file_handler = handler("doc/Blinky.X.production.hex");
+  
+  fseek(file_handler, 10 ,SEEK_SET);
+  fflush(*data);   //try (*data);
+  fgets(data , 61 , file_handler);
+  printf("data int = %d\ndata hex = %x\n", data, data);
+  TEST_ASSERT_EQUAL(1, data);
+}
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
