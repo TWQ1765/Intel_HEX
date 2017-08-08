@@ -137,30 +137,13 @@ char* getiHexLine(FILE * file_handler)
 //*/
 
 //*// fgets()2 read all element
-char* iHexLineGet(FILE * file_handler) //:04001000230E1200A9\n
-{
-  /*
-  char str[100];
-  int i = 0;
-  int length_of_ihex;
-  if(file_handler)
-  {
-    while (fscanf(file_handler, "%s", str[i+1]) != EOF)
-    {
-     // strcpy(str[i],getiHexLine(file_handler) );//getiHexLine(file_handler)
-      length_of_ihex = strlen(str);
-      printf("number %d length of the i_hex is %d\n",i,length_of_ihex);
-    }i++;
-  }
-  return *str;
-  */
-  
+char* iHexLineGet(FILE * file) //:04001000230E1200A9\n
+{ 
   int len,i;
   int buf_size = 1000; 
   char *str[10];
   char *i_hex[i];
-  FILE *fptr;
-  fptr = fopen(file_handler,"r");
+  FILE *fptr = fopen(file,"r");
   if (fptr)
   {
     i_hex[i] = malloc(buf_size);
@@ -169,21 +152,28 @@ char* iHexLineGet(FILE * file_handler) //:04001000230E1200A9\n
       i++;
       i_hex[i] = malloc(buf_size);
     }
-    printf("Output :\n");
-    srand(time(NULL));
+    printf("Output :--------------------------------\n");
+	printf("Output - %s\n",i_hex[3]);
+	/*
+    srand(time(NULL));//ramdom value only 
     int j = rand()%i;
     int k = (j+1)%i;
     fflush(stdout);
-    printf("%d - %s%d - %s",j, i_hex[j],k,i_hex[k]);
-    int x;
-    for(x=0 ; x<i ; x++)
-    {
-      free(i_hex[x]);
-      scanf("%d",x);
-      fclose(fptr);
-    return 0;
-    }
-    
+	*/
+	for(int j=0 ; j<i ; j++)
+	{
+		printf("%d - %s\n",j,i_hex[j]);
+	}
+	///*
+    for(int x=0 ; x<i ; x++)
+	{
+		free(i_hex[x]);
+      //scanf("%d",x);
+		fclose(fptr);
+		return i_hex[2];
+	}
+	//*/
+    /*
     printf("Data (intel_Hex) from  the Hex file\n");
     printf("_______________________________________________\n");
     while((len = getc(fptr))!=EOF)
@@ -196,9 +186,10 @@ char* iHexLineGet(FILE * file_handler) //:04001000230E1200A9\n
     printf("length of the row of data is %d\n", len); // len=-1 ?
     return str;
   }
-  
+  */
   //char hex_line[1028];
   //return fgets(hex_line,1028, file_handler);
+  }
 }
 //*/
 
