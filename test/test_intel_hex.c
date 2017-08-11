@@ -55,7 +55,7 @@ void test_sscanf(void)
 }
 */
 
-/*trying sprintf()
+//*trying sprintf()***************important remember
 void test_sprintf_()
 {
   char *buffer;
@@ -64,7 +64,7 @@ void test_sprintf_()
   TEST_ASSERT_EQUAL_STRING("Hello Word 0x1234,0.000000", buffer);
   free(buffer);
 }
-*/
+//*/
 
 /*//trying fgets() test Byte count HAS PROBLEM LEN
 void test_iHexGetLength_given_020000040000FA_expect_2(void)
@@ -223,7 +223,7 @@ void test_iHexGetLength_given_020000040000FA_expect_2(void)
     //file_handler = handler("doc/Blinky.X.production.hex");//pointer=pointer
     char* i_hex = iHexLineGet("doc/Blinky.X.production.hex");
     
-    TEST_ASSERT_EQUAL_STRING(":04001000230E1200A9\n", i_hex);//the 3 line from file
+    TEST_ASSERT_EQUAL_STRING(":04001000230E1200A9\n", i_hex);//the 3rd line from file
   } 
 //*/
 

@@ -137,69 +137,45 @@ char* getiHexLine(FILE * file_handler)
 //*/
 
 //*// fgets()2 read all element
-char* iHexLineGet(FILE * file_handler) //:04001000230E1200A9\n
-{
-  /*
-  char str[100];
-  int i = 0;
-  int length_of_ihex;
-  if(file_handler)
-  {
-    while (fscanf(file_handler, "%s", str[i+1]) != EOF)
-    {
-     // strcpy(str[i],getiHexLine(file_handler) );//getiHexLine(file_handler)
-      length_of_ihex = strlen(str);
-      printf("number %d length of the i_hex is %d\n",i,length_of_ihex);
-    }i++;
-  }
-  return *str;
-  */
-  
+char* iHexLineGet(FILE * file) //:04001000230E1200A9\n
+{ 
   int len,i;
   int buf_size = 1000; 
   char *str[10];
   char *i_hex[i];
-  FILE *fptr;
-  fptr = fopen(file_handler,"r");
+  FILE *fptr = fopen(file,"r");
   if (fptr)
   {
-    i_hex[i] = malloc(buf_size);
-    while (fgets(i_hex[i], buf_size , fptr))
-    {
-      i++;
       i_hex[i] = malloc(buf_size);
-    }
-    printf("Output :\n");
-    srand(time(NULL));
+      while (fgets(i_hex[i], buf_size , fptr))
+      {
+        i++;
+        i_hex[i] = malloc(buf_size);
+      }
+      printf("Output :--------------------------------\n");
+      printf("Output - %s\n",i_hex[3]);
+	/*
+    srand(time(NULL));//ramdom value only 
     int j = rand()%i;
     int k = (j+1)%i;
     fflush(stdout);
-    printf("%d - %s%d - %s",j, i_hex[j],k,i_hex[k]);
-    int x;
-    for(x=0 ; x<i ; x++)
-    {
-      free(i_hex[x]);
-      scanf("%d",x);
-      fclose(fptr);
-    return 0;
-    }
-    
-    printf("Data (intel_Hex) from  the Hex file\n");
-    printf("_______________________________________________\n");
-    while((len = getc(fptr))!=EOF)
-    //fscanf(fptr, "%[^\n]",str);//read until the newline
-    //printf("Data from file:\n%s",str);
-    
-    putchar(len);
-    fclose(fptr);
-    printf("_______________________________________________\n");
-    printf("length of the row of data is %d\n", len); // len=-1 ?
-    return str;
+	*/
+      for(int j=0 ; j<i ; j++)
+      {
+        printf("%d - %s\n",j,i_hex[j]);
+      }
+	///*
+      for(int x=0 ; x<i ; x++)
+      {
+        free(i_hex[x]);
+        //scanf("%d",x);
+        fclose(fptr);
+        return i_hex[2]; // only return one array?
+      }
+	//*/
   }
-  
-  //char hex_line[1028];
-  //return fgets(hex_line,1028, file_handler);
 }
+
 //*/
 
 //*/try fseek();
@@ -290,11 +266,21 @@ uint8_t* iHexGetArrayofData(char *line)
 }
 //*/
 
+
+  /*------------------------------------------------------------
+   *  record type         mean                
+   *      00       Data
+   *      01       End Of File
+   *      02       Extended Segment Address ( ignored )
+   *      03       Start Segment Address (For 80x86 processors,ignored)
+   *      04       Extended Linear Address
+   *      05       Start Linear Address ( ignored )
+   *---------------------------------------------------------------*/
 /*//try iHexGetAddress*****************function r_type()
 int iHexGetAddress(char * line)
 {
-  uint8_t* array_data[][]=iHexGetArrayofData(line);
-  int r_type = recordType(line);
+  uint8_t* array_data[]=iHexGetArrayofData(line);
+  int r_type = recordType(line); // get return 
   
   switch(r_type)
   {
@@ -307,7 +293,7 @@ int iHexGetAddress(char * line)
     case 4:
      uint8_t* address = &array_data[4];
      break; 
-    case   
+       
   }
  
   return address;
