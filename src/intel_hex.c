@@ -7,7 +7,6 @@
 //#define SWAP(a, b) do { typeof(a) temp = a; a = b; b = temp; } while (0)//swap function
 
 
-
 ///*//test Hex is right or not. :10000000560E08EC00F0020E020E020E06EF00F094
 int iHexVerifyLine(char * line)
 {
