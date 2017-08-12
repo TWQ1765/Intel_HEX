@@ -8,84 +8,6 @@
 
 
 
-/*//try1
-int hex_file_line_count(FILE * file_to_count)
-{
-	int line_count = 0;
-	char got_char;
-
-	while(got_char != EOF)
-	{
-		got_char = fgetc(file_to_count);
-		if (got_char == ':'){line_count++;}
-	}
-	rewind(file_to_count);
-	return line_count;
-}
-
-char*readLine(File* fileHandler)
-*/
-/*//try2
-
-   char ch;
-   char str[100];
-   printf("Enter any character \n");
-   scanf("%c", &ch);
-   printf("Entered character is %c \n", ch);
-   printf("Enter any string ( upto 100 character ) \n");
-   scanf("%s", &str);
-   printf("Entered string is %s \n", str);
-
-*/ 
-/*//try3 
-int main()
-{
-    int v;
-    if (scanf("%d", &v) == 1) {
-        printf("OK\n");
-    } else {
-        printf("Not an integer.\n");
-    }
-    return 0;
-}
-*/
-/*//remember tyr4 grom trying scanf ()
-int main(){
-  int x;
-  scanf("%d" , &x);
-  printf("This is a test value must be int : %d\n" , x);
-}
-*/
-
-/* //swap value  test value:  0x20                0x98       //not needed
-uint8_t* swapvalue(uint8_t* hexvaluehigh,uint8_t* hexvaluelow)//return as pointer type FILE 'FILE *'
-{
- 
-  //hexvalue.hexvaluehigh;        //a
-  //hexvalue.hexvaluelow;         //b
-  
-  SWAP(hexvaluehigh,hexvaluelow); //defined
-                                  //printed:         0x98        0x20
-  printf("hexvaluehigh = %x , hexvaluelow = %x",hexvaluehigh,hexvaluelow);
-  return hexvaluehigh;//*return one value
-}
-*/
-
-/* //real allocate high byte & low byte format************not needed
-uint8_t* realdata(char *data)//return as pointer type FILE 'FILE *'
-{
-  uint8_t* hexvalue[];
-  uint8_t* hexvaluehigh;  //a
-  uint8_t* hexvaluelow;   //b
-  hexvalue[]  =iHexGetArrayofData(data);
-  for(int i=4 ; i< ; i+=2)
-  {
-    sscanf(&hexvalue [i+1], "%2x", &hexvaluehigh[i/2]);
-    
-  }
-}
-*/
-
 ///*//test Hex is right or not. :10000000560E08EC00F0020E020E020E06EF00F094
 int iHexVerifyLine(char * line)
 {
@@ -117,7 +39,7 @@ int iHexVerifyLine(char * line)
 }  
 //*/ 
 
-///* //function open file not needed ?
+///* //function open file
 FILE* handler(char *file)//return as pointer type FILE 'FILE *'
 {
   FILE *file_handler;              //pointer fileHandler
@@ -128,7 +50,7 @@ FILE* handler(char *file)//return as pointer type FILE 'FILE *'
 }
 ///*/
 
-//*// fgets() 
+//*// fgets() only able to get 1st line
 char* getiHexLine(FILE * file_handler)
 {
   char hex_line[1028];
@@ -136,39 +58,40 @@ char* getiHexLine(FILE * file_handler)
 }
 //*/
 
-//*// fgets()2 read all element
+//*// fgets()2 read all element in the file
 char* iHexLineGet(FILE * file) //:04001000230E1200A9\n
 { 
-  int len,i;
+  int len,i,j;
   int buf_size = 1000; 
   char *str[10];
   char *i_hex[i];
+ // char *i_hex_mem[j];
   FILE *fptr = fopen(file,"r");
   if (fptr)
   {
       i_hex[i] = malloc(buf_size);
+	 // i_hex_mem[j] = malloc(buf_size);
+	  
       while (fgets(i_hex[i], buf_size , fptr))
       {
         i++;
         i_hex[i] = malloc(buf_size);
       }
       printf("Output :--------------------------------\n");
-      printf("Output - %s\n",i_hex[3]);
-	/*
-    srand(time(NULL));//ramdom value only 
-    int j = rand()%i;
-    int k = (j+1)%i;
-    fflush(stdout);
-	*/
-      for(int j=0 ; j<i ; j++)
+      printf("the 3rd line - %s",i_hex[2]);
+	 
+      for( j=0 ; j<i ; j++)
       {
-        printf("%d - %s\n",j,i_hex[j]);
+        printf("%d - %s",j,i_hex[j]);
+		//i_hex_mem[j] = i_hex[j];
       }
+	  printf("Number of elements :%d\n", sizeof(i_hex[j]));
 	///*
       for(int x=0 ; x<i ; x++)
       {
+		//free(i_hex_mem[x]);  
         free(i_hex[x]);
-        //scanf("%d",x);
+        
         fclose(fptr);
         return i_hex[2]; // only return one array?
       }
@@ -178,9 +101,14 @@ char* iHexLineGet(FILE * file) //:04001000230E1200A9\n
 
 //*/
 
-//*/try fseek();
+//*//try fseek();
    
-//*
+//*/
+
+/*//try memcpy();
+   char * ihex[] = malloc();
+*/
+
 
 /*/try read all element at file 
 int readAll(char *file)
@@ -298,4 +226,84 @@ int iHexGetAddress(char * line)
  
   return address;
 }  
+*/
+
+/**__TRY_ZONE_(can be ignore)_______________________________________________________________________*/
+
+/*//try1
+int hex_file_line_count(FILE * file_to_count)
+{
+	int line_count = 0;
+	char got_char;
+
+	while(got_char != EOF)
+	{
+		got_char = fgetc(file_to_count);
+		if (got_char == ':'){line_count++;}
+	}
+	rewind(file_to_count);
+	return line_count;
+}
+
+char*readLine(File* fileHandler)
+*/
+/*//try2
+
+   char ch;
+   char str[100];
+   printf("Enter any character \n");
+   scanf("%c", &ch);
+   printf("Entered character is %c \n", ch);
+   printf("Enter any string ( upto 100 character ) \n");
+   scanf("%s", &str);
+   printf("Entered string is %s \n", str);
+
+*/ 
+/*//try3 
+int main()
+{
+    int v;
+    if (scanf("%d", &v) == 1) {
+        printf("OK\n");
+    } else {
+        printf("Not an integer.\n");
+    }
+    return 0;
+}
+*/
+/*//remember tyr4 grom trying scanf ()
+int main(){
+  int x;
+  scanf("%d" , &x);
+  printf("This is a test value must be int : %d\n" , x);
+}
+*/
+
+/* //swap value  test value:  0x20                0x98       //not needed
+uint8_t* swapvalue(uint8_t* hexvaluehigh,uint8_t* hexvaluelow)//return as pointer type FILE 'FILE *'
+{
+ 
+  //hexvalue.hexvaluehigh;        //a
+  //hexvalue.hexvaluelow;         //b
+  
+  SWAP(hexvaluehigh,hexvaluelow); //defined
+                                  //printed:         0x98        0x20
+  printf("hexvaluehigh = %x , hexvaluelow = %x",hexvaluehigh,hexvaluelow);
+  return hexvaluehigh;//*return one value
+}
+*/
+
+/* //real allocate high byte & low byte format************not needed
+uint8_t* realdata(char *data)//return as pointer type FILE 'FILE *'
+{
+  uint8_t* hexvalue[];
+  uint8_t* hexvaluehigh;  //a
+  uint8_t* hexvaluelow;   //b
+  hexvalue[]  =iHexGetArrayofData(data);
+  for(int i=4 ; i< ; i+=2)
+  {
+    sscanf(&hexvalue [i+1], "%2x", &hexvaluehigh[i/2]);
+    
+  }
+}
 */

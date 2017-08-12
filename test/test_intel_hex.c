@@ -24,7 +24,7 @@ void test_intelfile_fopen_expect_and_return_true(void)
 }
 //*/
 
-//*//test function getiHexline()
+//*//test function getiHexline() only get 1st line of file
 void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 {
     FILE *file_handler; //pointer
@@ -34,51 +34,6 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     TEST_ASSERT_EQUAL_STRING(":020000040000FA\n", i_hex);
 }
 //*/
-
-/*//trying scanf ()
-void test_scanf(void)
-{
-  int x;
-  scanf("%d" , &x);
-  printf("This is a test value must be int : %d\n" , x);
-}
-*/
-
-/*//trying sscanf()
-void test_sscanf(void)
-{
-  char iHexLine[] = "060023002c45ab38949c45";
-  int value;
-  
-  sscanf(&iHexLine[0] , "%2x" , &value);
-  TEST_ASSERT_EQUAL_HEX32(0x00000006, value);
-}
-*/
-
-//*trying sprintf()***************important remember
-void test_sprintf_()
-{
-  char *buffer;
-  buffer = malloc(1028);
-  sprintf(buffer, "Hello Word 0x%d,%f",1234,5678);
-  TEST_ASSERT_EQUAL_STRING("Hello Word 0x1234,0.000000", buffer);
-  free(buffer);
-}
-//*/
-
-/*//trying fgets() test Byte count HAS PROBLEM LEN
-void test_iHexGetLength_given_020000040000FA_expect_2(void)
-{
-  char line[] = ":020000040000FA";
- 
-  char len = iHexGetLength(line);
- 
-//  sscanf(&iHexLine[1] , "%2x" , &line);
-  printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
-  printf("Byte count of the String: 0x0%d\n", len); 
-  TEST_ASSERT_EQUAL_HEX32(1, len);
-}
-*/
 
 ///*//try test startcode ':' == ASSCI:3a
   void test_intel_hex_startcode(void)
@@ -116,7 +71,7 @@ void test_iHexGetLength_given_020000040000FA_expect_2(void)
 //*/
 
 ///*/try test Record type 
-  void test_intel_hex_Record_type(void)
+  void test_intel_hex_Record_type_return_0x00000004(void)
   {
     char iHexLine[] = ":020000040000FA";
     int Record_type;
@@ -191,20 +146,7 @@ void test_iHexGetLength_given_020000040000FA_expect_2(void)
     free (i_hex_array); //deallocate allocated memory
   } 
 //*/
-
-/*//Try swap value not needed
-  void test_swapvalue_given_0x20_and_0x98_expect_0x98_and_0x20(void)
-  { 
-    uint8_t* highbit = 0x20;
-    uint8_t* lowbit  = 0x98;
-    uint16_t* iHexArray = swapvalue(highbit,lowbit);
-    //struct value* function(highbit,lowbit);
-    
-    TEST_ASSERT_EQUAL(0x20, iHexArray);
-    TEST_ASSERT_EQUAL(0x98, iHexArray);
-  } 
-*/
-
+ 
 //*//Try Record type
   void test_recordType_given_04_expect_00_return_error(void)
   { 
@@ -227,7 +169,54 @@ void test_iHexGetLength_given_020000040000FA_expect_2(void)
   } 
 //*/
 
+
+/**__TRY_ZONE_(can be ignore)_______________________________________________________________________*/
 //TEST_ASSERT_EQUAL_INT8_ARRAY last test
+
+/*//trying scanf ()
+void test_scanf(void)
+{
+  int x;
+  scanf("%d" , &x);
+  printf("This is a test value must be int : %d\n" , x);
+}
+*/
+
+/*//trying sscanf()
+void test_sscanf(void)
+{
+  char iHexLine[] = "060023002c45ab38949c45";
+  int value;
+  
+  sscanf(&iHexLine[0] , "%2x" , &value);
+  TEST_ASSERT_EQUAL_HEX32(0x00000006, value);
+}
+*/
+
+/*trying sprintf()***************important remember
+void test_sprintf_()
+{
+  char *buffer;
+  buffer = malloc(1028);
+  sprintf(buffer, "Hello Word 0x%d,%f",1234,5678);
+  TEST_ASSERT_EQUAL_STRING("Hello Word 0x1234,0.000000", buffer);
+  free(buffer);
+}
+*/
+
+/*//trying fgets() test Byte count HAS PROBLEM LEN
+void test_iHexGetLength_given_020000040000FA_expect_2(void)
+{
+  char line[] = ":020000040000FA";
+ 
+  char len = iHexGetLength(line);
+ 
+//  sscanf(&iHexLine[1] , "%2x" , &line);
+  printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+  printf("Byte count of the String: 0x0%d\n", len); 
+  TEST_ASSERT_EQUAL_HEX32(1, len);
+}
+*/
 
 /*/try fseek()******************check output (false)
 void test_fseek_trying(void)
@@ -246,7 +235,40 @@ void test_fseek_trying(void)
 
 */
 
+/*//Try swap value (not needed)
+void test_swapvalue_given_0x20_and_0x98_expect_0x98_and_0x20(void)
+  { 
+    uint8_t* highbit = 0x20;
+    uint8_t* lowbit  = 0x98;
+    uint16_t* iHexArray = swapvalue(highbit,lowbit);
+    //struct value* function(highbit,lowbit);
+    
+    TEST_ASSERT_EQUAL(0x20, iHexArray);
+    TEST_ASSERT_EQUAL(0x98, iHexArray);
+  } 
+*/
 
+//*///Try something
+  void test_something_given(void)
+  { 
+    int i;
+    int n;
+    int **myArray;
+
+    n = 10;
+    myArray = (int**)malloc(n*sizeof(int*));
+
+    //Usage example
+    int myIntArray[] = {1,2,3,4,5};
+
+    myArray[0] = myIntArray;
+
+    //This call should print "4"
+    printf("%d\n",myArray[0][3]);
+	printf("my array -%s\n",myArray[0]);
+	TEST_ASSERT_EQUAL_STRING(":04001000230E1200A9\n", myArray);
+  } 
+//*/
 
 
 
