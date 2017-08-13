@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-
+#include <stdarg.h>
 //#define SWAP(a, b) do { typeof(a) temp = a; a = b; b = temp; } while (0)//swap function
 
 
@@ -60,11 +60,12 @@ char* getiHexLine(FILE * file_handler)
 //*// fgets()2 read all element in the file
 char* iHexLineGet(FILE * file) //:04001000230E1200A9\n
 { 
-  int len,i,j;
+  int i,j;
   int buf_size = 1000; 
   char *str[10];
-  char *i_hex[i];
- // char *i_hex_mem[j];
+  char **i_hex[i];
+  int sample[10000];
+  int *i_hex_mem = (int *)malloc(sizeof(int)*buf_size); /*Stored in heap segment*/
   FILE *fptr = fopen(file,"r");
   if (fptr)
   {
@@ -76,15 +77,27 @@ char* iHexLineGet(FILE * file) //:04001000230E1200A9\n
         i++;
         i_hex[i] = malloc(buf_size);
       }
-      printf("Output :--------------------------------\n");
-      printf("the 3rd line - %s",i_hex[2]);
-	 
+	   i_hex[i] = malloc(10*sizeof(char));
+      
+     // printf("the 3rd line - %s",i_hex[2]);
+	   printf("ihex - %s",*i_hex);
+	  printf("Number of elements :%d\n", strlen(i_hex[1]));
+	  printf("No-----------All elemennt in file--------------------\n");
       for( j=0 ; j<i ; j++)
       {
-        printf("%d - %s",j,i_hex[j]);
-		//i_hex_mem[j] = i_hex[j];
+		//sscanf(i_hex[j] , "%s" , *sample);  
+        printf("%d - %s",j,&*i_hex[j]);
+		//*(i_hex_mem+j) = i_hex[j];
+		//memcpy(i_hex[j],&sample ,sizeof sample);
       }
+	  printf("-------------End of file elemennt--------------------\n");
+	  //sscanf(i_hex[1] , "%s" , *sample);
 	  printf("Number of elements :%d\n", sizeof(i_hex[j]));
+	  printf("Number of elements :%d\n", sizeof(i_hex));
+	 // printf("Number of elements :%d\n", strlen(i_hex_mem[1]));
+	  //printf("i_hex_mem :%d\n", *i_hex_mem[2]);
+	  //printf("i_hex_mem %d\n", &i_hex_mem[2]);
+	  printf("sample %s\n", *sample);
 	///*
       for(int x=0 ; x<i ; x++)
       {
@@ -104,33 +117,24 @@ char* iHexLineGet(FILE * file) //:04001000230E1200A9\n
    
 //*/
 
-/*//try memcpy();
-   char * ihex[] = malloc();
-*/
 
-
-/*/try read all element at file 
-int readAll(char *file)
-{
-    
-    for(int i = 0; s[i] != '\0'; ++i);
-    for(int j = 0: )
-
-    printf("Length of string: %d", i);
-    
-    return i;
-}  
+///*// get address 16bit 
+ int getAddress16bit(uint8_t *i_hex_array)
+ {
+  int address = (i_hex_array[1]<<1) + i_hex_array[2];
+  
+  return address;  
+ } 
 //*/
-/* 
- FILE *file;
-    char str[60];
-    // opening file for reading 
-    file = fopen("data/TestCode.hex" , "r");
-    fgets (str, 60, file);
-    // writing content to str
-    puts(str);
-    fclose(file);  
-    */
+
+///*// get address 32bit 
+ int getAddress32bit(uint8_t *i_hex_array1,uint8_t *i_hex_array2)
+ {
+  int address = (i_hex_array1[9]<<8) + i_hex_array1[10] + (i_hex_array2[1]<<8) + i_hex_array2[2];
+  
+  return address;  
+ } 
+//*/
     
 //*//Record type****************
 int recordType(char* line)
@@ -277,7 +281,21 @@ int main(){
   printf("This is a test value must be int : %d\n" , x);
 }
 */
+/*//try memcpy();
+   char * ihex[] = malloc();
+*/
+/*/try read all element at file 
+int readAll(char *file)
+{
+    
+    for(int i = 0; s[i] != '\0'; ++i);
+    for(int j = 0: )
 
+    printf("Length of string: %d", i);
+    
+    return i;
+}  
+//*/
 /* //swap value  test value:  0x20                0x98       //not needed
 uint8_t* swapvalue(uint8_t* hexvaluehigh,uint8_t* hexvaluelow)//return as pointer type FILE 'FILE *'
 {

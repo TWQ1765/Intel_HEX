@@ -169,6 +169,25 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 //*/
 
+void test_getAddress16bit_address_as_16bit(void)
+{
+  char *i_hex = ":04001000230E1200A9\n";
+  uint8_t* i_hex_array = iHexGetArrayofData(i_hex);
+  int address = getAddress16bit(i_hex_array);
+  
+  TEST_ASSERT_EQUAL(0x0011, address);
+}
+  
+void test_getAddress32bit_address_as_16bit(void)
+{
+  char *i_hex1 = ":020000040030CA\n";
+  char *i_hex2 = ":01000100C836";
+  uint8_t* i_hex_array1 = iHexGetArrayofData(i_hex1);
+  uint8_t* i_hex_array2 = iHexGetArrayofData(i_hex2);
+  int address = getAddress32bit(i_hex_array1,i_hex_array2);
+  
+  TEST_ASSERT_EQUAL(0x0011, address);
+}
 
 /**__TRY_ZONE_(can be ignore)_______________________________________________________________________*/
 //TEST_ASSERT_EQUAL_INT8_ARRAY last test
@@ -182,16 +201,19 @@ void test_scanf(void)
 }
 */
 
-/*//trying sscanf()
+//*//trying sscanf()
 void test_sscanf(void)
 {
   char iHexLine[] = "060023002c45ab38949c45";
-  int value;
+  int value[100];
   
-  sscanf(&iHexLine[0] , "%2x" , &value);
-  TEST_ASSERT_EQUAL_HEX32(0x00000006, value);
+ // sscanf(&iHexLine[0] , "%2x" , &value);
+ // TEST_ASSERT_EQUAL_HEX32(0x00000006, value);
+ 
+	sscanf(&iHexLine , "%s" , &value);
+	TEST_ASSERT_EQUAL_STRING("060023002c45ab38949c45\n", iHexLine);
 }
-*/
+//*/
 
 /*trying sprintf()***************important remember
 void test_sprintf_()
@@ -270,7 +292,46 @@ void test_swapvalue_given_0x20_and_0x98_expect_0x98_and_0x20(void)
   } 
 //*/
 
+//*///Try sizeof
+  void test_sizeof_given(void)
+  { 
+    /* Initialize arrays */
+  int mPlusN[] = {2, 8, 1, 1, 1, 13, 1, 15, 20}; //int
+  char* N = "12345";				//char
+  char* simplestr[] ={"12312312312","34534534534","67867869787686786"};
+  int n = sizeof(N)/sizeof(N[0]);
+  int m = sizeof(mPlusN)/sizeof(mPlusN[0]); //9;
+ 
+	printf("number of n :%d\n", n); //8 wrong
+	printf("number of m :%d\n", m); //9 collect
+	printf("simplestr  :%s\n", simplestr[2]); 
+	TEST_ASSERT_EQUAL_STRING(":04001000230E1200A9\n", mPlusN);
+  } 
+//*/
 
+/*///Try read and skip 7 in the line
+  void test_lineskip_given(void)
+  { 
+	char fileBuf[MAXFILE];
+	FILE *f;
+	int c,x;
+	int MAXFILE=1000;
+	size_t i;
+
+	while (f = fopen("doc/Blinky.X.production.hex", "r")) 
+	{
+		for (i = 0; i < (MAXFILE - 1) && (c = getc(f)) != EOF; ++i)
+			fileBuf[i] = c;
+			fclose(f);
+	} 	
+	
+	
+	char line[MAXLINE];
+		for (x = 0; x < 7; ++x)
+		fgets(line, MAXLINE, f);
+	TEST_ASSERT_EQUAL_STRING(":04001000230E1200A9\n", f);
+  } 
+*/
 
 
 
