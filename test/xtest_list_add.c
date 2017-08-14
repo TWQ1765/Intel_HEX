@@ -16,7 +16,7 @@ void tearDown(void)
  *- 1 - the .hex file is locate at the following directory. 
  *-     Intel_HEX\doc , name is Blinky.X.production.hex.
  *- 2 - camelcasing Ex.) getiHexLine refering to function.
- *- 3 - snake_casing EX.) i_hex refering to constant decelation .
+ *- 3 - snake_casing EX.) i_hex refering to constant.
  *--------------------------------------------------------*/
  
 //*//test file Blinky.X.production occur or not? 
@@ -61,27 +61,34 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   { 
     char* data_str[] ={":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
     char* file ="doc/Blinky.X.production.hex";
-    int line_num = 6; // changing this value to test if -VE number will clash
-                      //number over will return NULL
+    int* line_num = 7; // changing this value to test 
+    
     char* all_data = iHexSelectLoad(file, line_num);
     
-    TEST_ASSERT_EQUAL_STRING(data_str[6], all_data);
+    TEST_ASSERT_EQUAL_STRING(data_str[7], all_data);
   } 
 //*/
 
 
-//*//Try read only all line from file **************
+/*//Try read only all line from file **************
   void test_iHexLoadHexFileToMemory_read_all_line_from_file_expect_true(void)
   { 
     char* data_str[] ={":020000040000FA",":10000000560E08EC00F0020E020E020E06EF00F093",":04001000230E1200A9",":020014000000EA",":020000040030CA",":01000100C836",":010003001EDE",":010005008377",":0100060001F8",":00000001FF"};
     
-    char* file ="doc/Blinky.X.production.hex";
-    
-    char* all_data = iHexLoadHexFileToMemory(file);
    
-    TEST_ASSERT_EQUAL_STRING(data_str[0], all_data);
+    char* i_hex;
+    int i = 0;
+    FILE *file_handler; //pointer
+    file_handler = handler("doc/Blinky.X.production.hex"); //pointer=pointer
+    i_hex = getiHexLine(file_handler);
+    while (*i_hex != NULL)
+    {
+      i_hex = getiHexLine(file_handler);
+      //sscanf(i_hex , "%s" , sample);
+    }
+    TEST_ASSERT_EQUAL_STRING(data_str[0], i_hex);
   } 
-//*/
+*/
 
 
 ///*//try test startcode ':' == ASSCI:3a
@@ -93,11 +100,11 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     sscanf(&iHexLine[0] , "%*" , *line);
     printf("start of the String:'%c'\n \
     Hex_value = 0x%x\n",*line,*line); 
-    TEST_ASSERT_EQUAL_HEX32(0x0000003a, *line);
+    TEST_ASSERT_EQUAL_HEX32(0x00000001, *line);
   } 
 //*/
 
-///*/try test  Address 0x0000 //just try test dont have fuction
+///*/try test  Address 0x0000
   void test_intel_hex_Address(void)
   {
     char iHexLine[] = ":020000040000FA";
@@ -115,18 +122,18 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     //test address low byte
     sscanf(&iHexLine[5] , "%2x" , &addresslow);
     printf("addresslow of the String: 0x0%x\n", addresslow); 
-    TEST_ASSERT_EQUAL_HEX32(0x00000000, addresslow);  
+    TEST_ASSERT_EQUAL_HEX32(0x00000001, addresslow);  
   } 
 //*/
 
-///*/try test Record type //just try test dont have fuction
-  void test_intel_hex_Record_type_given_and_return_0x00000004(void)
+///*/try test Record type 
+  void test_intel_hex_Record_type_return_0x00000004(void)
   {
     char iHexLine[] = ":020000040000FA";
     int Record_type;
     sscanf(&iHexLine[7] , "%2x" , &Record_type);
     printf("Record type of the String: 0x0%x\n", Record_type); 
-    TEST_ASSERT_EQUAL_HEX32(0x00000004, Record_type);
+    TEST_ASSERT_EQUAL_HEX32(0x00000000, Record_type);
   } 
 //*/
 
@@ -148,8 +155,8 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     int sum_hex;
     char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F093";
     sum_hex = iHexVerifyLine(i_hex);
-    printf("the sum of intel_Hex return %d\n", sum_hex);
-    TEST_ASSERT_EQUAL(1, sum_hex);
+    printf("the sum of intel_Hex is %d\n", sum_hex);
+    TEST_ASSERT_EQUAL(0, sum_hex);
   } 
 //*/
 
@@ -159,8 +166,8 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     int sum_hex;
     char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F094";
     sum_hex = iHexVerifyLine(i_hex);
-    printf("the sum of intel_Hex return %d\n", sum_hex);
-    TEST_ASSERT_EQUAL(0, sum_hex);
+    printf("the sum of intel_Hex is %d\n", sum_hex);
+    TEST_ASSERT_EQUAL(1, sum_hex);
   } 
 //*/
 
@@ -170,8 +177,8 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     int sum_hex;
     char *i_hex = "10000000560E08EC00F0020E020E020E06EF00F094";
     sum_hex = iHexVerifyLine(i_hex);
-    printf("the sum of intel_Hex return %d\n", sum_hex);
-    TEST_ASSERT_EQUAL(0, sum_hex);
+    printf("the sum of intel_Hex is %d\n", sum_hex);
+    TEST_ASSERT_EQUAL(1, sum_hex);
   } 
 //*/
 //*//Try test convert intel_Hex to array in 16-bits. 
@@ -188,7 +195,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   void test_iHexGetArrayofData_expect_array_data_return_error(void)
   { 
     uint8_t array_data[]= {0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
-    char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F093";
+    char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F094";
     uint8_t* i_hex_array = iHexGetArrayofData(i_hex);
     TEST_ASSERT_EQUAL_INT8(array_data[4], 0x56);//test only one 16bit data
     TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21); //test all set 16bit data
@@ -199,19 +206,23 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 //*//Try Record type
   void test_recordType_given_04_expect_00_return_error(void)
   { 
+    
     char *i_hex = ":10000004560E08EC00F0020E020E020E06EF00F093";
     int r_type = recordType(i_hex);
     TEST_ASSERT_EQUAL(00, r_type);
+    //TEST_ASSERT_EQUAL(0x98, iHexArray);
   } 
 //*/
 
+
+
 void test_getAddress16bit_address_as_16bit(void)
 {
-  char *i_hex = ":040A1000230E1200A9\n";
+  char *i_hex = ":04001000230E1200A9\n";
   uint8_t* i_hex_array = iHexGetArrayofData(i_hex);
   int address = getAddress16bit(i_hex_array);
   
-  TEST_ASSERT_EQUAL(0x0A10, address);
+  TEST_ASSERT_EQUAL(0x0011, address);
 }
   
 void test_getAddress32bit_address_as_16bit(void)
@@ -221,10 +232,10 @@ void test_getAddress32bit_address_as_16bit(void)
   uint8_t* i_hex_array1 = iHexGetArrayofData(i_hex1);
   uint8_t* i_hex_array2 = iHexGetArrayofData(i_hex2);
   int address = getAddress32bit(i_hex_array1,i_hex_array2);//should= 0x00300001 | 3145729
+   TEST_ASSERT_EQUAL(0x20,i_hex_array1[0]);
   TEST_ASSERT_EQUAL_INT32(0x00300001, address);
-  
+  TEST_ASSERT_EQUAL(0x0011, address);
 }
-
 
 /**__TRY_ZONE_(can be ignore)_______________________________________________________________________*/
 //TEST_ASSERT_EQUAL_INT8_ARRAY last test
@@ -337,7 +348,7 @@ void test_swapvalue_given_0x20_and_0x98_expect_0x98_and_0x20(void)
   int mPlusN[] = {2, 8, 1, 1, 1, 13, 1, 15, 20}; //int
   char* N = "12345";				//char
   char* simplestr[] ={"12312312312","34534534534","67867869787686786"};
-  int n = sizeof(int);
+  int n = sizeof(N)/sizeof(N[0]);
   int m = sizeof(mPlusN)/sizeof(mPlusN[0]); //9;
   
 	printf("number of n :%d\n", n); //8 wrong

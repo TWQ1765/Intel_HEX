@@ -42,14 +42,12 @@ int iHexVerifyLine(char * line)
 FILE* handler(char *file)//return as pointer type FILE 'FILE *'
 {
   FILE *file_handler;              //pointer fileHandler
-  
   file_handler = fopen(file , "r");
- 
   return file_handler;             // pointer return
 }
 ///*/
 
-//*// fgets() only able to get 1st line
+///*// fgets() only able to get 1st line
 char* getiHexLine(FILE * file_handler)
 {
   char hex_line[1028];
@@ -57,71 +55,67 @@ char* getiHexLine(FILE * file_handler)
 }
 //*/
 
-//*// fgets()2 read all element in the file
-char* iHexLineGet(FILE * file) //:04001000230E1200A9\n
-{ 
-  int i,j;
-  int buf_size = 1000; 
-  char *str[10];
-  char **i_hex[i];
-  int sample[10000];
-  int *i_hex_mem = (int *)malloc(sizeof(int)*buf_size); /*Stored in heap segment*/
-  FILE *fptr = fopen(file,"r");
-  if (fptr)
-  {
-      i_hex[i] = malloc(buf_size);
-	 // i_hex_mem[j] = malloc(buf_size);
-	  
-      while (fgets(i_hex[i], buf_size , fptr))
-      {
-        i++;
-        i_hex[i] = malloc(buf_size);
-      }
-	   i_hex[i] = malloc(10*sizeof(char));
-      
-     // printf("the 3rd line - %s",i_hex[2]);
-	   printf("ihex - %s",*i_hex);
-	  printf("Number of elements :%d\n", strlen(i_hex[1]));
-	  printf("No-----------All elemennt in file--------------------\n");
-      for( j=0 ; j<i ; j++)
-      {
-		//sscanf(i_hex[j] , "%s" , *sample);  
-        printf("%d - %s",j,&*i_hex[j]);
-		//*(i_hex_mem+j) = i_hex[j];
-		//memcpy(i_hex[j],&sample ,sizeof sample);
-      }
-	  printf("-------------End of file elemennt--------------------\n");
-	  //sscanf(i_hex[1] , "%s" , *sample);
-	  printf("Number of elements :%d\n", sizeof(i_hex[j]));
-	  printf("Number of elements :%d\n", sizeof(i_hex));
-	 // printf("Number of elements :%d\n", strlen(i_hex_mem[1]));
-	  //printf("i_hex_mem :%d\n", *i_hex_mem[2]);
-	  //printf("i_hex_mem %d\n", &i_hex_mem[2]);
-	  printf("sample %s\n", *sample);
-	///*
-      for(int x=0 ; x<i ; x++)
-      {
-		//free(i_hex_mem[x]);  
-        free(i_hex[x]);
-        
-        fclose(fptr);
-        return i_hex[2]; // only return one array?
-      }
-	//*/
-  }
+//*// load selected element from file*************************************
+char* iHexSelectLoad(char *file,int  *line_num)
+{
+  char* file_handler = handler(file);
+  char *hex_line = getiHexLine(file_handler);
+  int buf_size = 100; 
+  char *select_data =(char *)malloc(sizeof(char)*buf_size); 
+ 
+    for (int i =0 ; i < line_num ; i++) //chage line_num to *line_num
+    {
+      select_data = getiHexLine(file_handler);
+    }
+    
+  return select_data;
 }
+//*/
 
+//*// load all element from file*************************************
+char* iHexLoadHexFileToMemory(char *file)
+{
+  //int line_num1=1;
+  char temp;
+  //int line_num2=2;
+  char* data_array1 = (char*)malloc(100);
+  data_array1 = HexSelectLoad(file, 2);
+ // printf("%d = %s",line_num1,*data_array1);
+   /*
+  while(iHexVerifyLine(data_array1))
+  {
+    line_num1 = line_num1 + 1;
+    data_array1 =  iHexSelectLoad(file, line_num1); 
+    
+    sscanf(&line_num1[length+1], "%2c", &temp);
+    printf("%d = %s",line_num1,data_array1);
+    
+  }
+   // uint8_t* data_array2 =  iHexSelectLoad(file, line_num2);
+   
+    //line_num2+=;
+ 
+ */
+  return data_array1;
+  
+}
 //*/
 
 //*//try fseek();
    
 //*/
 
-
+/*-------Shifting-(<<)-in Hexdecimal------------------
+ * hexdecimal   ~     binary
+ *   0x0F       =     00001111
+ *______________________________start Shifting (0x0F<<4)
+ *   0x0F0      =     000011110000 
+ *---------------------------------------------------*/
 ///*// get address 16bit 
  int getAddress16bit(uint8_t *i_hex_array)
  {
-  int address = (i_hex_array[1]<<1) + i_hex_array[2];
+  printf("Hex_array[1] = %x",i_hex_array[2]<<8); 
+  int address = (i_hex_array[1]<<8) + i_hex_array[2];
   
   return address;  
  } 
@@ -130,8 +124,9 @@ char* iHexLineGet(FILE * file) //:04001000230E1200A9\n
 ///*// get address 32bit 
  int getAddress32bit(uint8_t *i_hex_array1,uint8_t *i_hex_array2)
  {
-  int address = (i_hex_array1[9]<<8) + i_hex_array1[10] + (i_hex_array2[1]<<8) + i_hex_array2[2];
-  
+  int test_address = (i_hex_array1[5]<<16) + (i_hex_array2[2]<<0);
+  int address = (i_hex_array1[4]<<24) + (i_hex_array1[5]<<16) + (i_hex_array2[1]<<8) + i_hex_array2[2];
+  printf("test_address = %x\n",test_address); 
   return address;  
  } 
 //*/
@@ -178,18 +173,22 @@ uint8_t* iHexGetArrayofData(char *line)
   char temp;
   uint8_t *result;
   
-  while(1){
+  while(1)
+  {
     sscanf(&line[length+1], "%2c", &temp);
     
-    if(line[length+1] != NULL){
+    if(line[length+1] != NULL) //change line[length+1] to...(char*)line[length+1]
+    { 
       length = length + 2;
     }
-    else{
+    else
+    {
       result = malloc(length/2);
       break;
     }
   }
-  for(int i=0;i<length;i+=2){
+  for(int i=0;i<length;i+=2)
+  {
     sscanf(&line [i+1], "%2x", &result[i/2]);
   }
   return result;
@@ -208,21 +207,23 @@ uint8_t* iHexGetArrayofData(char *line)
    *      05       Start Linear Address ( ignored )
    *---------------------------------------------------------------*/
 /*//try iHexGetAddress*****************function r_type()
-int iHexGetAddress(char * line)
+int iHexGetAddress(char *file,uint8_t *i_hex_array1,uint8_t *i_hex_array2)
 {
+  char* file_handler = handler(file);
+  char *hex_line = getiHexLine(file_handler);
   uint8_t* array_data[]=iHexGetArrayofData(line);
   int r_type = recordType(line); // get return 
   
   switch(r_type)
   {
-    case 0:
-      uint8_t* address = &array_data[4];
+    case 0://record type = 0
+      uint8_t* address = getAddress16bit(i_hex_array1);
       break;
-    case 1:
+    case 1://record type = 01
       uint8_t* address = NULL;
       break;
-    case 4:
-     uint8_t* address = &array_data[4];
+    case 4://record type = 04
+     uint8_t* address = getAddress32bit(i_hex_array1,i_hex_array2);
      break; 
        
   }
@@ -321,6 +322,61 @@ uint8_t* realdata(char *data)//return as pointer type FILE 'FILE *'
   {
     sscanf(&hexvalue [i+1], "%2x", &hexvaluehigh[i/2]);
     
+  }
+}
+*/
+/* some problem look degerous----------
+ * 1 - char *i_hex[i] , i has not declare a value 
+ * 2 - function getiHexLine() able do job like read 
+ *     all element in file by call it multiple time
+ *      
+ *------------------------------------*/
+/*// fgets()2 read all element in the file ***has problem
+char* iHexLineGet(FILE * file) //:04001000230E1200A9\n
+{ 
+  int i,j;
+  int buf_size = 100; 
+  char *str[10];
+  char *i_hex[i];
+  int sample[10000];
+  int *i_hex_mem = (int *)malloc(sizeof(int)*buf_size); //Stored in heap segment
+  FILE *fptr = fopen(file,"r");
+  if (fptr)
+  {
+      i_hex[i] = malloc(buf_size);
+      //i_hex_mem[j] = malloc(buf_size);
+	  
+      while (fgets(i_hex[i], buf_size , fptr))
+      {
+        i++;
+        i_hex[i] = (char *)malloc(sizeof(char)*buf_size);
+      }
+      i_hex[i] = malloc(10*sizeof(char));
+      
+      //printf("the 3rd line - %s",i_hex[2]);
+      printf("ihex - %s",*i_hex);
+      printf("Number of elements in 1st line  :%d\n", strlen(i_hex[1]));
+      printf("No-----------All elemennt in file--------------------\n");
+      for( j=0 ; j<i ; j++)
+      {
+        printf("%d - %s",j,i_hex[j]);
+        //sscanf(i_hex[j] , "%s" , *sample);  
+        //*(i_hex_mem+j) = i_hex[j];
+        //memcpy(i_hex[j],&sample ,sizeof sample);
+      }
+	  printf("-------------End of file elemennt--------------------\n");
+	  sscanf(i_hex[4] , "%s" , *sample);
+    printf("sample string return %s\n", *sample);
+ 
+      for(int x=0 ; x<i ; x++)
+      {
+        //free(i_hex_mem[x]);  
+        free(i_hex[x]);
+        
+        fclose(fptr);
+        return i_hex[2]; // only return one array?
+      }
+	
   }
 }
 */

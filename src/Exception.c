@@ -16,7 +16,7 @@ void throwException(int errorCode, char *message, ...) {
   
   length = vsnprintf(buffer, 0, message, args);
   buffer = malloc(length + 1);
-  vsnprintf(buffer, length, message, args);
+  vsnprintf(buffer, length + 1, message, args);
   
   e->msg = buffer;
   e->errorCode = errorCode;
