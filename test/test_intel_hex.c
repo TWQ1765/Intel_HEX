@@ -4,7 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-
+#include "CException.h"
+#include "Exception.h"
+//#include "token.h"
+#include "Error.h"
 void setUp(void)
 {
 }
@@ -22,10 +25,17 @@ void tearDown(void)
 //*//test file Blinky.X.production occur or not? 
 void test_intelfile_fopen_expect_and_return_true(void)
 {
+	CEXCEPTION_T ex;
     FILE *file_handler; //pointer
-    file_handler = handler("doc/Blinky.X.production.hex"); //pointer=pointer
-    
-    TEST_ASSERT_NOT_NULL(file_handler);
+	//printf("tyr exception");
+	Try{
+		file_handler = handler("doc/Blinky.X.production.hex"); //pointer=pointer
+		TEST_ASSERT_NOT_NULL(file_handler);
+	}
+	Catch(ex){
+		dumpException(ex);
+	}
+	
 }
 //*/
 
@@ -68,7 +78,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
     char* file ="doc/Blinky.X.production.hex";
     int line_num = 2; // changing this value to test if -VE number will clash
-                      //number over will return NULL
+                      // number over will return NULL
     char* selecte_data = iHexSelectLoad(file, line_num);
     
     TEST_ASSERT_EQUAL_STRING(data_str[2], selecte_data);
@@ -155,15 +165,15 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   void test_iHexVerifyLine_given_right_expect_return_1(void)
   { 
     int sum_hex;
-    char *i_hex = ":04001000230E1200A9";
+    char *i_hex = ":04001000230E1200A9\n";
     sum_hex = iHexVerifyLine(i_hex);
     printf("the sum of intel_Hex return %d\n", sum_hex);
     TEST_ASSERT_EQUAL(1, sum_hex);
   } 
 //*/
 
-//*//Try test valid intel_Hex error code
-  void test_iHexVerifyLine_given_error_code_expect_return_0(void)
+//*//Try test valid intel_Hex error code with error checksum
+  void test_iHexVerifyLine_given_error_checksum_code_expect_return_0(void)
   { 
     int sum_hex;
     char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F094\n";
@@ -320,7 +330,7 @@ void test_swapvalue_given_0x20_and_0x98_expect_0x98_and_0x20(void)
   } 
 */
 
-//*///Try something
+/*///Try something
   void test_something_given(void)
   { 
     int i;
@@ -341,9 +351,9 @@ void test_swapvalue_given_0x20_and_0x98_expect_0x98_and_0x20(void)
     printf("my array -%s\n",myArray[0]);
     TEST_ASSERT_EQUAL_STRING(":04001000230E1200A9\n", myArray);
   } 
-//*/
+*/
 
-//*//Try sizeof able to select array string
+/*//Try sizeof able to select array string
   void test_sizeof_given(void)
   { 
     // Initialize arrays
@@ -358,7 +368,7 @@ void test_swapvalue_given_0x20_and_0x98_expect_0x98_and_0x20(void)
 	printf("simplestr  :%s\n", simplestr[2]); 
 	TEST_ASSERT_EQUAL_STRING(":04001000230E1200A9\n", mPlusN);
   } 
-//*/
+*/
 
 /*///Try function getiHexLine multiple time 
   void test_getiHexLine_multiple_given(void)

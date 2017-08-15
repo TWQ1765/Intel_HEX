@@ -13,47 +13,77 @@ int iHexVerifyLine(char * line)
   char *lineptr = line;
   char temp_hex;
   int i =0;
-  int test=0;
   int sum_hex=0;
-  int get_hex= 0x123;
-  int start_simbol = 0;
+  int get_hex= 0;
+  int start_symbol = 0;
   
-  sscanf(&line[0] , "%c" , &start_simbol);//read simbol ':'
-  if (start_simbol != 0x3a)//if 1st are not start with ':' return test=0
+  sscanf(&line[0] , "%c" , &start_symbol);//read simbol ':'
+  if (start_symbol != ':')
   { 
-    return test = 0;
+    return 0;
   }
   else 
   {    
-    while(line[i+1] != '\n' )//read the code until the end of line
+    while((line[i+1] != '\n'))//read the code until the end of line
     {
-      sscanf(&line[i+1], "%2c" , &temp_hex);
+     
       sscanf(&line[i+1], "%2x" , &get_hex);
       i=i+2;
       sum_hex=sum_hex+get_hex;
-      test = ((sum_hex & 0xff)<=0);//check value of test should = 1
     }
   }
- return test;
+	return (sum_hex & 0xff) == 0;
 }  
 //*/ 
 
-///* //function open file
+/* //function open file---------try Exception
+FILE* handler(char *file)//return as pointer type FILE 'FILE *'
+{
+  		
+  FILE *file_handler;              //pointer fileHandler
+  file_handler = fopen(file , "r");
+  if(file_handler = NULL)
+  {
+	  throwException("File dose not exit, do you mean %s",file);
+  }
+  return file_handler;             //pointer return
+}
+*/
+
+//* //function open file-------the main code
 FILE* handler(char *file)//return as pointer type FILE 'FILE *'
 {
   FILE *file_handler;              //pointer fileHandler
   file_handler = fopen(file , "r");
+  //fclose(file);
   return file_handler;             // pointer return
 }
-///*/
+//*/
 
-///*// fgets() only able to get 1st line
+///*// fgets() only able to get 1st line*************current
+char* getiHexLine( FILE *file_handler)
+{
+  char *hex_line = (char*)malloc(1024);
+  fgets(hex_line, 1024, file_handler);
+  //if (fgets(hex_line, 44, file_handler) != '\n')
+  //{
+	  //int i=+1;
+	 // printf("hex_line = %s",hex_line);
+	 // puts(hex_line);
+  //}
+  //fclose(file_handler);
+  
+  return hex_line;
+}
+//*/
+
+/*// fgets() only able to get 1st line*********prev
 char* getiHexLine( FILE *file_handler)
 {
   char hex_line[1028];
   return fgets(hex_line,1028, file_handler);
 }
-//*/
+*/
 
 //*// load selected element from file*************************************
 char* iHexSelectLoad(char *file,int  *line_num)
@@ -61,8 +91,8 @@ char* iHexSelectLoad(char *file,int  *line_num)
   char* file_handler = handler(file);
   char *hex_line = getiHexLine(file_handler);
   int buf_size = 100; 
-  char *select_data =(char *)malloc(sizeof(char)*buf_size); 
-	//printf("line_num = %d\n",line_num);
+  char *select_data;// =(char *)malloc(sizeof(char)*buf_size); 
+	
     for (int i =0 ; i < line_num ; i++) //chage line_num to *line_num
     {
       select_data = getiHexLine(file_handler);
@@ -77,34 +107,41 @@ char* iHexLoadHexFileToMemory(char *file)
 {
   int line_num1=2;
   int check_line ;
-  //char* temp;
+  char* temp;
   //int num = 0;
-  char* data_array2= ":04001000230E1200A9";//for testing iHexSelectLoad()
-  char* data_array1;// = (char*)malloc(100);
-  data_array1 = iHexSelectLoad(file, line_num1);
-  //does   data_array1  ==  data_array2 ???????????
-  printf("%d = %s",line_num1, data_array1);
-  printf("%s\n",data_array1);
   
-  check_line = iHexVerifyLine(data_array2); // why check_line = 0 should be 1 if data_array1 is valid
-  printf("check_line = %d ",check_line);
-  ///* 
-  while(iHexVerifyLine(data_array1))
+  char* data_array2 = ":04001000230E1200A9\n";	//for testing iHexSelectLoad()
+  char* data_array1;							// = (char*)malloc(100);
+  data_array1 = iHexSelectLoad(file, line_num1);
+
+  //int rc = strcmp(data_array1, data_array2);//does   data_array1  ==  data_array2 ??????????? 
+  //printf("rc = %d \n",rc); 					// rc=0 mean 1&2 ==:04001000230E1200A9\n
+ 
+  //temp = data_array1;
+  printf("%d = %s",line_num1, data_array1);
+  printf("data_array1 = %s",data_array1);	//see and look and prove:......
+  printf("data_array2 = %s",data_array2); 	//data_array1 == data_array2
+  
+  check_line = iHexVerifyLine(data_array1); // why check_line should be 1 if data_array1 is valid
+  printf("check_line = %d \n",check_line);
+  
+  /* 
+  while(check_line)  //will clash, careful
   {
     line_num1 = line_num1 + 1;
-	
+	check_line = iHexVerifyLine(data_array2);
 	printf("line_num1 = %d ",line_num1);
     //data_array1 =  iHexSelectLoad(file, line_num1); 
     //printf("%d = %s",line_num1,data_array1);
 	/*
     sscanf(&line_num1[length+1], "%2c", temp);
-    */
+   
     
   }
    // uint8_t* data_array2 =  iHexSelectLoad(file, line_num2);
    
     //line_num2+=;
-//*/
+*/
  
   return data_array1;
   
@@ -150,8 +187,6 @@ int recordType(char* line)
   return r_type;
 }  
 //*/
-
-
 
 ///*//read as 0xXX (8byte) element from file
 uint8_t* iHexGetArrayofData(char *line)
