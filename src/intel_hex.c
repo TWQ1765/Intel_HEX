@@ -7,7 +7,7 @@
 //#define SWAP(a, b) do { typeof(a) temp = a; a = b; b = temp; } while (0)//swap function
 
 
-///*//test Hex is right or not. :10000000560E08EC00F0020E020E020E06EF00F094
+///*//test Hex is right or not. :10000000560E08EC00F0020E020E020E06EF00F094\n
 int iHexVerifyLine(char * line)
 {
   char *lineptr = line;
@@ -25,7 +25,7 @@ int iHexVerifyLine(char * line)
   }
   else 
   {    
-    while(line[i+1] != NULL)//read the code until the end of line
+    while(line[i+1] != '\n' )//read the code until the end of line
     {
       sscanf(&line[i+1], "%2c" , &temp_hex);
       sscanf(&line[i+1], "%2x" , &get_hex);
@@ -48,7 +48,7 @@ FILE* handler(char *file)//return as pointer type FILE 'FILE *'
 ///*/
 
 ///*// fgets() only able to get 1st line
-char* getiHexLine(FILE * file_handler)
+char* getiHexLine( FILE *file_handler)
 {
   char hex_line[1028];
   return fgets(hex_line,1028, file_handler);
@@ -62,7 +62,7 @@ char* iHexSelectLoad(char *file,int  *line_num)
   char *hex_line = getiHexLine(file_handler);
   int buf_size = 100; 
   char *select_data =(char *)malloc(sizeof(char)*buf_size); 
- 
+	//printf("line_num = %d\n",line_num);
     for (int i =0 ; i < line_num ; i++) //chage line_num to *line_num
     {
       select_data = getiHexLine(file_handler);
@@ -75,27 +75,37 @@ char* iHexSelectLoad(char *file,int  *line_num)
 //*// load all element from file*************************************
 char* iHexLoadHexFileToMemory(char *file)
 {
-  //int line_num1=1;
-  char temp;
-  //int line_num2=2;
-  char* data_array1 = (char*)malloc(100);
-  data_array1 = HexSelectLoad(file, 2);
- // printf("%d = %s",line_num1,*data_array1);
-   /*
+  int line_num1=2;
+  int check_line ;
+  //char* temp;
+  //int num = 0;
+  char* data_array2= ":04001000230E1200A9";//for testing iHexSelectLoad()
+  char* data_array1;// = (char*)malloc(100);
+  data_array1 = iHexSelectLoad(file, line_num1);
+  //does   data_array1  ==  data_array2 ???????????
+  printf("%d = %s",line_num1, data_array1);
+  printf("%s\n",data_array1);
+  
+  check_line = iHexVerifyLine(data_array2); // why check_line = 0 should be 1 if data_array1 is valid
+  printf("check_line = %d ",check_line);
+  ///* 
   while(iHexVerifyLine(data_array1))
   {
     line_num1 = line_num1 + 1;
-    data_array1 =  iHexSelectLoad(file, line_num1); 
-    
-    sscanf(&line_num1[length+1], "%2c", &temp);
-    printf("%d = %s",line_num1,data_array1);
+	
+	printf("line_num1 = %d ",line_num1);
+    //data_array1 =  iHexSelectLoad(file, line_num1); 
+    //printf("%d = %s",line_num1,data_array1);
+	/*
+    sscanf(&line_num1[length+1], "%2c", temp);
+    */
     
   }
    // uint8_t* data_array2 =  iHexSelectLoad(file, line_num2);
    
     //line_num2+=;
+//*/
  
- */
   return data_array1;
   
 }
@@ -134,37 +144,14 @@ char* iHexLoadHexFileToMemory(char *file)
 //*//Record type****************
 int recordType(char* line)
 {
- // uint8_t* iHexGetArrayofData();
+ 
   uint8_t* array_data=iHexGetArrayofData(line);
   int r_type = array_data[3];
   return r_type;
 }  
 //*/
 
-/*//read byte from file
-uint8_t read_byte_from_file(FILE * file, uint8_t * char_to_put, int * total_chars_read)
-{
-	//Holds combined nibbles.
-	uint8_t hexValue;
-	//Get first nibble.
-	*char_to_put = fgetc (file);
-	clear_special_char(file, char_to_put, total_chars_read);
-	//Put first nibble in.
-	hexValue = (Ascii2Hex(*char_to_put));
-	//Slide the nibble.
-	hexValue = ((hexValue << 4) & 0xF0);
-	//Put second nibble in.
-	*char_to_put = fgetc (file);
-	clear_special_char(file, char_to_put, total_chars_read);
-	//Put the nibbles together.
-	hexValue |= (Ascii2Hex(*char_to_put));
-	//Return the byte.
-	*total_chars_read += 2;
 
-	return hexValue;
-}
-
-*/
 
 ///*//read as 0xXX (8byte) element from file
 uint8_t* iHexGetArrayofData(char *line)
@@ -310,7 +297,30 @@ uint8_t* swapvalue(uint8_t* hexvaluehigh,uint8_t* hexvaluelow)//return as pointe
   return hexvaluehigh;//*return one value
 }
 */
+/*//read byte from file
+uint8_t read_byte_from_file(FILE * file, uint8_t * char_to_put, int * total_chars_read)
+{
+	//Holds combined nibbles.
+	uint8_t hexValue;
+	//Get first nibble.
+	*char_to_put = fgetc (file);
+	clear_special_char(file, char_to_put, total_chars_read);
+	//Put first nibble in.
+	hexValue = (Ascii2Hex(*char_to_put));
+	//Slide the nibble.
+	hexValue = ((hexValue << 4) & 0xF0);
+	//Put second nibble in.
+	*char_to_put = fgetc (file);
+	clear_special_char(file, char_to_put, total_chars_read);
+	//Put the nibbles together.
+	hexValue |= (Ascii2Hex(*char_to_put));
+	//Return the byte.
+	*total_chars_read += 2;
 
+	return hexValue;
+}
+
+*/
 /* //real allocate high byte & low byte format************not needed
 uint8_t* realdata(char *data)//return as pointer type FILE 'FILE *'
 {

@@ -1,8 +1,11 @@
 #ifndef _INTEL_HEX_H
 #define _INTEL_HEX_H
 #include <stdio.h>  //for FILE datatype
-#include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include <stdarg.h>
 struct point {
   int x; 
 };
