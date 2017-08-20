@@ -89,11 +89,11 @@ char* getiHexLine( FILE *file_handler)
 char* iHexSelectLoad(char *file,int  *line_num)
 {
   char* file_handler = handler(file);
-  char *hex_line = getiHexLine(file_handler);
+ // char *hex_line = getiHexLine(file_handler);
   int buf_size = 100; 
   char *select_data;// =(char *)malloc(sizeof(char)*buf_size); 
 	
-    for (int i =0 ; i < line_num ; i++) //chage line_num to *line_num
+    for (int i =0 ; i <= line_num ; i++) //chage line_num to *line_num
     {
       select_data = getiHexLine(file_handler);
     }
@@ -105,25 +105,36 @@ char* iHexSelectLoad(char *file,int  *line_num)
 //*// load all element from file*************************************
 char* iHexLoadHexFileToMemory(char *file)
 {
-  int line_num1=2;
-  int check_line ;
-  char* temp;
+  int line_num1=0;
+  int line_num2=1;
+  int check_line,null_line;
+  int r_type;
+  char temp=NULL;
   //int num = 0;
-  
-  char* data_array2 = ":04001000230E1200A9\n";	//for testing iHexSelectLoad()
-  char* data_array1;							// = (char*)malloc(100);
-  data_array1 = iHexSelectLoad(file, line_num1);
-
-  //int rc = strcmp(data_array1, data_array2);//does   data_array1  ==  data_array2 ??????????? 
-  //printf("rc = %d \n",rc); 					// rc=0 mean 1&2 ==:04001000230E1200A9\n
  
-  //temp = data_array1;
+  char* data_array2 = iHexSelectLoad(file, line_num2);	
+  char* data_array1	= iHexSelectLoad(file, line_num1);
+ // while(data_array1!=NULL || data_array2!=NULL)
+//  {
+		null_line= (&data_array1>=0);
+		printf("null_line = %d \n",null_line);
+		printf("xxxxxxxx = %d \n",temp );
+		check_line = (iHexVerifyLine(data_array1))&&(iHexVerifyLine(data_array2));
+		printf("check_line = %d \n",check_line);
+	  
+  //}
+  r_type = recordType(data_array1);
+  printf("r_type = %d\n",r_type);
+  
+  r_type = recordType(data_array2);
+  printf("r_type = %d\n",r_type);
+  
   printf("%d = %s",line_num1, data_array1);
   printf("data_array1 = %s",data_array1);	//see and look and prove:......
   printf("data_array2 = %s",data_array2); 	//data_array1 == data_array2
   
-  check_line = iHexVerifyLine(data_array1); // why check_line should be 1 if data_array1 is valid
-  printf("check_line = %d \n",check_line);
+  //check_line = iHexVerifyLine(data_array1); // why check_line should be 1 if data_array1 is valid
+  
   
   /* 
   while(check_line)  //will clash, careful
@@ -181,7 +192,6 @@ char* iHexLoadHexFileToMemory(char *file)
 //*//Record type****************
 int recordType(char* line)
 {
- 
   uint8_t* array_data=iHexGetArrayofData(line);
   int r_type = array_data[3];
   return r_type;
@@ -229,23 +239,20 @@ uint8_t* iHexGetArrayofData(char *line)
    *      05       Start Linear Address ( ignored )
    *---------------------------------------------------------------*/
 /*//try iHexGetAddress*****************function r_type()
-int iHexGetAddress(char *file,uint8_t *i_hex_array1,uint8_t *i_hex_array2)
+uint8_t* iHexGetAddress(char* r_type,char *i_hex_array1,char *i_hex_array2)
 {
-  char* file_handler = handler(file);
-  char *hex_line = getiHexLine(file_handler);
-  uint8_t* array_data[]=iHexGetArrayofData(line);
-  int r_type = recordType(line); // get return 
   
+  uint8_t* address;
   switch(r_type)
   {
     case 0://record type = 0
-      uint8_t* address = getAddress16bit(i_hex_array1);
+       address = getAddress16bit(i_hex_array1);
       break;
     case 1://record type = 01
-      uint8_t* address = NULL;
+       address = NULL;
       break;
     case 4://record type = 04
-     uint8_t* address = getAddress32bit(i_hex_array1,i_hex_array2);
+		address = getAddress32bit(i_hex_array1,i_hex_array2);
      break; 
        
   }

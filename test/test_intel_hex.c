@@ -61,7 +61,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     FILE *file_handler; //pointer
     file_handler = handler("doc/Blinky.X.production.hex"); //pointer=pointer
     
-    for (int i =0 ; i < 3 ; i++)
+    for (int i =0 ; i <= 2 ; i++)
     {
       i_hex = getiHexLine(file_handler);
     }
@@ -77,11 +77,11 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
 	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
     char* file ="doc/Blinky.X.production.hex";
-    int line_num = 2; // changing this value to test if -VE number will clash
+    int line_num = 0; // changing this value to test if -VE number will clash
                       // number over will return NULL
     char* selecte_data = iHexSelectLoad(file, line_num);
     
-    TEST_ASSERT_EQUAL_STRING(data_str[2], selecte_data);
+    TEST_ASSERT_EQUAL_STRING(data_str[0], selecte_data);
   } 
 //*/
 
@@ -98,7 +98,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     
     char* all_data = iHexLoadHexFileToMemory(file);
    
-    TEST_ASSERT_EQUAL_STRING(data_str[0], all_data);
+    TEST_ASSERT_EQUAL_STRING(data_str[1], all_data);
   } 
 //*/
 
