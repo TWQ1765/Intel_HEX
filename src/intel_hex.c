@@ -65,14 +65,6 @@ char* getiHexLine( FILE *file_handler)
 {
   char *hex_line = (char*)malloc(1024);
   fgets(hex_line, 1024, file_handler);
-  //if (fgets(hex_line, 44, file_handler) != '\n')
-  //{
-	  //int i=+1;
-	 // printf("hex_line = %s",hex_line);
-	 // puts(hex_line);
-  //}
-  //fclose(file_handler);
-  
   return hex_line;
 }
 //*/
@@ -107,22 +99,21 @@ char* iHexLoadHexFileToMemory(char *file)
 {
   int line_num1=0;
   int line_num2=1;
-  int check_line,null_line;
+  int check_line;
   int r_type;
   char temp=NULL;
   //int num = 0;
  
   char* data_array2 = iHexSelectLoad(file, line_num2);	
   char* data_array1	= iHexSelectLoad(file, line_num1);
- // while(data_array1!=NULL || data_array2!=NULL)
-//  {
-		null_line= (&data_array1>=0);
-		printf("null_line = %d \n",null_line);
-		printf("xxxxxxxx = %d \n",temp );
+ // while((iHexVerifyLine(data_array1))&&(iHexVerifyLine(data_array2)))
+ //{
+		
+	
 		check_line = (iHexVerifyLine(data_array1))&&(iHexVerifyLine(data_array2));
 		printf("check_line = %d \n",check_line);
 	  
-  //}
+ // }
   r_type = recordType(data_array1);
   printf("r_type = %d\n",r_type);
   
@@ -157,11 +148,7 @@ char* iHexLoadHexFileToMemory(char *file)
   return data_array1;
   
 }
-//*/
 
-//*//try fseek();
-   
-//*/
 
 /*-------Shifting-(<<)-in Hexdecimal------------------
  * hexdecimal   ~     binary
@@ -264,69 +251,13 @@ uint8_t* iHexGetAddress(int* r_type,char *i_hex_array1,char *i_hex_array2)
 
 /**__TRY_ZONE_(can be ignore)_______________________________________________________________________*/
 
-/*//try1
-int hex_file_line_count(FILE * file_to_count)
-{
-	int line_count = 0;
-	char got_char;
-
-	while(got_char != EOF)
-	{
-		got_char = fgetc(file_to_count);
-		if (got_char == ':'){line_count++;}
-	}
-	rewind(file_to_count);
-	return line_count;
-}
-
-char*readLine(File* fileHandler)
-*/
-/*//try2
-
-   char ch;
-   char str[100];
-   printf("Enter any character \n");
-   scanf("%c", &ch);
-   printf("Entered character is %c \n", ch);
-   printf("Enter any string ( upto 100 character ) \n");
-   scanf("%s", &str);
-   printf("Entered string is %s \n", str);
-
-*/ 
-/*//try3 
-int main()
-{
-    int v;
-    if (scanf("%d", &v) == 1) {
-        printf("OK\n");
-    } else {
-        printf("Not an integer.\n");
-    }
-    return 0;
-}
-*/
-/*//remember tyr4 grom trying scanf ()
+/*//remember trying scanf ()
 int main(){
   int x;
   scanf("%d" , &x);
   printf("This is a test value must be int : %d\n" , x);
 }
 */
-/*//try memcpy();
-   char * ihex[] = malloc();
-*/
-/*/try read all element at file 
-int readAll(char *file)
-{
-    
-    for(int i = 0; s[i] != '\0'; ++i);
-    for(int j = 0: )
-
-    printf("Length of string: %d", i);
-    
-    return i;
-}  
-//*/
 /* //swap value  test value:  0x20                0x98       //not needed
 uint8_t* swapvalue(uint8_t* hexvaluehigh,uint8_t* hexvaluelow)//return as pointer type FILE 'FILE *'
 {
@@ -339,30 +270,6 @@ uint8_t* swapvalue(uint8_t* hexvaluehigh,uint8_t* hexvaluelow)//return as pointe
   printf("hexvaluehigh = %x , hexvaluelow = %x",hexvaluehigh,hexvaluelow);
   return hexvaluehigh;//*return one value
 }
-*/
-/*//read byte from file
-uint8_t read_byte_from_file(FILE * file, uint8_t * char_to_put, int * total_chars_read)
-{
-	//Holds combined nibbles.
-	uint8_t hexValue;
-	//Get first nibble.
-	*char_to_put = fgetc (file);
-	clear_special_char(file, char_to_put, total_chars_read);
-	//Put first nibble in.
-	hexValue = (Ascii2Hex(*char_to_put));
-	//Slide the nibble.
-	hexValue = ((hexValue << 4) & 0xF0);
-	//Put second nibble in.
-	*char_to_put = fgetc (file);
-	clear_special_char(file, char_to_put, total_chars_read);
-	//Put the nibbles together.
-	hexValue |= (Ascii2Hex(*char_to_put));
-	//Return the byte.
-	*total_chars_read += 2;
-
-	return hexValue;
-}
-
 */
 /* //real allocate high byte & low byte format************not needed
 uint8_t* realdata(char *data)//return as pointer type FILE 'FILE *'

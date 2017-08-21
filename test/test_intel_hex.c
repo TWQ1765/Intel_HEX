@@ -247,7 +247,7 @@ void test_getAddress32bit_address_as_16bit(void)
   TEST_ASSERT_EQUAL_INT32(0x00300001, address);
   
 }
-///*
+///*case statement being use.
 void test_iHexGetAddress_given_00300001_expect_true(void)
 {
   char *i_hex1 = ":020000040030CA\n";
@@ -261,7 +261,6 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
   TEST_ASSERT_EQUAL_INT32(0x00300001, address);
   
 }
-//uint8_t* iHexGetAddress(char* r_type,char *i_hex_array1,char *i_hex_array2)
 //*/
 
 /**__TRY_ZONE_(can be ignore)_______________________________________________________________________*/
@@ -342,29 +341,6 @@ void test_swapvalue_given_0x20_and_0x98_expect_0x98_and_0x20(void)
     
     TEST_ASSERT_EQUAL(0x20, iHexArray);
     TEST_ASSERT_EQUAL(0x98, iHexArray);
-  } 
-*/
-
-/*///Try something
-  void test_something_given(void)
-  { 
-    int i;
-    int n;
-    int **myArray;
-
-    n = 10;
-    myArray = (int**)malloc(n*sizeof(int*));
-
-    //Usage example
-    int myIntArray[] = {1,2,3,4,5};
-
-    myArray[0] = myIntArray;
-
-    //This call should print "4"
-    printf("try-zone------------------------------------\n"); 
-    printf("%d\n",myArray[0][3]);
-    printf("my array -%s\n",myArray[0]);
-    TEST_ASSERT_EQUAL_STRING(":04001000230E1200A9\n", myArray);
   } 
 */
 
