@@ -77,12 +77,12 @@ char* getiHexLine( FILE *file_handler)
 }
 */
 
-//*// load selected element from file*************************************
-char* iHexSelectLoad(char *file,int  *line_num)
+//*// load selected element from file
+char* iHexSelectLoad(char *file, int*line_num)
 {
-  char* file_handler = handler(file);
- // char *hex_line = getiHexLine(file_handler);
-  int buf_size = 100; 
+  FILE* file_handler = handler(file);
+  //char *hex_line = getiHexLine(file_handler);
+  //int buf_size = 100; 
   char *select_data;// =(char *)malloc(sizeof(char)*buf_size); 
 	
     for (int i =0 ; i <= line_num ; i++) //chage line_num to *line_num
@@ -94,61 +94,72 @@ char* iHexSelectLoad(char *file,int  *line_num)
 }
 //*/
 
-//*// load all element from file*************************************
-char* iHexLoadHexFileToMemory(char *file)
+///*/// load all record type from all element
+int8_t* allRecordTypeToMemory(char* line1,char* line2)
 {
-  int line_num1=0;
-  int line_num2=1;
+	int r_type1 = recordType(line1);
+	uint8_t* i_hex_array1=iHexGetArrayofData(line1);
+	uint8_t* i_hex_array2=iHexGetArrayofData(line2);
+	int8_t* address = iHexGetAddress(r_type1,i_hex_array1,i_hex_array2);
+	
+	
+	return address;
+}
+//*/
+
+/*// load all element from file and return all recordtype******************problem cause clash 
+char* allRecordTypeToMemory(char *file)
+{
+  int line_num1=0;  //1st line from file
+  int line_num2=1;  //2nd line from file
   int check_line;
   int r_type;
-  char temp=NULL;
-  //int num = 0;
- 
-  char* data_array2 = iHexSelectLoad(file, line_num2);	
-  char* data_array1	= iHexSelectLoad(file, line_num1);
- // while((iHexVerifyLine(data_array1))&&(iHexVerifyLine(data_array2)))
- //{
+  char * r_type_mem = malloc(1024);
+  r_type_mem[1024];
+  
+  char* data_array1	= malloc(1024);
+  char* data_array2 = malloc(1024);
+  data_array1 = iHexSelectLoad(file, line_num1);
+  data_array2 = iHexSelectLoad(file, line_num2);
+  
+  while((iHexVerifyLine(data_array1))||(iHexVerifyLine(data_array2)))
+  {
 		
-	
-		check_line = (iHexVerifyLine(data_array1))&&(iHexVerifyLine(data_array2));
-		printf("check_line = %d \n",check_line);
-	  
- // }
-  r_type = recordType(data_array1);
-  printf("r_type = %d\n",r_type);
+    for (int i = 0 ; i <= check_line ; i++)
+    {
+      data_array1	= iHexSelectLoad(file, line_num1);
+      data_array2 = iHexSelectLoad(file, line_num2);
+      line_num1++;
+      line_num2++;
+      check_line += (iHexVerifyLine(data_array1))||(iHexVerifyLine(data_array2));
+      r_type = recordType(data_array1);
+      printf("%d = %s",line_num1, data_array1);
+      printf("%d = %d\n",line_num1, r_type);
+      r_type_mem[i] = r_type;
+    }
+    free(data_array1);
+    free(data_array2);
+    free(r_type_mem);
+    printf("check_line = %d \n",check_line);
+    //call 1 time
+    printf("r_type_mem = %d \n",r_type_mem[7]);//CHECK HERE PROBLEM [1] get 4 [2] = 
+    
+    printf("%d = %s",line_num1, *data_array1); 
+  }
+
+  //r_type = recordType(data_array1);
+  //printf("r_type = %d\n",r_type);
   
-  r_type = recordType(data_array2);
-  printf("r_type = %d\n",r_type);
+  //r_type = recordType(data_array2);
+  //printf("r_type = %d\n",r_type);
   
-  printf("%d = %s",line_num1, data_array1);
   printf("data_array1 = %s",data_array1);	//see and look and prove:......
   printf("data_array2 = %s",data_array2); 	//data_array1 == data_array2
-  
-  //check_line = iHexVerifyLine(data_array1); // why check_line should be 1 if data_array1 is valid
-  
-  
-  /* 
-  while(check_line)  //will clash, careful
-  {
-    line_num1 = line_num1 + 1;
-	check_line = iHexVerifyLine(data_array2);
-	printf("line_num1 = %d ",line_num1);
-    //data_array1 =  iHexSelectLoad(file, line_num1); 
-    //printf("%d = %s",line_num1,data_array1);
-	/*
-    sscanf(&line_num1[length+1], "%2c", temp);
-   
-    
-  }
-   // uint8_t* data_array2 =  iHexSelectLoad(file, line_num2);
-   
-    //line_num2+=;
-*/
- 
-  return data_array1;
-  
+   //call 2 time
+  printf("r_type_mem = %d\n",r_type_mem[0]);
+  return r_type_mem; 
 }
-
+*/
 
 /*-------Shifting-(<<)-in Hexdecimal------------------
  * hexdecimal   ~     binary
@@ -179,8 +190,8 @@ char* iHexLoadHexFileToMemory(char *file)
 //*//Record type****************
 int recordType(char* line)
 {
-  uint8_t* array_data=iHexGetArrayofData(line);
-  int r_type = array_data[3];
+  uint8_t* i_hex_array=iHexGetArrayofData(line);
+  int r_type = i_hex_array[3];
   return r_type;
 }  
 //*/

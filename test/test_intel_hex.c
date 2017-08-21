@@ -86,7 +86,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 //*/
 
 
-//*//Try read only all line from file **************
+/*//Try read only all line from file **************
   void test_iHexLoadHexFileToMemory_read_all_line_from_file_expect_true(void)
   { 
     char* data_str[] ={\
@@ -100,8 +100,42 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
    
     TEST_ASSERT_EQUAL_STRING(data_str[1], all_data);
   } 
-//*/
+*/
 
+/*//Try read all record type only line from file ******CHECK THIS
+  void test_allRecordTypeToMemory_read_all_record_type_from_file_expect_true(void)
+  { 
+    char* data_str[] ={\
+	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
+	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
+	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
+    char* record_type_all[] = {'4','0','0','0','4','0','0','0','0','1'};//{4,0,0,0,4,0,0,0,0,1};
+   
+    char * all_r_type[1024]; 
+    int check_line;
+	while(iHexVerifyLine(data_str[0]))
+	{
+		check_line = 1 ;
+	for (int i =0 ; i <= 5 ; i++)//seem will clash
+	{
+		//check_line += (iHexVerifyLine(data_str[i+1]));
+		
+		//if (check_line==1)
+		//{
+		//	all_r_type[i] = recordType(data_str[i]);
+		//}
+		//else
+		//{
+			printf("invalid intel Hex\n");
+		//}
+	}
+	}
+    //printf("sum of check_line = %d\n" ,check_line);
+    //printf("all_r_type = %d" ,all_r_type[2]);
+    //TEST_ASSERT_EQUAL_MEMORY_ARRAY(record_type_all, all_r_type); //this test seen problem
+	TEST_ASSERT_EQUAL_STRING(":020000040000FA\n",data_str[0]);
+  } 
+*/
 
 ///*//try test startcode ':' == ASSCI:3a
   void test_intel_hex_startcode(void)
@@ -149,7 +183,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 //*/
 
-//*//try test Data 
+//*//try test Data dont have fuction
   void test_intel_hex_data(void)
   { 
     int data;
@@ -162,43 +196,43 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 //*/
 
 //*//Try test valid intel_Hex right
-  void test_iHexVerifyLine_given_right_expect_return_1(void)
+  void test_iHexVerifyLine_given_right_intel_hex_expect_return_1(void)
   { 
-    int sum_hex;
+    int check_hex;
     char *i_hex = ":04001000230E1200A9\n";
-    sum_hex = iHexVerifyLine(i_hex);
-    printf("the sum of intel_Hex return %d\n", sum_hex);
-    TEST_ASSERT_EQUAL(1, sum_hex);
+    check_hex = iHexVerifyLine(i_hex);
+    printf("the sum of intel_Hex return %d\n", check_hex);
+    TEST_ASSERT_EQUAL(1, check_hex);
   } 
 //*/
 
 //*//Try test valid intel_Hex error code with error checksum
   void test_iHexVerifyLine_given_error_checksum_code_expect_return_0(void)
   { 
-    int sum_hex;
+    int check_hex;
     char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F094\n";
-    sum_hex = iHexVerifyLine(i_hex);
-    printf("the sum of intel_Hex return %d\n", sum_hex);
-    TEST_ASSERT_EQUAL(0, sum_hex);
+    check_hex = iHexVerifyLine(i_hex);
+    printf("the sum of intel_Hex return %d\n", check_hex);
+    TEST_ASSERT_EQUAL(0, check_hex);
   } 
 //*/
 
 //*//Try test valid intel_not_have_startSimbol ':'
   void test_iHexVerifyLine_given_not_have_startSimbol_expect_return_0(void)
   { 
-    int sum_hex;
+    int check_hex;
     char *i_hex = "10000000560E08EC00F0020E020E020E06EF00F094\n";
-    sum_hex = iHexVerifyLine(i_hex);
-    printf("the sum of intel_Hex return %d\n", sum_hex);
-    TEST_ASSERT_EQUAL(0, sum_hex);
+    check_hex = iHexVerifyLine(i_hex);
+    printf("the sum of intel_Hex return %d\n", check_hex);
+    TEST_ASSERT_EQUAL(0, check_hex);
   } 
 //*/
 //*//Try test convert intel_Hex to array in 16-bits. 
   void test_iHexGetArrayofData_expect_array_data_return_true(void)
   { 
     uint8_t array_data[]= {\
-	0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
-	0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
+    0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
+    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
     char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F093";
     uint8_t* i_hex_array = iHexGetArrayofData(i_hex);
     TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21);
@@ -209,8 +243,8 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   void test_iHexGetArrayofData_expect_array_data_return_error(void)
   { 
     uint8_t array_data[]= {\
-	0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
-	0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
+    0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
+    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
     char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F093";
     uint8_t* i_hex_array = iHexGetArrayofData(i_hex);
     TEST_ASSERT_EQUAL_INT8(array_data[4], 0x56);//test only one 16bit data
