@@ -238,28 +238,29 @@ uint8_t* iHexGetArrayofData(char *line)
    *      04       Extended Linear Address
    *      05       Start Linear Address ( ignored )
    *---------------------------------------------------------------*/
-/*//try iHexGetAddress*****************function r_type()
-uint8_t* iHexGetAddress(char* r_type,char *i_hex_array1,char *i_hex_array2)
+//*//try iHexGetAddress*****************function r_type()
+uint8_t* iHexGetAddress(int* r_type,char *i_hex_array1,char *i_hex_array2)
 {
-  
   uint8_t* address;
-  switch(r_type)
+  switch(*r_type)
   {
     case 0://record type = 0
-       address = getAddress16bit(i_hex_array1);
+      address = getAddress16bit(i_hex_array1);
       break;
     case 1://record type = 01
-       address = NULL;
+      address = NULL;
       break;
     case 4://record type = 04
-		address = getAddress32bit(i_hex_array1,i_hex_array2);
+      address = getAddress32bit(i_hex_array1,i_hex_array2);
      break; 
-       
+    default:            
+      address = NULL;
+     break;
   }
  
   return address;
 }  
-*/
+//*/
 
 /**__TRY_ZONE_(can be ignore)_______________________________________________________________________*/
 

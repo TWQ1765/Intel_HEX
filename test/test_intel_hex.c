@@ -247,7 +247,22 @@ void test_getAddress32bit_address_as_16bit(void)
   TEST_ASSERT_EQUAL_INT32(0x00300001, address);
   
 }
-
+///*
+void test_iHexGetAddress_given_00300001_expect_true(void)
+{
+  char *i_hex1 = ":020000040030CA\n";
+  char *i_hex2 = ":01000100C836\n";
+  int r_type = 4;
+  uint8_t* address;
+  uint8_t* i_hex_array1 = iHexGetArrayofData(i_hex1);
+  uint8_t* i_hex_array2 = iHexGetArrayofData(i_hex2);
+  
+  address = iHexGetAddress(&r_type,i_hex_array1,i_hex_array2);
+  TEST_ASSERT_EQUAL_INT32(0x00300001, address);
+  
+}
+//uint8_t* iHexGetAddress(char* r_type,char *i_hex_array1,char *i_hex_array2)
+//*/
 
 /**__TRY_ZONE_(can be ignore)_______________________________________________________________________*/
 //TEST_ASSERT_EQUAL_INT8_ARRAY last test
