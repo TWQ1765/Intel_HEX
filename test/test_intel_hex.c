@@ -125,12 +125,9 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     printf("sum of check_line = %d\n" ,check_line);
     printf("all_r_type = %d\n" ,all_r_type[0]);
 	printf("record_type_all = %d\n" ,record_type_all[0]);
-    //TEST_ASSERT_EQUAL_MEMORY_ARRAY(record_type_all, all_r_type); //this test seen problem
+   
 	TEST_ASSERT_EQUAL_STRING(":020000040000FA\n",data_str[0]);
 	TEST_ASSERT_EQUAL_UINT_ARRAY(record_type_all, all_r_type, check_line);
-	//TEST_ASSERT_EQUAL_STRING("4",record_type_all[0]);
-	//TEST_ASSERT_EQUAL_STRING_ARRAY(record_type_all, all_r_type, check_line);  
-	//TEST_ASSERT_EQUAL_INT_ARRAY(record_type_all,all_r_type,check_line);
   } 
 //*/
 

@@ -4,10 +4,8 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdarg.h>
-//#define SWAP(a, b) do { typeof(a) temp = a; a = b; b = temp; } while (0)//swap function
 
-
-///*//test Hex is right or not. :10000000560E08EC00F0020E020E020E06EF00F094\n
+///*//test Hex is right or not. ex.):10000000560E08EC00F0020E020E020E06EF00F094\n
 int iHexVerifyLine(char * line)
 {
   char *lineptr = line;
@@ -36,20 +34,6 @@ int iHexVerifyLine(char * line)
 }  
 //*/ 
 
-/* //function open file---------try Exception
-FILE* handler(char *file)//return as pointer type FILE 'FILE *'
-{
-  		
-  FILE *file_handler;              //pointer fileHandler
-  file_handler = fopen(file , "r");
-  if(file_handler = NULL)
-  {
-	  throwException("File dose not exit, do you mean %s",file);
-  }
-  return file_handler;             //pointer return
-}
-*/
-
 //* //function open file-------the main code
 FILE* handler(char *file)//return as pointer type FILE 'FILE *'
 {
@@ -60,7 +44,7 @@ FILE* handler(char *file)//return as pointer type FILE 'FILE *'
 }
 //*/
 
-///*// fgets() only able to get 1st line*************current
+///*// fgets() only able to get 1st line*******current
 char* getiHexLine( FILE *file_handler)
 {
   char *hex_line = (char*)malloc(1024);
@@ -68,14 +52,6 @@ char* getiHexLine( FILE *file_handler)
   return hex_line;
 }
 //*/
-
-/*// fgets() only able to get 1st line*********prev
-char* getiHexLine( FILE *file_handler)
-{
-  char hex_line[1028];
-  return fgets(hex_line,1028, file_handler);
-}
-*/
 
 //*// load selected element from file
 char* iHexSelectLoad(char *file, int*line_num)
@@ -106,60 +82,6 @@ int8_t* allRecordTypeToMemory(char* line1,char* line2)
 	return address;
 }
 //*/
-
-/*// load all element from file and return all recordtype******************problem cause clash 
-char* allRecordTypeToMemory(char *file)
-{
-  int line_num1=0;  //1st line from file
-  int line_num2=1;  //2nd line from file
-  int check_line;
-  int r_type;
-  char * r_type_mem = malloc(1024);
-  r_type_mem[1024];
-  
-  char* data_array1	= malloc(1024);
-  char* data_array2 = malloc(1024);
-  data_array1 = iHexSelectLoad(file, line_num1);
-  data_array2 = iHexSelectLoad(file, line_num2);
-  
-  while((iHexVerifyLine(data_array1))||(iHexVerifyLine(data_array2)))
-  {
-		
-    for (int i = 0 ; i <= check_line ; i++)
-    {
-      data_array1	= iHexSelectLoad(file, line_num1);
-      data_array2 = iHexSelectLoad(file, line_num2);
-      line_num1++;
-      line_num2++;
-      check_line += (iHexVerifyLine(data_array1))||(iHexVerifyLine(data_array2));
-      r_type = recordType(data_array1);
-      printf("%d = %s",line_num1, data_array1);
-      printf("%d = %d\n",line_num1, r_type);
-      r_type_mem[i] = r_type;
-    }
-    free(data_array1);
-    free(data_array2);
-    free(r_type_mem);
-    printf("check_line = %d \n",check_line);
-    //call 1 time
-    printf("r_type_mem = %d \n",r_type_mem[7]);//CHECK HERE PROBLEM [1] get 4 [2] = 
-    
-    printf("%d = %s",line_num1, *data_array1); 
-  }
-
-  //r_type = recordType(data_array1);
-  //printf("r_type = %d\n",r_type);
-  
-  //r_type = recordType(data_array2);
-  //printf("r_type = %d\n",r_type);
-  
-  printf("data_array1 = %s",data_array1);	//see and look and prove:......
-  printf("data_array2 = %s",data_array2); 	//data_array1 == data_array2
-   //call 2 time
-  printf("r_type_mem = %d\n",r_type_mem[0]);
-  return r_type_mem; 
-}
-*/
 
 /*-------Shifting-(<<)-in Hexdecimal------------------
  * hexdecimal   ~     binary
@@ -226,16 +148,15 @@ uint8_t* iHexGetArrayofData(char *line)
 }
 //*/
 
-
-  /*------------------------------------------------------------
-   *  record type         mean                
-   *      00       Data
-   *      01       End Of File
-   *      02       Extended Segment Address ( ignored )
-   *      03       Start Segment Address (For 80x86 processors,ignored)
-   *      04       Extended Linear Address
-   *      05       Start Linear Address ( ignored )
-   *---------------------------------------------------------------*/
+/*------------------------------------------------------------
+*  record type         detail                
+*      00       Data
+*      01       End Of File
+*      02       Extended Segment Address ( ignored )
+*      03       Start Segment Address (For 80x86 processors,ignored)
+*      04       Extended Linear Address
+*      05       Start Linear Address ( ignored )
+*---------------------------------------------------------------*/
 //*//try iHexGetAddress*****************function r_type()
 uint8_t* iHexGetAddress(int* r_type,char *i_hex_array1,char *i_hex_array2)
 {
@@ -261,7 +182,73 @@ uint8_t* iHexGetAddress(int* r_type,char *i_hex_array1,char *i_hex_array2)
 //*/
 
 /**__TRY_ZONE_(can be ignore)_______________________________________________________________________*/
+/*// load all element from file and return all recordtype******************problem cause clash 
+char* allRecordTypeToMemory(char *file)
+{
+  int line_num1=0;  //1st line from file
+  int line_num2=1;  //2nd line from file
+  int check_line;
+  int r_type;
+  char * r_type_mem = malloc(1024);
+  r_type_mem[1024];
+  
+  char* data_array1	= malloc(1024);
+  char* data_array2 = malloc(1024);
+  data_array1 = iHexSelectLoad(file, line_num1);
+  data_array2 = iHexSelectLoad(file, line_num2);
+  
+  while((iHexVerifyLine(data_array1))||(iHexVerifyLine(data_array2)))
+  {
+		
+    for (int i = 0 ; i <= check_line ; i++)
+    {
+      data_array1	= iHexSelectLoad(file, line_num1);
+      data_array2 = iHexSelectLoad(file, line_num2);
+      line_num1++;
+      line_num2++;
+      check_line += (iHexVerifyLine(data_array1))||(iHexVerifyLine(data_array2));
+      r_type = recordType(data_array1);
+      printf("%d = %s",line_num1, data_array1);
+      printf("%d = %d\n",line_num1, r_type);
+      r_type_mem[i] = r_type;
+    }
+    free(data_array1);
+    free(data_array2);
+    free(r_type_mem);
+    printf("check_line = %d \n",check_line);
+    //call 1 time
+    printf("r_type_mem = %d \n",r_type_mem[7]);//CHECK HERE PROBLEM [1] get 4 [2] = 
+    
+    printf("%d = %s",line_num1, *data_array1); 
+  }
 
+  //r_type = recordType(data_array1);
+  //printf("r_type = %d\n",r_type);
+  
+  //r_type = recordType(data_array2);
+  //printf("r_type = %d\n",r_type);
+  
+  printf("data_array1 = %s",data_array1);	//see and look and prove:......
+  printf("data_array2 = %s",data_array2); 	//data_array1 == data_array2
+   //call 2 time
+  printf("r_type_mem = %d\n",r_type_mem[0]);
+  return r_type_mem; 
+}
+*/
+/* //function open file---------try Exception
+FILE* handler(char *file)//return as pointer type FILE 'FILE *'
+{
+  FILE *file_handler;              //pointer fileHandler
+  file_handler = fopen(file , "r");
+  
+  if(file_handler = NULL)
+  {
+	throwException("File dose not exit, do you mean %s",file);
+  }
+  else
+	return file_handler;             //pointer return
+}
+*/
 /*//remember trying scanf ()
 int main(){
   int x;
