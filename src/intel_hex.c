@@ -30,7 +30,7 @@ int iHexVerifyLine(char * line)
       sum_hex=sum_hex+get_hex;
     }
   }
-	return (sum_hex & 0xff) == 0;
+	return (sum_hex & 0xff) == 0;// check intel Hex checksum
 }  
 //*/ 
 
@@ -74,8 +74,8 @@ char* iHexSelectLoad(char *file, int*line_num) // warning*****change char* -> in
 int8_t* allRecordTypeToMemory(char* line1,char* line2)
 {
 	int r_type1 = recordType(line1);
-	uint8_t* i_hex_array1=iHexGetArrayofData(line1);
-	uint8_t* i_hex_array2=iHexGetArrayofData(line2);
+	uint8_t* i_hex_array1=iHexToArray(line1);
+	uint8_t* i_hex_array2=iHexToArray(line2);
 	int8_t* address = iHexGetAddress(r_type1,i_hex_array1,i_hex_array2);
 	
 	
@@ -83,25 +83,34 @@ int8_t* allRecordTypeToMemory(char* line1,char* line2)
 }
 //*/
 
-//*/// load all data from all element******************WE ARE HERE
+
+/*-----------------------------------------------	
+ *	1.	if address >16bits do line1 + 2 = line3
+ *		so check line3 r_type and get address. 
+ *	2.	if address = 16bits do line1 + 1 = line2
+ *
+ *-----------------------------------------------*/ 
+/*/// load all data from all element******************WE ARE HERE
 int8_t* iHexLoadHexFileToMemory(char* line1,char* line2)
 {
-	// if address >16bits do line1 + 2 = line3
-	// so check line3 r_type and get address 
-	// if address = 16bits do line1 + 1 = line2
-	
+	uint8_t* i_hex_array1, i_hex_array2;
 	int8_t *address = allRecordTypeToMemory(line1,line2);
-	if (address >)
+	if (address > 0xFF)//comparing with HEXdec?
+	{
+		i_hex_array2=iHexToArray(line2);
+		
+	}
+		
 	return address;
 }
-//*/
+*/
 
 
 /*-------Shifting-(<<)-in Hexdecimal------------------
  * hexdecimal   ~     binary
- *   0x0F       =     00001111
+ *   0x0F0F     =   0000111100001111
  *______________________________start Shifting (0x0F<<4)
- *   0x0F0      =     000011110000 
+ *   0x0F000FFF  =   000011110000...
  *---------------------------------------------------*/
 ///*// get address 16bit 
  int getAddress16bit(uint8_t *i_hex_array)
@@ -126,14 +135,16 @@ int8_t* iHexLoadHexFileToMemory(char* line1,char* line2)
 //*//Record type****************
 int recordType(char* line)
 {
-  uint8_t* i_hex_array=iHexGetArrayofData(line);
+  uint8_t* i_hex_array=iHexToArray(line);
   int r_type = i_hex_array[3];
   return r_type;
 }  
 //*/
 
+//uint8_t* iHexGetArrayofData(char *line)
+
 ///*//read as 0xXX (8byte) element from file
-uint8_t* iHexGetArrayofData(char *line)
+uint8_t* iHexToArray(char *line)
 {
   int length = 0;
   char temp;
@@ -143,9 +154,9 @@ uint8_t* iHexGetArrayofData(char *line)
   {
     sscanf(&line[length+1], "%2c", &temp);
     
-    if(line[length+1] != NULL) //change line[length+1] to...(char*)line[length+1]
+    if(line[length+1] != NULL) 	//change line[length+1] to...(char*)line[length+1]
     { 
-      length = length + 2;
+      length = length + 2;		//find total length
     }
     else
     {
@@ -169,7 +180,7 @@ uint8_t* iHexGetArrayofData(char *line)
 *      02       Extended Segment Address ( ignored )
 *      03       Start Segment Address (For 80x86 processors,ignored)
 *      04       Extended Linear Address
-*      05       Start Linear Address ( ignored )
+*      05       Start Linear Address 
 *---------------------------------------------------------------*/
 //*//try iHexGetAddress*****************function r_type()
 uint8_t* iHexGetAddress(int* r_type,char *i_hex_array1,char *i_hex_array2)
@@ -186,6 +197,8 @@ uint8_t* iHexGetAddress(int* r_type,char *i_hex_array1,char *i_hex_array2)
     case 4://record type = 04
       address = getAddress32bit(i_hex_array1,i_hex_array2);
      break; 
+	//case 5://record type = 05//:04000005000000CD2A
+	 // address = 		
     default:            
       address = NULL;
      break;

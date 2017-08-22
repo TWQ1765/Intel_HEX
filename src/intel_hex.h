@@ -11,7 +11,7 @@ struct point {
 };
 
 
-uint8_t * iHexGetArrayofData(char *line);
+uint8_t * iHexToArray(char *line);
 int iHexVerifyLine(char * line);
 FILE* handler(char *file);
 char* getiHexLine( FILE *file_handler);

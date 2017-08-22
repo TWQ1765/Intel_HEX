@@ -119,7 +119,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 	for (int i =0 ; i <= check_line ; i++)
 	{
 		all_r_type[i] = recordType(data_str[i]);
-		printf(" 	%d	-	 %d\n" , i , all_r_type[i]);
+		printf(" 	%d	=	 %d\n" , i , all_r_type[i]);
 	}
 	
     printf("sum of check_line = %d\n" ,check_line);
@@ -228,19 +228,19 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
     0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
     char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F093";
-    uint8_t* i_hex_array = iHexGetArrayofData(i_hex);
+    uint8_t* i_hex_array = iHexToArray(i_hex);
     TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21);
     free (i_hex_array); //deallocate allocated memory
   } 
 //*/
-//*//Try test convert intel_Hex to array in 16-bits . **********repeated
-  void test_iHexGetArrayofData_expect_array_data_return_error(void)
+//*//Try test get intel hex data only by skipping 4-8bits in array.  
+  void test_iHexToArray_expect_data_only_return(void)
   { 
     uint8_t array_data[]= {\
     0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
     0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
     char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F093";
-    uint8_t* i_hex_array = iHexGetArrayofData(i_hex);
+    uint8_t* i_hex_array = iHexToArray(i_hex);
     TEST_ASSERT_EQUAL_INT8(array_data[4], 0x56);//test only one 16bit data
     TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21); //test all set 16bit data
     free (i_hex_array); //deallocate allocated memory
@@ -259,7 +259,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 void test_getAddress16bit_address_as_16bit(void)
 {
   char *i_hex = ":040A1000230E1200A9\n";
-  uint8_t* i_hex_array = iHexGetArrayofData(i_hex);
+  uint8_t* i_hex_array = iHexToArray(i_hex);
   int address = getAddress16bit(i_hex_array);
   
   TEST_ASSERT_EQUAL(0x0A10, address);
@@ -269,21 +269,21 @@ void test_getAddress32bit_address_as_16bit(void)
 {
   char *i_hex1 = ":020000040030CA\n";
   char *i_hex2 = ":01000100C836\n";
-  uint8_t* i_hex_array1 = iHexGetArrayofData(i_hex1);
-  uint8_t* i_hex_array2 = iHexGetArrayofData(i_hex2);
+  uint8_t* i_hex_array1 = iHexToArray(i_hex1);
+  uint8_t* i_hex_array2 = iHexToArray(i_hex2);
   int address = getAddress32bit(i_hex_array1,i_hex_array2);//should= 0x00300001 | 3145729
   TEST_ASSERT_EQUAL_INT32(0x00300001, address);
   
 }
-///*case statement being use from fuction iHexGetArrayofData().
+///*case statement being use from fuction iHexToArray().
 void test_iHexGetAddress_given_00300001_expect_true(void)
 {
   char *i_hex1 = ":020000040030CA\n";
   char *i_hex2 = ":01000100C836\n";
   int r_type = 4;
   uint8_t* address;
-  uint8_t* i_hex_array1 = iHexGetArrayofData(i_hex1);
-  uint8_t* i_hex_array2 = iHexGetArrayofData(i_hex2);
+  uint8_t* i_hex_array1 = iHexToArray(i_hex1);
+  uint8_t* i_hex_array2 = iHexToArray(i_hex2);
   
   address = iHexGetAddress(&r_type,i_hex_array1,i_hex_array2);
   TEST_ASSERT_EQUAL_INT32(0x00300001, address);
