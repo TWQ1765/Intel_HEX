@@ -109,31 +109,28 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
 	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
 	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
-    char* record_type_all[] = {"4","0","0","0","4","0","0","0","0","1"};//{4,0,0,0,4,0,0,0,0,1};
+    char* record_type_all[] ={4,0,0,0,4,0,0,0,0,1};
    
     char * all_r_type[1024]; 
     int check_line;
-	//while(iHexVerifyLine(data_str[0]))//seem will clash loop 4ever
-	//{
-		check_line =9;
+	
+	check_line =9;
+	printf(" line no:	-	Record Type:\n");
 	for (int i =0 ; i <= check_line ; i++)
 	{
-		
-		//if (check_line==1)
-		//{
-			all_r_type[i] = recordType(data_str[i]);
-		//}
-		//else
-		//{
-			printf("invalid intel Hex\n");
-		//}
+		all_r_type[i] = recordType(data_str[i]);
+		printf(" 	%d	-	 %d\n" , i , all_r_type[i]);
 	}
 	
     printf("sum of check_line = %d\n" ,check_line);
-    printf("all_r_type = %d" ,all_r_type[4]);
+    printf("all_r_type = %d\n" ,all_r_type[0]);
+	printf("record_type_all = %d\n" ,record_type_all[0]);
     //TEST_ASSERT_EQUAL_MEMORY_ARRAY(record_type_all, all_r_type); //this test seen problem
 	TEST_ASSERT_EQUAL_STRING(":020000040000FA\n",data_str[0]);
-	TEST_ASSERT_EQUAL_STRING("4",record_type_all[0]);
+	TEST_ASSERT_EQUAL_UINT_ARRAY(record_type_all, all_r_type, check_line);
+	//TEST_ASSERT_EQUAL_STRING("4",record_type_all[0]);
+	//TEST_ASSERT_EQUAL_STRING_ARRAY(record_type_all, all_r_type, check_line);  
+	//TEST_ASSERT_EQUAL_INT_ARRAY(record_type_all,all_r_type,check_line);
   } 
 //*/
 
