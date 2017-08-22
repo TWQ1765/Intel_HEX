@@ -15,12 +15,12 @@ void setUp(void)
 void tearDown(void)
 {
 }
-/*----------Intel_hex_Information_-------------------------
+/*----------------------Intel_hex_Information_--------------------------
  *- 1 - the .hex file is locate at the following directory. 
- *-     Intel_HEX\doc , name is Blinky.X.production.hex.
- *- 2 - camelcasing Ex.) getiHexLine refering to function.
+ *-     (‪C:\Student\TWQ\projects\C\Intel_HEX\doc\Blinky.X.production.hex)
+ *- 2 - camelCasing Ex.) getiHexLine refering to function.
  *- 3 - snake_casing EX.) i_hex refering to constant decelation .
- *--------------------------------------------------------*/
+ *----------------------------------------------------------------------*/
  
 //*//test file Blinky.X.production occur or not? 
 void test_intelfile_fopen_expect_and_return_true(void)
@@ -86,7 +86,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 //*/
 
 
-/*//Try read only all line from file **************
+/*//Try read only all line from file **************WE ARE HERE
   void test_iHexLoadHexFileToMemory_read_all_line_from_file_expect_true(void)
   { 
     char* data_str[] ={\
@@ -94,15 +94,15 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
 	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
     
-    char* file ="doc/Blinky.X.production.hex";
     
-    char* all_data = iHexLoadHexFileToMemory(file);
+    
+	//char* all_data = iHexLoadHexFileToMemory(file);
    
-    TEST_ASSERT_EQUAL_STRING(data_str[1], all_data);
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21);
   } 
 */
 
-//*//Try read all record type only line from file ******CHECK THIS
+//*//Try read all record type only line from file 
   void test_allRecordTypeToMemory_read_all_record_type_from_file_expect_true(void)
   { 
     char* data_str[] ={\
@@ -233,7 +233,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     free (i_hex_array); //deallocate allocated memory
   } 
 //*/
-//*//Try test convert intel_Hex to array in 16-bits. 
+//*//Try test convert intel_Hex to array in 16-bits . **********repeated
   void test_iHexGetArrayofData_expect_array_data_return_error(void)
   { 
     uint8_t array_data[]= {\
@@ -275,7 +275,7 @@ void test_getAddress32bit_address_as_16bit(void)
   TEST_ASSERT_EQUAL_INT32(0x00300001, address);
   
 }
-///*case statement being use.
+///*case statement being use from fuction iHexGetArrayofData().
 void test_iHexGetAddress_given_00300001_expect_true(void)
 {
   char *i_hex1 = ":020000040030CA\n";

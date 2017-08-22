@@ -54,7 +54,7 @@ char* getiHexLine( FILE *file_handler)
 //*/
 
 //*// load selected element from file
-char* iHexSelectLoad(char *file, int*line_num)
+char* iHexSelectLoad(char *file, int*line_num) // warning*****change char* -> int*
 {
   FILE* file_handler = handler(file);
   //char *hex_line = getiHexLine(file_handler);
@@ -70,7 +70,7 @@ char* iHexSelectLoad(char *file, int*line_num)
 }
 //*/
 
-///*/// load all record type from all element
+//*/// load all record type from all element
 int8_t* allRecordTypeToMemory(char* line1,char* line2)
 {
 	int r_type1 = recordType(line1);
@@ -82,6 +82,20 @@ int8_t* allRecordTypeToMemory(char* line1,char* line2)
 	return address;
 }
 //*/
+
+//*/// load all data from all element******************WE ARE HERE
+int8_t* iHexLoadHexFileToMemory(char* line1,char* line2)
+{
+	// if address >16bits do line1 + 2 = line3
+	// so check line3 r_type and get address 
+	// if address = 16bits do line1 + 1 = line2
+	
+	int8_t *address = allRecordTypeToMemory(line1,line2);
+	if (address >)
+	return address;
+}
+//*/
+
 
 /*-------Shifting-(<<)-in Hexdecimal------------------
  * hexdecimal   ~     binary
