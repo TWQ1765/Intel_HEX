@@ -278,15 +278,15 @@ void test_getAddress32bit_address_as_16bit(void)
 ///*case statement being use from fuction iHexToArray().
 void test_iHexGetAddress_given_00300001_expect_true(void)
 {
-  char *i_hex1 = ":020000040030CA\n";
+  char *i_hex1 = ":020001040030CA\n";
   char *i_hex2 = ":01000100C836\n";
-  int r_type = 4;
+  int r_type = 4; //changing this valu to test
   uint8_t* address;
   uint8_t* i_hex_array1 = iHexToArray(i_hex1);
   uint8_t* i_hex_array2 = iHexToArray(i_hex2);
   
   address = iHexGetAddress(&r_type,i_hex_array1,i_hex_array2);
-  TEST_ASSERT_EQUAL_INT32(0x00300001, address);
+  TEST_ASSERT_EQUAL_INT32(0x00300001, address); //3145729 decimal
   
 }
 //*/

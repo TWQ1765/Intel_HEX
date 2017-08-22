@@ -126,13 +126,14 @@ int8_t* iHexLoadHexFileToMemory(char* line1,char* line2)
  int getAddress32bit(uint8_t *i_hex_array1,uint8_t *i_hex_array2)
  {
   int test_address = (i_hex_array1[5]<<16) + (i_hex_array2[2]<<0);
-  int address = (i_hex_array1[4]<<24) + (i_hex_array1[5]<<16) + (i_hex_array2[1]<<8) + i_hex_array2[2];
+  int address = (i_hex_array1[4]<<24) + (i_hex_array1[5]<<16) + \
+				(i_hex_array2[1]<<8) + i_hex_array2[2];
   printf("test_address = %x\n",test_address); 
   return address;  
  } 
 //*/
     
-//*//Record type****************
+//*//Record type
 int recordType(char* line)
 {
   uint8_t* i_hex_array=iHexToArray(line);
@@ -141,7 +142,19 @@ int recordType(char* line)
 }  
 //*/
 
-//uint8_t* iHexGetArrayofData(char *line)
+///*//read as 0xXX (8byte) only data element from file ****************WE ARE HERE TOO NEED TEST
+uint8_t* iHexGetArrayofData(uint8_t *i_hex_array,int position,int length )
+{
+	uint8_t* i_hex_data = malloc(sizeof(uint8_t)*length);
+	for (int i =0; i < length ; i++)
+	{
+		i_hex_data = i_hex_array[position+i];
+		
+	}
+	free(i_hex_data);
+	return i_hex_data;
+}
+//*/
 
 ///*//read as 0xXX (8byte) element from file
 uint8_t* iHexToArray(char *line)
@@ -186,24 +199,28 @@ uint8_t* iHexToArray(char *line)
 uint8_t* iHexGetAddress(int* r_type,char *i_hex_array1,char *i_hex_array2)
 {
   uint8_t* address;
-  switch(*r_type)
+  if(r_type == 5)// check for start Linear address 1st 
   {
-    case 0://record type = 0
-      address = getAddress16bit(i_hex_array1);
-      break;
-    case 1://record type = 01
-      address = NULL;
-      break;
-    case 4://record type = 04
-      address = getAddress32bit(i_hex_array1,i_hex_array2);
-     break; 
-	//case 5://record type = 05//:04000005000000CD2A
-	 // address = 		
-    default:            
-      address = NULL;
-     break;
+	address =  getAddress16bit(i_hex_array1);//:04000005000000CD2A
   }
- 
+  else
+  {
+	switch(*r_type)
+	{
+		case 0://record type = 0
+			address = getAddress16bit(i_hex_array1);
+			break;
+		case 1://record type = 01
+			address = -1;	//returning the last address memory
+			break;
+		case 4://record type = 04
+			address = getAddress32bit(i_hex_array1,i_hex_array2);
+			break; 	
+		default:            
+			address = -1;//returning the last address memory
+			break;
+	}
+  }
   return address;
 }  
 //*/
