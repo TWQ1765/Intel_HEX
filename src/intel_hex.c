@@ -112,8 +112,10 @@ int8_t* iHexLoadHexFileToMemory(char* line1,char* line2)
  * 	1. check and do only record type == 00 
  * 	2. get the size of the array then know add how many time
  *	3. does uint8_t can store large number?
+ *     only can read 32bit of data.
+ * 	4. need to put into a string?
  *--------------------------------------------------------------*/
-//*//
+//*//******************************************cant load address.
 uint8_t* getOnlyData(uint8_t *i_hex_array) 
 {
 	
@@ -128,7 +130,7 @@ uint8_t* getOnlyData(uint8_t *i_hex_array)
 	uint8_t* data = (uint8_t*)malloc(sizeof(uint8_t)*50);
 	for( k ; k < (i-1) ; k++ )
 	{
-		*data += (i_hex_array[k]<<((i*8)-(j*8)));// i already -1 ?
+		data += (i_hex_array[k]<<((i*8)-(j*8)));// i already -1 ?
 		
 		j++;
 	}
