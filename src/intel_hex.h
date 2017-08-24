@@ -23,7 +23,7 @@ int getAddress32bit(uint8_t *i_hex_array1,uint8_t *i_hex_array2);
 int getAddressStart(uint8_t *i_hex_array);
 
 //try zone______________________________________
-
+uint8_t* getOnlyData(uint8_t *i_hex_array);
 //int* iHexSelectLoad(char *file,int * line_num);
 //char* iHexLineGet(FILE * file_handler);
 //uint8_t* swapvalue(uint8_t*hexvaluehigh,uint8_t*hexvaluelow);swap not needded

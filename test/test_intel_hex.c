@@ -105,6 +105,23 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 */
 
+//*//Try read only data from i_hex not include check_sum
+  void test_getOnlyData_read_only_data_expect_true(void)
+  { 
+    char* data_str[] ={\
+	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
+	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
+	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
+    uint8_t i_hex_data = 0x560E08EC00F0020E020E020E06EF00F0;
+	uint8_t* data;
+	uint8_t* i_hex_array = iHexToArray(data_str[1]);
+    data = getOnlyData(i_hex_array);
+    printf("data = %x",data);
+	TEST_ASSERT_EQUAL_HEX8(i_hex_data, data);
+    //TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data, data, 14);
+  } 
+//*/
+
 //*//Try read all record type only line from file 
   void test_allRecordTypeToMemory_read_all_record_type_from_file_expect_true(void)
   { 
@@ -294,9 +311,9 @@ void test_getAddress32bit_address_as_32bit_expect_true(void)
 ///*case statement being use from fuction iHexToArray().
 void test_iHexGetAddress_given_00300001_expect_true(void)
 {
-  char *i_hex1 = ":04000005000000CD2A\n";//":020001040030CA\n"
+  char *i_hex1 = ":020001040030CA\n";//":020001040030CA\n"
   char *i_hex2 = ":01000100C836\n";
-  int r_type = 5; //changing this valu to test
+  int r_type = 4; //changing this valu to test
   uint8_t* address;
   uint8_t* i_hex_array1 = iHexToArray(i_hex1);
   uint8_t* i_hex_array2 = iHexToArray(i_hex2);

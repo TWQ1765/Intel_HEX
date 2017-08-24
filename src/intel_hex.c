@@ -95,7 +95,7 @@ int8_t* iHexLoadHexFileToMemory(char* line1,char* line2)
 {
 	uint8_t* i_hex_array1, i_hex_array2;
 	int8_t *address = allRecordTypeToMemory(line1,line2);
-	if (address > 0xFF)//comparing with HEXdec?
+	if (address > 0xFF)//-1 comparing with HEXdec?
 	{
 		i_hex_array2=iHexToArray(line2);
 		//can add function read data only
@@ -108,13 +108,40 @@ int8_t* iHexLoadHexFileToMemory(char* line1,char* line2)
 	return address;
 }
 */
-
+/*-------read data start at 4th of array ihex-------------------
+ * 	1. check and do only record type == 00 
+ * 	2. get the size of the array then know add how many time
+ *	3. does uint8_t can store large number?
+ *--------------------------------------------------------------*/
+//*//
+uint8_t* getOnlyData(uint8_t *i_hex_array) 
+{
+	
+	//uint8_t check_end; //:10010000-214601360121470136007EFE09D21901-40
+	int j=0;
+	int i=4;
+	int k=4;
+	while(i_hex_array[i] != '\n')
+	{
+		i++;//find the total length of data
+	}
+	uint8_t* data = (uint8_t*)malloc(sizeof(uint8_t)*50);
+	for( k ; k < (i-1) ; k++ )
+	{
+		*data += (i_hex_array[k]<<((i*8)-(j*8)));// i already -1 ?
+		
+		j++;
+	}
+	//free(data);
+	return data;
+}
+//*/
 
 /*-------Shifting-(<<)-in Hexdecimal------------------
  * hexdecimal   ~     binary
  *   0x0F0F     =   0000111100001111
- *______________________________start Shifting (0x0F<<4)
- *   0x0F000FFF  =   000011110000...
+ *___result__________________________start Shifting (0x0F0F<<4)
+ *   0x0F0F0	=   00001111000011110000
  *---------------------------------------------------*/
 ///*// get address 16bit 
  int getAddress16bit(uint8_t *i_hex_array)
@@ -132,7 +159,7 @@ int8_t* iHexLoadHexFileToMemory(char* line1,char* line2)
   int test_address = (i_hex_array1[5]<<16) + (i_hex_array2[2]<<0);
   int address = (i_hex_array1[4]<<24) + (i_hex_array1[5]<<16) + \
 				(i_hex_array2[1]<<8) + i_hex_array2[2];
-  printf("test_address = %x\n",test_address); 
+  //printf("test_address = %x\n",test_address); 
   return address;  
  } 
 //*/
