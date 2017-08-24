@@ -20,7 +20,7 @@ int recordType(char* line);
 uint8_t* iHexGetAddress(int* r_type,char *i_hex_array1,char *i_hex_array2);
 int getAddress16bit(uint8_t *i_hex_array);
 int getAddress32bit(uint8_t *i_hex_array1,uint8_t *i_hex_array2);
-int8_t* allRecordTypeToMemory(char* line1,char* line2);
+int getAddressStart(uint8_t *i_hex_array);
 
 //try zone______________________________________
 

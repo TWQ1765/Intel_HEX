@@ -70,7 +70,7 @@ char* iHexSelectLoad(char *file, int*line_num) // warning*****change char* -> in
 }
 //*/
 
-//*/// load all record type from all element
+/*/// load all record type from all element ***not use
 int8_t* allRecordTypeToMemory(char* line1,char* line2)
 {
 	int r_type1 = recordType(line1);
@@ -81,7 +81,7 @@ int8_t* allRecordTypeToMemory(char* line1,char* line2)
 	
 	return address;
 }
-//*/
+*/
 
 
 /*-----------------------------------------------	
@@ -98,6 +98,10 @@ int8_t* iHexLoadHexFileToMemory(char* line1,char* line2)
 	if (address > 0xFF)//comparing with HEXdec?
 	{
 		i_hex_array2=iHexToArray(line2);
+		//can add function read data only
+	}
+	else
+	{
 		
 	}
 		
@@ -131,6 +135,16 @@ int8_t* iHexLoadHexFileToMemory(char* line1,char* line2)
   printf("test_address = %x\n",test_address); 
   return address;  
  } 
+//*/
+
+//*//get start linear Address for record type = 05
+int getAddressStart(uint8_t *i_hex_array)
+{
+	int startAddress = (i_hex_array[4]<<24)+ (i_hex_array[5]<<16) + \
+					   (i_hex_array[6]<<8) + (i_hex_array[7]);
+	return startAddress;
+}
+
 //*/
     
 //*//Record type
@@ -199,12 +213,7 @@ uint8_t* iHexToArray(char *line)
 uint8_t* iHexGetAddress(int* r_type,char *i_hex_array1,char *i_hex_array2)
 {
   uint8_t* address;
-  if(r_type == 5)// check for start Linear address 1st 
-  {
-	address =  getAddress16bit(i_hex_array1);//:04000005000000CD2A
-  }
-  else
-  {
+  
 	switch(*r_type)
 	{
 		case 0://record type = 0
@@ -216,11 +225,14 @@ uint8_t* iHexGetAddress(int* r_type,char *i_hex_array1,char *i_hex_array2)
 		case 4://record type = 04
 			address = getAddress32bit(i_hex_array1,i_hex_array2);
 			break; 	
+		case 5://record type = 04
+			address = getAddressStart(i_hex_array1);
+			break; 		
 		default:            
 			address = -1;//returning the last address memory
 			break;
 	}
-  }
+  //}
   return address;
 }  
 //*/
