@@ -112,13 +112,14 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
 	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
 	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
-    uint8_t i_hex_data = 0x560E08EC00F0020E020E020E06EF00F0;
+    uint8_t i_hex_data[] ={0x56,0x0E,0x08,0xEC,0x00,0xF0,\
+    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
 	uint8_t* data;
 	uint8_t* i_hex_array = iHexToArray(data_str[1]);
     data = getOnlyData(i_hex_array);
     printf("data = %x",data);
-	TEST_ASSERT_EQUAL_HEX8(i_hex_data, data);
-    //TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data, data, 14);
+	
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data, data, 14);
   } 
 //*/
 
