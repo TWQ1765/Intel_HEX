@@ -34,8 +34,7 @@ void test_intelfile_fopen_expect_and_return_true(void)
 	}
 	Catch(ex){
 		dumpException(ex);
-	}
-	
+	}	
 }
 //*/
 
@@ -104,27 +103,53 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21);
   } 
 */
-
-//*//Try read only data from i_hex not include check_sum
-  void test_getOnlyData_read_only_data_expect_true(void)
+/*// Array put at specific address location of memory*************WE ARE HERE
+  void test_specificAddressOfArray_expect_true(void)
   { 
     char* data_str[] ={\
 	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
 	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
 	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
-    uint8_t i_hex_data[] ={0x56,0x0E,0x08,0xEC,0x00,0xF0,\
-    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
-	uint8_t* data;
-	uint8_t* i_hex_array = iHexToArray(data_str[1]);
-    data = getOnlyData(i_hex_array);
-    printf("data = %x",data);
+    
+	uint8_t* address;
+	uint8_t* i_hex_array1 = iHexToArray(data_str[0]);
+	uint8_t* i_hex_array2 = iHexToArray(data_str[1]);
+	address = iHexGetAddress(4,i_hex_array1,i_hex_array2);
 	
+    uint8_t* data = getOnlyData(i_hex_array2);
+    //printf("data = %x",data);
+	
+	memcpy((void*)address, data, sizeof data);
     TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data, data, 14);
+  } 
+*/
+
+//*// read only data from i_hex not include check_sum
+  void test_getOnlyData_read_only_data_given_data_str_1_array_expect_true(void)
+  { 
+    char* data_str[] ={\
+	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
+	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
+	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
+    uint8_t i_hex_data1[] ={0x56,0x0E,0x08,0xEC,0x00,0xF0,\
+    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0};
+	uint8_t i_hex_data2[] ={0x23,0x0E,0x12,0x00};
+	
+	uint8_t* data1;
+	uint8_t* data2;
+	uint8_t* i_hex_array1 = iHexToArray(data_str[1]);
+	
+    data1 = getOnlyData(i_hex_array1);
+	uint8_t* i_hex_array2 = iHexToArray(data_str[2]);
+	
+    data2 = getOnlyData(i_hex_array2);
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data1, data1, 14);
+	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data2, data2, 4);
   } 
 //*/
 
-//*//Try read all record type only line from file 
-  void test_allRecordTypeToMemory_read_all_record_type_from_file_expect_true(void)
+//*//read all record type for each line from file 
+  void test_recordType_read_all_record_type_from_file_expect_true(void)
   { 
     char* data_str[] ={\
 	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
@@ -203,7 +228,6 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   { 
     int data;
     char iHexLine[] = ":020000040000FA\n";
- 
     sscanf(&iHexLine[9] , "%2x" , &data);
     printf("Record type of the String: 0x0%x\n", data); 
     TEST_ASSERT_EQUAL_HEX32(0x00000000, data);
@@ -305,7 +329,6 @@ void test_getAddress32bit_address_as_32bit_expect_true(void)
   uint8_t* i_hex_array2 = iHexToArray(i_hex2);
   int address = getAddress32bit(i_hex_array1,i_hex_array2);//should= 0x00300001 | 3145729
   TEST_ASSERT_EQUAL_INT32(0x00300001, address);
-  
 }
 
 
@@ -315,7 +338,7 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
   char *i_hex1 = ":020001040030CA\n";//":020001040030CA\n"
   char *i_hex2 = ":01000100C836\n";
   int r_type = 4; //changing this valu to test
-  uint8_t* address;
+  uint8_t *address;
   uint8_t* i_hex_array1 = iHexToArray(i_hex1);
   uint8_t* i_hex_array2 = iHexToArray(i_hex2);
   

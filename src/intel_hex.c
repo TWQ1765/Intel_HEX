@@ -5,6 +5,20 @@
 #include <stdint.h>
 #include <stdarg.h>
 
+
+
+int getvalue(int x){
+	
+	int value = x + 1;
+	int a = 4;
+
+	char const * const p = (const char * const)&a;
+	char * q = (char *)0x12345;
+	printf("***************q= %d\n",q);
+	
+	return value;
+}
+
 ///*//test Hex is right or not. ex.):10000000560E08EC00F0020E020E020E06EF00F094\n
 int iHexVerifyLine(char * line)
 {
@@ -24,7 +38,6 @@ int iHexVerifyLine(char * line)
   {    
     while((line[i+1] != '\n'))//read the code until the end of line
     {
-     
       sscanf(&line[i+1], "%2x" , &get_hex);
       i=i+2;
       sum_hex=sum_hex+get_hex;
@@ -57,15 +70,12 @@ char* getiHexLine( FILE *file_handler)
 char* iHexSelectLoad(char *file, int*line_num) // warning*****change char* -> int*
 {
   FILE* file_handler = handler(file);
-  //char *hex_line = getiHexLine(file_handler);
-  //int buf_size = 100; 
   char *select_data;// =(char *)malloc(sizeof(char)*buf_size); 
 	
     for (int i =0 ; i <= line_num ; i++) //chage line_num to *line_num
     {
       select_data = getiHexLine(file_handler);
     }
-    
   return select_data;
 }
 //*/
@@ -118,8 +128,6 @@ int8_t* iHexLoadHexFileToMemory(char* line1,char* line2)
 //*// loading only address.
 uint8_t* getOnlyData(uint8_t *i_hex_array) 
 {
-	
-	//uint8_t check_end; //:10010000-214601360121470136007EFE09D21901-40
 	int j=0;
 	int i=4;
 	int k=4;
@@ -131,10 +139,8 @@ uint8_t* getOnlyData(uint8_t *i_hex_array)
 	for( k ; k < (i-1) ; k++ )
 	{
 		data[j] = (i_hex_array[k]);// i already =(i-1) ?ans = no 
-		
 		j++;
 	}
-	
 	return data;
 }
 //*/
@@ -150,7 +156,6 @@ uint8_t* getOnlyData(uint8_t *i_hex_array)
  {
   printf("Hex_array[1] = %x",i_hex_array[2]<<8); 
   int address = (i_hex_array[1]<<8) + i_hex_array[2];
-  
   return address;  
  } 
 //*/
@@ -158,10 +163,10 @@ uint8_t* getOnlyData(uint8_t *i_hex_array)
 ///*// get address 32bit 
  int getAddress32bit(uint8_t *i_hex_array1,uint8_t *i_hex_array2)
  {
-  int test_address = (i_hex_array1[5]<<16) + (i_hex_array2[2]<<0);
+  //int test_address = (i_hex_array1[5]<<16) + (i_hex_array2[2]<<0);
   int address = (i_hex_array1[4]<<24) + (i_hex_array1[5]<<16) + \
 				(i_hex_array2[1]<<8) + i_hex_array2[2];
-  printf("test_address = %x\n",test_address); 
+  //printf("test_address = %x\n",test_address); //test Shifting only
   return address;  
  } 
 //*/
@@ -173,7 +178,6 @@ int getAddressStart(uint8_t *i_hex_array)
 					   (i_hex_array[6]<<8) + (i_hex_array[7]);
 	return startAddress;
 }
-
 //*/
     
 //*//Record type
@@ -191,8 +195,7 @@ uint8_t* iHexGetArrayofData(uint8_t *i_hex_array,int position,int length )
 	uint8_t* i_hex_data = malloc(sizeof(uint8_t)*length);
 	for (int i =0; i < length ; i++)
 	{
-		i_hex_data = i_hex_array[position+i];
-		
+		i_hex_data = i_hex_array[position+i];	
 	}
 	free(i_hex_data);
 	return i_hex_data;
@@ -209,7 +212,6 @@ uint8_t* iHexToArray(char *line)
   while(1)
   {
     sscanf(&line[length+1], "%2c", &temp);
-    
     if(line[length+1] != NULL) 	//change line[length+1] to...(char*)line[length+1]
     { 
       length = length + 2;		//find total length
@@ -220,12 +222,12 @@ uint8_t* iHexToArray(char *line)
       break;
     }
   }
+  
   for(int i=0;i<length;i+=2)
   {
     sscanf(&line [i+1], "%2x", &result[i/2]);
   }
   return result;
-  
 }
 //*/
 
@@ -241,12 +243,11 @@ uint8_t* iHexToArray(char *line)
 //*//try iHexGetAddress*****************function r_type()
 uint8_t* iHexGetAddress(int* r_type,char *i_hex_array1,char *i_hex_array2)
 {
-  uint8_t* address;
-  
+  uint8_t *address;
 	switch(*r_type)
 	{
 		case 0://record type = 0
-			address = getAddress16bit(i_hex_array1);
+			address = (getAddress16bit(i_hex_array1));
 			break;
 		case 1://record type = 01
 			address = -1;	//returning the last address memory
@@ -261,7 +262,6 @@ uint8_t* iHexGetAddress(int* r_type,char *i_hex_array1,char *i_hex_array2)
 			address = -1;//returning the last address memory
 			break;
 	}
-  //}
   return address;
 }  
 //*/
