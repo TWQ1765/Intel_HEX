@@ -127,7 +127,7 @@ uint8_t* getOnlyData(uint8_t *i_hex_array)
 	{
 		i++;//find the total length of data
 	}
-	uint8_t* data = (uint8_t*)malloc(sizeof(uint8_t)*50);
+	uint8_t* data = (uint8_t*)malloc(i*sizeof(uint8_t));
 	for( k ; k < (i-1) ; k++ )
 	{
 		data += (i_hex_array[k]<<((i*8)-(j*8)));// i already -1 ?
@@ -161,7 +161,7 @@ uint8_t* getOnlyData(uint8_t *i_hex_array)
   int test_address = (i_hex_array1[5]<<16) + (i_hex_array2[2]<<0);
   int address = (i_hex_array1[4]<<24) + (i_hex_array1[5]<<16) + \
 				(i_hex_array2[1]<<8) + i_hex_array2[2];
-  //printf("test_address = %x\n",test_address); 
+  printf("test_address = %x\n",test_address); 
   return address;  
  } 
 //*/
