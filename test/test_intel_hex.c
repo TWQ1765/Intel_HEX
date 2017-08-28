@@ -83,7 +83,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 //*/
 
-//*// load**********************************************************************
+/*// load**********************************************************************
   void test_iHexLoadHexFileToMemory_return_struct_given_data_address_expect_true(void)
   { 
     char* data_str[] ={\
@@ -95,7 +95,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0};
 	uint8_t i_hex_data2[] ={0x23,0x0E,0x12,0x00};
 	
-	//uint8_t* data;
+	uint8_t* data;
 	ADDRESSDATA addressData;
 	
 	addressData = iHexLoadHexFileToMemory(data_str[4],data_str[5]);
@@ -104,7 +104,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     //TEST_ASSERT_EQUAL_UINT8_ARRAY(data_str[0], data1, 14);
 	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data1, &addressData.data, 14);
   } 
-//*/
+*/
 
 
 

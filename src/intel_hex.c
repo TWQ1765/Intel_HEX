@@ -59,7 +59,7 @@ char* getiHexLine( FILE *file_handler)
 *	2.char* getiHexLine( FILE *);
 *-----------------------------------------------*/
 //*// load selected element from file
-char* iHexSelectLoad(char *file, int*line_num) // warning*****change char* -> int*
+char* iHexSelectLoad(char *file, int line_num) // warning*****change char* -> int*
 {
   FILE* file_handler = handler(file);
   char *select_data;// =(char *)malloc(sizeof(char)*buf_size); 
@@ -123,22 +123,22 @@ ADDRESSDATA  iHexLoadHexFileToMemory(char* line1,char* line2)
 {
 	ADDRESSDATA addressData;
 	
-	uint8_t* i_hex_array1;
-	uint8_t* i_hex_array2;
+	uint8_t *i_hex_array1;
+	uint8_t *i_hex_array2;
 	
 	if (recordType(line1)==4 || recordType(line1) + recordType(line2)==4) //check r_type=4
 	{
 		i_hex_array1 = iHexToArray(line1);
 		i_hex_array2 = iHexToArray(line2);
 		addressData.address = iHexGetAddress(4,i_hex_array1,i_hex_array2);
-		addressData.data = getOnlyData(&i_hex_array2);
+		addressData.data = getOnlyData(i_hex_array2);
 	}
 	else if (recordType(line1)==0 || recordType(line1) + recordType(line2)== 0) //check r_type=0
 	{
 		i_hex_array1 = iHexToArray(line1);
 		i_hex_array2 = iHexToArray(line2);
 		addressData.address = iHexGetAddress(0,i_hex_array1,i_hex_array2);
-		addressData.data = getOnlyData(&i_hex_array2);
+		addressData.data = getOnlyData(i_hex_array2);
 	}
 	else //r_type = 5
 	{

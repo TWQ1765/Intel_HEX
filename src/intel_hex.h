@@ -14,7 +14,7 @@ struct ADDRESSDATA{
 };
 
 uint8_t * iHexToArray(char *line);
-int iHexVerifyLine(char * line);
+int iHexVerifyLine(char *line);
 FILE* handler(char *file);
 char* getiHexLine( FILE *file_handler);
 char* iHexSelectLoad(char *file,int * line_num); 
