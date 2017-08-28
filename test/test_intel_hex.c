@@ -83,6 +83,30 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 //*/
 
+//*// load*****************************************************
+  void test_iHexLoadHexFileToMemory_return_struct_given_data_address_expect_true(void)
+  { 
+    char* data_str[] ={\
+	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
+	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
+	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
+    uint8_t i_hex_data1[] ={0x56,0x0E,0x08,0xEC,0x00,0xF0,\
+    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0};
+	uint8_t i_hex_data2[] ={0x23,0x0E,0x12,0x00};
+	
+	uint8_t* data;
+	//ADDRESSDATA addressData;
+	
+	data = iHexLoadHexFileToMemory(data_str[1],data_str[2]);
+	
+	//TEST_ASSERT_EQUAL_INT32(0x00300001, addressData.address); 
+    //TEST_ASSERT_EQUAL_UINT8_ARRAY(data_str[0], data1, 14);
+	//TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data2, data2, 4);
+  } 
+//*/
+
+
+
 
 /*//Try read only all line from file **************WE ARE HERE
   void test_iHexLoadHexFileToMemory_read_all_line_from_file_expect_true(void)
@@ -263,18 +287,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     TEST_ASSERT_EQUAL(0, check_hex);
   } 
 //*/
-//*//Try test convert intel_Hex to array in 16-bits. 
-  void test_iHexGetArrayofData_expect_array_data_return_true(void)
-  { 
-    uint8_t array_data[]= {\
-    0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
-    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
-    char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F093";
-    uint8_t* i_hex_array = iHexToArray(i_hex);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21);
-    free (i_hex_array); //deallocate allocated memory
-  } 
-//*/
+
 //*//Try test get intel hex data only by skipping 4-8bits in array.  
   void test_iHexToArray_expect_data_only_return(void)
   { 
@@ -339,7 +352,7 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
   uint8_t* i_hex_array1 = iHexToArray(i_hex1);
   uint8_t* i_hex_array2 = iHexToArray(i_hex2);
   
-  address = iHexGetAddress(&r_type,i_hex_array1,i_hex_array2);
+  address = iHexGetAddress(r_type,i_hex_array1,i_hex_array2);
   TEST_ASSERT_EQUAL_INT32(0x00300001, address); //3145729 decimal
   
 }
