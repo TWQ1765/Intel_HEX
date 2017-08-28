@@ -83,25 +83,26 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 //*/
 
-//*// load*****************************************************
+//*// load**********************************************************************
   void test_iHexLoadHexFileToMemory_return_struct_given_data_address_expect_true(void)
   { 
     char* data_str[] ={\
 	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
 	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
-	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
+	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",\
+	":010000051EDC\n",":00000001FF\n"};
     uint8_t i_hex_data1[] ={0x56,0x0E,0x08,0xEC,0x00,0xF0,\
     0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0};
 	uint8_t i_hex_data2[] ={0x23,0x0E,0x12,0x00};
 	
-	uint8_t* data;
-	//ADDRESSDATA addressData;
+	//uint8_t* data;
+	ADDRESSDATA addressData;
 	
-	data = iHexLoadHexFileToMemory(data_str[1],data_str[2]);
+	addressData = iHexLoadHexFileToMemory(data_str[4],data_str[5]);
 	
 	//TEST_ASSERT_EQUAL_INT32(0x00300001, addressData.address); 
     //TEST_ASSERT_EQUAL_UINT8_ARRAY(data_str[0], data1, 14);
-	//TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data2, data2, 4);
+	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data1, &addressData.data, 14);
   } 
 //*/
 
@@ -294,7 +295,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     uint8_t array_data[]= {\
     0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
     0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
-    char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F093";
+    char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F093\n";
     uint8_t* i_hex_array = iHexToArray(i_hex);
     TEST_ASSERT_EQUAL_INT8(array_data[4], 0x56);//test only one 16bit data
     TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21); //test all set 16bit data

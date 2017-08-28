@@ -119,38 +119,35 @@ int8_t* allRecordTypeToMemory(char* line1,char* line2)
  *
  *-----------------------------------------------*/ 
 //*/// load all data from all element******************WE ARE HERE
-uint8_t iHexLoadHexFileToMemory(char* line1,char* line2)
+ADDRESSDATA  iHexLoadHexFileToMemory(char* line1,char* line2)
 {
-	//ADDRESSDATA addressData;
+	ADDRESSDATA addressData;
 	
-	uint8_t i_hex_array1, i_hex_array2;
-	uint8_t *address;
-	uint8_t* data;
+	uint8_t* i_hex_array1;
+	uint8_t* i_hex_array2;
+	
 	if (recordType(line1)==4 || recordType(line1) + recordType(line2)==4) //check r_type=4
 	{
-		//int r_type = 4;
 		i_hex_array1 = iHexToArray(line1);
 		i_hex_array2 = iHexToArray(line2);
-		//addressData.address = iHexGetAddress(4,i_hex_array1,i_hex_array2);
-		data = getOnlyData(&i_hex_array2);
+		addressData.address = iHexGetAddress(4,i_hex_array1,i_hex_array2);
+		addressData.data = getOnlyData(&i_hex_array2);
 	}
 	else if (recordType(line1)==0 || recordType(line1) + recordType(line2)== 0) //check r_type=0
 	{
-		int r_type = 0;
 		i_hex_array1 = iHexToArray(line1);
 		i_hex_array2 = iHexToArray(line2);
-		//addressData.address = iHexGetAddress(r_type,i_hex_array1,i_hex_array2);
-		data = getOnlyData(&i_hex_array2);
+		addressData.address = iHexGetAddress(0,i_hex_array1,i_hex_array2);
+		addressData.data = getOnlyData(&i_hex_array2);
 	}
 	else //r_type = 5
 	{
-		int r_type = 5;
 		i_hex_array1 = iHexToArray(line1);
 		i_hex_array2 = iHexToArray(line2);
-		data= NULL;
-		//address = iHexGetAddress(r_type,i_hex_array1,i_hex_array2);
+		addressData.data= 0;
+		addressData.address = iHexGetAddress(5,i_hex_array1,i_hex_array2);
 	}
-	return data;
+	return addressData;
 }
 //*/
 

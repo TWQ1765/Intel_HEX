@@ -7,11 +7,11 @@
 #include <stdint.h>
 #include <stdarg.h>
 
-//typedef struct ADDRESSDATA ADDRESSDATA;
-//struct ADDRESSDATA{
-  //  uint8_t address;
-   // int data;
-//};
+typedef struct ADDRESSDATA ADDRESSDATA;
+struct ADDRESSDATA{
+    uint8_t address;
+    uint8_t data;
+};
 
 uint8_t * iHexToArray(char *line);
 int iHexVerifyLine(char * line);
@@ -26,6 +26,6 @@ int getAddressStart(uint8_t *i_hex_array);
 uint8_t* getOnlyData(uint8_t *i_hex_array);
 
 
-uint8_t iHexLoadHexFileToMemory(char* line1,char* line2);
+ADDRESSDATA  iHexLoadHexFileToMemory(char* line1,char* line2);
 
 #endif // _INTEL_HEX_H
