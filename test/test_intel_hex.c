@@ -128,7 +128,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 //*/
 
-//*// read only data from i_hex not include check_sum
+//*// read only data from i_hex try passing diffrent i_hex
   void test_getOnlyData_read_only_data_given_data_str_expect_data_return_true(void)
   { 
     char* data_str[] ={									\
@@ -143,24 +143,21 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 	":0100060001F8\n",									\
 	":00000001FF\n"										\
 	};
-	uint8_t i_hex_data1[]= {\
-	0x56,0x0E,0x08,			\
-	0xEC,0x00,0xF0,			\
-	0x02,0x0E,0x02,			\
-	0x0E,0x02,0x0E,			\
-	0x06,0xEF,				\
-	0x00,0xF0				\
-	};
+	
 	uint8_t i_hex_data2[] ={0x23,0x0E,0x12,0x00};
+	uint8_t i_hex_data3[]= {0x00,0x00};
+	uint8_t i_hex_data5[]= {0xC8};
 	
-	uint8_t* i_hex_array1 = iHexToArray(data_str[1]);
     uint8_t* i_hex_array2 = iHexToArray(data_str[2]);
-	
-	uint8_t* data1 = getOnlyData(i_hex_array1);
+	uint8_t* i_hex_array3 = iHexToArray(data_str[3]);
+	uint8_t* i_hex_array5 = iHexToArray(data_str[5]);
     uint8_t* data2 = getOnlyData(i_hex_array2);
+	uint8_t* data3 = getOnlyData(i_hex_array3);
+    uint8_t* data5 = getOnlyData(i_hex_array5);
 	
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data1, data1, 14);
 	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data2, data2, 4);
+	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data3, data3, 2);
+	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data5, data5, 1);
   } 
 //*/
 
@@ -380,11 +377,7 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
 }
 //*/
 
-
-
-//----------------------------------------------------------------------------------------------------
-
-//*// load**********************************************************************
+//*// load Intel_HEX as parameter of the function return data&address as structure
   void test_iHexLoadHexFileToMemory_return_struct_given_data_address_expect_true(void)
   { 
     char* data_str[] ={								\
@@ -408,17 +401,31 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
 		0x06,0xEF,0x00,0xF0		\
 		};
 	uint8_t i_hex_data2[] ={0x23,0x0E,0x12,0x00};
+	uint8_t i_hex_data5[] ={0xc8};
+	uint8_t i_hex_data7[] ={0x83};
 	
-	//uint8_t* data;
-	ADDRESSDATA addressData;
+	ADDRESSDATA addressData1;//test for r_type=4
+	ADDRESSDATA addressData2;//test for r_type=0
+	ADDRESSDATA addressData3;//test for r_type=5
 	
-	//addressData = iHexLoadHexFileToMemory(data_str[4],data_str[5]);
+	addressData1 = iHexLoadHexFileToMemory(data_str[4],data_str[5]);
+	addressData2 = iHexLoadHexFileToMemory(data_str[7],data_str[8]);
+	addressData3 = iHexLoadHexFileToMemory(data_str[9],data_str[10]);
 	
-	//TEST_ASSERT_EQUAL_INT32(0x00300001, addressData.address); 
-    //TEST_ASSERT_EQUAL_UINT8_ARRAY(data_str[0], data1, 14);
-	//TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data1, &addressData.data, 14);
+	TEST_ASSERT_EQUAL_INT32(0x00300001, addressData1.address); 
+	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data5, addressData1.data,1);
+	
+	TEST_ASSERT_EQUAL_INT32(0x0005, addressData2.address); 
+	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data7, addressData2.data,1);//
+	
+	TEST_ASSERT_EQUAL_INT32(0x1e, addressData3.address); //
+	TEST_ASSERT_EQUAL_UINT8(0, addressData3.data);
   } 
 //*/
+
+//----------------------------------------------------------------------------------------------------
+
+
 
 
 
