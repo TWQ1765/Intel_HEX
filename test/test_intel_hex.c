@@ -102,10 +102,34 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 //*/
 
-
+//*// read only data simple test 
+  void test_getOnlyData_read_only_data_given_ihex_array_expect_data_return_true(void)
+  { 
+    uint8_t i_hex_array[]= {\
+	0x10,0x00,0x00,			\
+	0x00,0x56,0x0E,			\
+	0x08,0xEC,0x00,			\
+	0xF0,0x02,0x0E,			\
+	0x02,0x0E,0x02,			\
+	0x0E,0x06,0xEF,			\
+	0x00,0xF0,0x93			\
+	};
+	uint8_t i_hex_data[]= {\
+	0x56,0x0E,0x08,			\
+	0xEC,0x00,0xF0,			\
+	0x02,0x0E,0x02,			\
+	0x0E,0x02,0x0E,			\
+	0x06,0xEF,				\
+	0x00,0xF0				\
+	};
+	uint8_t* data = getOnlyData(i_hex_array);
+    printf("i_hex_data-%d\n",i_hex_data[9]);
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data, data, 14);
+  } 
+//*/
 
 //*// read only data from i_hex not include check_sum
-  void test_getOnlyData_read_only_data_given_data_str_1_array_expect_true(void)
+  void test_getOnlyData_read_only_data_given_data_str_expect_data_return_true(void)
   { 
     char* data_str[] ={									\
 	":020000040000FA\n",								\
@@ -129,12 +153,12 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 	};
 	uint8_t i_hex_data2[] ={0x23,0x0E,0x12,0x00};
 	
-	uint8_t* data1;
-	uint8_t* data2;
 	uint8_t* i_hex_array1 = iHexToArray(data_str[1]);
-    data1 = getOnlyData(i_hex_array1);
-	uint8_t* i_hex_array2 = iHexToArray(data_str[2]);
-    data2 = getOnlyData(i_hex_array2);
+    uint8_t* i_hex_array2 = iHexToArray(data_str[2]);
+	
+	uint8_t* data1 = getOnlyData(i_hex_array1);
+    uint8_t* data2 = getOnlyData(i_hex_array2);
+	
     TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data1, data1, 14);
 	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data2, data2, 4);
   } 
@@ -160,7 +184,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     //char *all_r_type[1024]; //all_r_type is an array pointers to char \
 								many pointer 		
 	//char (*all_r_type)[1024] ;// all_r_type is an pointer point to char array
-	//char *(*all_r_type)[1024] ;
+	
 	int all_r_type[1024];
     int check_line = 9;
 	
@@ -181,9 +205,14 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 	TEST_ASSERT_EQUAL_INT(record_type_all[2], all_r_type[2]);
 	TEST_ASSERT_EQUAL_INT(record_type_all[3], all_r_type[3]);
 	TEST_ASSERT_EQUAL_INT(record_type_all[4], all_r_type[4]);
+	TEST_ASSERT_EQUAL_INT(record_type_all[5], all_r_type[5]);
+	TEST_ASSERT_EQUAL_INT(record_type_all[6], all_r_type[6]);
+	TEST_ASSERT_EQUAL_INT(record_type_all[7], all_r_type[7]);
+	TEST_ASSERT_EQUAL_INT(record_type_all[8], all_r_type[8]);
+	TEST_ASSERT_EQUAL_INT(record_type_all[9], all_r_type[9]);
 	//TEST_ASSERT_EQUAL_UINT_ARRAY(record_type_all, all_r_type, check_line);
   } 
-//*///
+//*/
 
 //*//try test startcode ':' == ASSCI:3a
   void test_intel_hex_startcode(void)
@@ -291,7 +320,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     uint8_t* i_hex_array = iHexToArray(i_hex);
     TEST_ASSERT_EQUAL_INT8(array_data[4], 0x56);//test only one 16bit data
     TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21); //test all set 16bit data
-    free (i_hex_array); //deallocate allocated memory
+    //free (i_hex_array); //deallocate allocated memory
   } 
 //*/
 
@@ -355,7 +384,7 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
 
 //----------------------------------------------------------------------------------------------------
 
-/*// load**********************************************************************
+//*// load**********************************************************************
   void test_iHexLoadHexFileToMemory_return_struct_given_data_address_expect_true(void)
   { 
     char* data_str[] ={								\
@@ -380,16 +409,16 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
 		};
 	uint8_t i_hex_data2[] ={0x23,0x0E,0x12,0x00};
 	
-	uint8_t* data;
+	//uint8_t* data;
 	ADDRESSDATA addressData;
 	
-	addressData = iHexLoadHexFileToMemory(data_str[4],data_str[5]);
+	//addressData = iHexLoadHexFileToMemory(data_str[4],data_str[5]);
 	
 	//TEST_ASSERT_EQUAL_INT32(0x00300001, addressData.address); 
     //TEST_ASSERT_EQUAL_UINT8_ARRAY(data_str[0], data1, 14);
-	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data1, &addressData.data, 14);
+	//TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data1, &addressData.data, 14);
   } 
-*/
+//*/
 
 
 

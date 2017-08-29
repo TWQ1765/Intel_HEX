@@ -76,19 +76,19 @@ char* iHexSelectLoad(char *file, int line_num) // warning*****change char* -> in
  *	3. does uint8_t can store large number?
  *     ans = only can read 32bit of data.
  * 	4. need to put into a string? ans = no put as array
+ *  5. seen from the informaion of a intel_hex the 1st set of it 
+ *		is the total number of data. Do not wasting time to count it.
+ *   
  *--------------------------------------------------------------*/
 //*// loading only address.
 uint8_t* getOnlyData(uint8_t *i_hex_array) 
 {
 	int j=0;
-	int i=4;
 	int k=4;
-	while(i_hex_array[i] != '\n')
-	{
-		i++;//find the total length of data
-	}
-	uint8_t* data = (uint8_t*)malloc(i*sizeof(uint8_t));
-	for( k ; k < (i-1) ; k++ )
+	int total_element = i_hex_array[0];
+	
+	uint8_t* data = (uint8_t*)malloc(total_element*sizeof(uint8_t));
+	for( k ; j < total_element ; k++ )
 	{
 		data[j] = (i_hex_array[k]);// i already =(i-1) ?ans = no 
 		j++;
