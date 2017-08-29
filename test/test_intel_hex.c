@@ -27,13 +27,13 @@ void test_intelfile_fopen_expect_and_return_true(void)
 	CEXCEPTION_T ex;
     FILE *file_handler; //pointer
 	//printf("tyr exception");
-	Try{
+	//Try{
 		file_handler = handler("doc/Blinky.X.production.hex"); //pointer=pointer
 		TEST_ASSERT_NOT_NULL(file_handler);
-	}
-	Catch(ex){
-		dumpException(ex);
-	}	
+	//}
+	//Catch(ex){
+	//	dumpException(ex);
+	//}	
 }
 //*/
 
@@ -51,10 +51,20 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 //*//Try read only 3rd line from file, able return 3rd line after run the function 3 time
   void test_iHexLineGet_read_only_3rd_line_from_file_expect_true(void)
   { 
-	char* data_str[] ={\
-	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
-	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
-	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
+  
+	char* data_str[] ={								\
+	":020000040000FA\n",							\
+	":10000000560E08EC00F0020E020E020E06EF00F093\n",\
+	":04001000230E1200A9\n",						\
+	":020014000000EA\n",							\
+	":020000040030CA\n",							\
+	":01000100C836\n",								\
+	":010003001EDE\n",								\
+	":010005008377\n",								\
+	":0100060001F8\n",								\
+	":00000001FF\n"									\
+	};
+	
     char* i_hex;
     FILE *file_handler; //pointer
     file_handler = handler("doc/Blinky.X.production.hex"); //pointer=pointer
@@ -69,11 +79,21 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 
 //*//Try load the selected line from file test with data_str. 
   void test_iHexSelectLoad_load_selected_line_form_file_expect_true(void)
-  { 
-    char* data_str[] ={\
-	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
-	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
-	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
+  {  
+	char* data_str[] ={									\
+	":020000040000FA\n",								\
+	":10000000560E08EC00F0020E020E020E06EF00F093\n",	\
+	":04001000230E1200A9\n",							\
+	":020014000000EA\n",								\
+	":020000040030CA\n",								\
+	":01000100C836\n",									\
+	":010003001EDE\n",									\
+	":010005008377\n",									\
+	":010005008377\n",									\
+	":0100060001F8\n",									\
+	":00000001FF\n"										\
+	};
+   
     char* file ="doc/Blinky.X.production.hex";
     int line_num = 0; // changing this value to test if -VE number will clash
                       // number over will return NULL
@@ -110,13 +130,28 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 //*//read all record type for each line from file 
   void test_recordType_read_all_record_type_from_file_expect_true(void)
   { 
-    char* data_str[] ={\
-	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
-	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
-	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
-    char* record_type_all[] ={4,0,0,0,4,0,0,0,0,1};
-   
-    char * all_r_type[1024]; 
+    char* data_str[] ={									\
+	":020000040000FA\n",								\
+	":10000000560E08EC00F0020E020E020E06EF00F093\n",	\
+	":04001000230E1200A9\n",							\
+	":020014000000EA\n",								\
+	":020000040030CA\n",								\
+	":01000100C836\n",									\
+	":010003001EDE\n",									\
+	":010005008377\n",									\
+	":0100060001F8\n",									\
+	":00000001FF\n"										\
+	};
+	
+	// record_type_all is an array pionter to char
+    char record_type_all[] ={4,0,0,0,4,0,0,0,0,1};
+	
+    //char *all_r_type[1024]; //all_r_type is an array pointers point to char \
+								many pointer 		
+	//char (*all_r_type)[1024] ;// all_r_type is an pointer point to char array
+
+	
+	char all_r_type[1024];
     int check_line;
 	
 	check_line =9;
@@ -229,9 +264,15 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 //*//Try test get intel hex data only by skipping 4-8bits in array.  
   void test_iHexToArray_expect_data_only_return(void)
   { 
-    uint8_t array_data[]= {\
-    0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
-    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
+    uint8_t array_data[]= {	\
+    0x10,0x00,0x00,			\
+	0x00,0x56,0x0E,			\
+	0x08,0xEC,0x00,			\
+	0xF0,0x02,0x0E,			\
+	0x02,0x0E,0x02,			\
+	0x0E,0x06,0xEF,			\
+	0x00,0xF0,0x93			\
+	};
     char *i_hex = ":10000000560E08EC00F0020E020E020E06EF00F093\n";
     uint8_t* i_hex_array = iHexToArray(i_hex);
     TEST_ASSERT_EQUAL_INT8(array_data[4], 0x56);//test only one 16bit data
@@ -281,7 +322,7 @@ void test_getAddress32bit_address_as_32bit_expect_true(void)
 }
 //*/
 
-//*case statement being use from fuction iHexToArray().
+/*case statement being use from fuction iHexToArray().
 void test_iHexGetAddress_given_00300001_expect_true(void)
 {
   char *i_hex1 = ":020001040030CA\n";//":020001040030CA\n"
@@ -292,10 +333,9 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
   uint8_t* i_hex_array2 = iHexToArray(i_hex2);
   
   address = iHexGetAddress(r_type,i_hex_array1,i_hex_array2);
-  TEST_ASSERT_EQUAL_INT32(0x00300001, address); //3145729 decimal
-  
+  TEST_ASSERT_EQUAL_INT32(0x00300001, address); //3145729 decimal 
 }
-//*/
+*/
 
 
 
