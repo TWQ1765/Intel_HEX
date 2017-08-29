@@ -89,7 +89,6 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 	":01000100C836\n",									\
 	":010003001EDE\n",									\
 	":010005008377\n",									\
-	":010005008377\n",									\
 	":0100060001F8\n",									\
 	":00000001FF\n"										\
 	};
@@ -105,15 +104,29 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 
 
 
-/*// read only data from i_hex not include check_sum
+//*// read only data from i_hex not include check_sum
   void test_getOnlyData_read_only_data_given_data_str_1_array_expect_true(void)
   { 
-    char* data_str[] ={\
-	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
-	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
-	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
-    uint8_t i_hex_data1[] ={0x56,0x0E,0x08,0xEC,0x00,0xF0,\
-    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0};
+    char* data_str[] ={									\
+	":020000040000FA\n",								\
+	":10000000560E08EC00F0020E020E020E06EF00F093\n",	\
+	":04001000230E1200A9\n",							\
+	":020014000000EA\n",								\
+	":020000040030CA\n",								\
+	":01000100C836\n",									\
+	":010003001EDE\n",									\
+	":010005008377\n",									\
+	":0100060001F8\n",									\
+	":00000001FF\n"										\
+	};
+	uint8_t i_hex_data1[]= {\
+	0x56,0x0E,0x08,			\
+	0xEC,0x00,0xF0,			\
+	0x02,0x0E,0x02,			\
+	0x0E,0x02,0x0E,			\
+	0x06,0xEF,				\
+	0x00,0xF0				\
+	};
 	uint8_t i_hex_data2[] ={0x23,0x0E,0x12,0x00};
 	
 	uint8_t* data1;
@@ -125,9 +138,9 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data1, data1, 14);
 	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data2, data2, 4);
   } 
-*/
+//*/
 
-//*//read all record type for each line from file 
+/*//read all record type for each line from file 
   void test_recordType_read_all_record_type_from_file_expect_true(void)
   { 
     char* data_str[] ={									\
@@ -142,23 +155,19 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 	":0100060001F8\n",									\
 	":00000001FF\n"										\
 	};
-	
 	// record_type_all is an array pionter to char
     char record_type_all[] ={4,0,0,0,4,0,0,0,0,1};
-	
-    //char *all_r_type[1024]; //all_r_type is an array pointers point to char \
+    //char *all_r_type[1024]; //all_r_type is an array pointers to char \
 								many pointer 		
 	//char (*all_r_type)[1024] ;// all_r_type is an pointer point to char array
-
-	
+	//char *(*all_r_type)[1024] ;
 	char all_r_type[1024];
-    int check_line;
+    int check_line = 9;
 	
-	check_line =9;
 	printf(" line no:	-	Record Type:\n");
 	for (int i =0 ; i <= check_line ; i++)
 	{
-		all_r_type[i] = recordType(data_str[i]);
+		*(all_r_type+i) = recordType(data_str[i]);//all_r_type[i] = recordType(data_str[i]);
 		printf(" 	%d	=	 %d\n" , i , all_r_type[i]);
 	}
 	
@@ -167,9 +176,14 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 	printf("record_type_all = %d\n" ,record_type_all[0]);
    
 	TEST_ASSERT_EQUAL_STRING(":020000040000FA\n",data_str[0]);
-	TEST_ASSERT_EQUAL_UINT_ARRAY(record_type_all, all_r_type, check_line);
+	TEST_ASSERT_EQUAL_INT(record_type_all[0], all_r_type[0]);
+	TEST_ASSERT_EQUAL_INT(record_type_all[1], all_r_type[1]);
+	TEST_ASSERT_EQUAL_INT(record_type_all[2], all_r_type[2]);
+	TEST_ASSERT_EQUAL_INT(record_type_all[3], all_r_type[3]);
+	TEST_ASSERT_EQUAL_INT(record_type_all[4], all_r_type[4]);
+	//TEST_ASSERT_EQUAL_UINT_ARRAY(record_type_all, all_r_type, check_line);
   } 
-//*/
+*///
 
 //*//try test startcode ':' == ASSCI:3a
   void test_intel_hex_startcode(void)
@@ -184,7 +198,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 //*/
 
-///*/try test  Address 0x0000 //just try test dont have fuction
+//*/try test  Address 0x0000 //just try test dont have fuction
   void test_intel_hex_Address(void)
   {
     char iHexLine[] = ":020000040000FA";
@@ -287,7 +301,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   { 
     char *i_hex = ":10000004560E08EC00F0020E020E020E06EF00F093";
     int r_type = recordType(i_hex);
-    TEST_ASSERT_EQUAL(04, r_type);
+    TEST_ASSERT_EQUAL_INT(4, r_type);
   } 
 //*/
 
@@ -322,7 +336,7 @@ void test_getAddress32bit_address_as_32bit_expect_true(void)
 }
 //*/
 
-/*case statement being use from fuction iHexToArray().
+//*case statement being use from fuction iHexToArray().
 void test_iHexGetAddress_given_00300001_expect_true(void)
 {
   char *i_hex1 = ":020001040030CA\n";//":020001040030CA\n"
@@ -335,7 +349,7 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
   address = iHexGetAddress(r_type,i_hex_array1,i_hex_array2);
   TEST_ASSERT_EQUAL_INT32(0x00300001, address); //3145729 decimal 
 }
-*/
+//*/
 
 
 
@@ -344,13 +358,26 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
 /*// load**********************************************************************
   void test_iHexLoadHexFileToMemory_return_struct_given_data_address_expect_true(void)
   { 
-    char* data_str[] ={\
-	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
-	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
-	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",\
-	":010000051EDC\n",":00000001FF\n"};
-    uint8_t i_hex_data1[] ={0x56,0x0E,0x08,0xEC,0x00,0xF0,\
-    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0};
+    char* data_str[] ={								\
+	":020000040000FA\n",							\
+	":10000000560E08EC00F0020E020E020E06EF00F093\n",\
+	":04001000230E1200A9\n",						\
+	":020014000000EA\n",							\
+	":020000040030CA\n",							\
+	":01000100C836\n",								\
+	":010003001EDE\n",								\
+	":010005008377\n",								\
+	":0100060001F8\n",								\
+	":010000051EDC\n",								\
+	":00000001FF\n"									\
+	};
+    uint8_t i_hex_data1[] ={	\
+		0x56,0x0E,0x08,			\
+		0xEC,0x00,0xF0,			\
+		0x02,0x0E,0x02,			\
+		0x0E,0x02,0x0E,			\
+		0x06,0xEF,0x00,0xF0		\
+		};
 	uint8_t i_hex_data2[] ={0x23,0x0E,0x12,0x00};
 	
 	uint8_t* data;

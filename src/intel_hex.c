@@ -5,8 +5,6 @@
 #include <stdint.h>
 #include <stdarg.h>
 
-
-
 ///*//test Hex is right or not. ex.):10000000560E08EC00F0020E020E020E06EF00F094\n
 int iHexVerifyLine(char * line)
 {
