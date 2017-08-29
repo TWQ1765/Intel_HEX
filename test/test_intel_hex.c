@@ -140,7 +140,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 //*/
 
-/*//read all record type for each line from file 
+//*//read all record type for each line from file 
   void test_recordType_read_all_record_type_from_file_expect_true(void)
   { 
     char* data_str[] ={									\
@@ -161,13 +161,13 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 								many pointer 		
 	//char (*all_r_type)[1024] ;// all_r_type is an pointer point to char array
 	//char *(*all_r_type)[1024] ;
-	char all_r_type[1024];
+	int all_r_type[1024];
     int check_line = 9;
 	
 	printf(" line no:	-	Record Type:\n");
 	for (int i =0 ; i <= check_line ; i++)
 	{
-		*(all_r_type+i) = recordType(data_str[i]);//all_r_type[i] = recordType(data_str[i]);
+		all_r_type[i] = recordType(data_str[i]);//all_r_type[i] = recordType(data_str[i]);
 		printf(" 	%d	=	 %d\n" , i , all_r_type[i]);
 	}
 	
@@ -183,7 +183,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
 	TEST_ASSERT_EQUAL_INT(record_type_all[4], all_r_type[4]);
 	//TEST_ASSERT_EQUAL_UINT_ARRAY(record_type_all, all_r_type, check_line);
   } 
-*///
+//*///
 
 //*//try test startcode ':' == ASSCI:3a
   void test_intel_hex_startcode(void)
@@ -342,7 +342,7 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
   char *i_hex1 = ":020001040030CA\n";//":020001040030CA\n"
   char *i_hex2 = ":01000100C836\n";
   int r_type = 4; //changing this valu to test
-  uint8_t *address;
+  int address;
   uint8_t* i_hex_array1 = iHexToArray(i_hex1);
   uint8_t* i_hex_array2 = iHexToArray(i_hex2);
   
