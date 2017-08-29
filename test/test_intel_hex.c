@@ -83,72 +83,9 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 //*/
 
-/*// load**********************************************************************
-  void test_iHexLoadHexFileToMemory_return_struct_given_data_address_expect_true(void)
-  { 
-    char* data_str[] ={\
-	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
-	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
-	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",\
-	":010000051EDC\n",":00000001FF\n"};
-    uint8_t i_hex_data1[] ={0x56,0x0E,0x08,0xEC,0x00,0xF0,\
-    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0};
-	uint8_t i_hex_data2[] ={0x23,0x0E,0x12,0x00};
-	
-	uint8_t* data;
-	ADDRESSDATA addressData;
-	
-	addressData = iHexLoadHexFileToMemory(data_str[4],data_str[5]);
-	
-	//TEST_ASSERT_EQUAL_INT32(0x00300001, addressData.address); 
-    //TEST_ASSERT_EQUAL_UINT8_ARRAY(data_str[0], data1, 14);
-	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data1, &addressData.data, 14);
-  } 
-*/
 
 
-
-
-/*//Try read only all line from file **************WE ARE HERE
-  void test_iHexLoadHexFileToMemory_read_all_line_from_file_expect_true(void)
-  { 
-    char* data_str[] ={\
-	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
-	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
-	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
-    uint8_t array_data[]= {\
-    0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
-    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
-	
-	
-    
-    
-	
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21);
-  } 
-*/
-/*// Array put at specific address location of memory*************WE ARE HERE
-  void test_specificAddressOfArray_expect_true(void)
-  { 
-    char* data_str[] ={\
-	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
-	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
-	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
-    
-	uint8_t* address;
-	uint8_t* i_hex_array1 = iHexToArray(data_str[0]);
-	uint8_t* i_hex_array2 = iHexToArray(data_str[1]);
-	address = iHexGetAddress(4,i_hex_array1,i_hex_array2);
-	
-    uint8_t* data = getOnlyData(i_hex_array2);
-    //printf("data = %x",data);
-	
-	memcpy((void*)address, data, sizeof data);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data, data, 14);
-  } 
-*/
-
-//*// read only data from i_hex not include check_sum
+/*// read only data from i_hex not include check_sum
   void test_getOnlyData_read_only_data_given_data_str_1_array_expect_true(void)
   { 
     char* data_str[] ={\
@@ -168,7 +105,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data1, data1, 14);
 	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data2, data2, 4);
   } 
-//*/
+*/
 
 //*//read all record type for each line from file 
   void test_recordType_read_all_record_type_from_file_expect_true(void)
@@ -199,7 +136,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 //*/
 
-///*//try test startcode ':' == ASSCI:3a
+//*//try test startcode ':' == ASSCI:3a
   void test_intel_hex_startcode(void)
   {
     char iHexLine[] = ":020000040000FA";
@@ -234,7 +171,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 //*/
 
-///*/try test Record type //just try test dont have fuction
+//*/try test Record type //just try test dont have fuction
   void test_intel_hex_Record_type_given_and_return_0x00000004(void)
   {
     char iHexLine[] = ":020000040000FA";
@@ -313,6 +250,7 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
   } 
 //*/
 
+//*
 //only for 05 record type to get start address
 void test_startAddress_get_starAddress_as_32bit_expect_true(void)
 {
@@ -341,9 +279,9 @@ void test_getAddress32bit_address_as_32bit_expect_true(void)
   int address = getAddress32bit(i_hex_array1,i_hex_array2);//should= 0x00300001 | 3145729
   TEST_ASSERT_EQUAL_INT32(0x00300001, address);
 }
+//*/
 
-
-///*case statement being use from fuction iHexToArray().
+//*case statement being use from fuction iHexToArray().
 void test_iHexGetAddress_given_00300001_expect_true(void)
 {
   char *i_hex1 = ":020001040030CA\n";//":020001040030CA\n"
@@ -361,9 +299,72 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
 
 
 
+//----------------------------------------------------------------------------------------------------
+
+/*// load**********************************************************************
+  void test_iHexLoadHexFileToMemory_return_struct_given_data_address_expect_true(void)
+  { 
+    char* data_str[] ={\
+	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
+	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
+	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",\
+	":010000051EDC\n",":00000001FF\n"};
+    uint8_t i_hex_data1[] ={0x56,0x0E,0x08,0xEC,0x00,0xF0,\
+    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0};
+	uint8_t i_hex_data2[] ={0x23,0x0E,0x12,0x00};
+	
+	uint8_t* data;
+	ADDRESSDATA addressData;
+	
+	addressData = iHexLoadHexFileToMemory(data_str[4],data_str[5]);
+	
+	//TEST_ASSERT_EQUAL_INT32(0x00300001, addressData.address); 
+    //TEST_ASSERT_EQUAL_UINT8_ARRAY(data_str[0], data1, 14);
+	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data1, &addressData.data, 14);
+  } 
+*/
 
 
 
+
+/*//Try read only all line from file **************WE ARE HERE
+  void test_iHexLoadHexFileToMemory_read_all_line_from_file_expect_true(void)
+  { 
+    char* data_str[] ={\
+	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
+	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
+	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
+    uint8_t array_data[]= {\
+    0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
+    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
+	
+	
+    
+    
+	
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21);
+  } 
+*/
+/*// Array put at specific address location of memory*************WE ARE HERE
+  void test_specificAddressOfArray_expect_true(void)
+  { 
+    char* data_str[] ={\
+	":020000040000FA\n",":10000000560E08EC00F0020E020E020E06EF00F093\n",\
+	":04001000230E1200A9\n",":020014000000EA\n",":020000040030CA\n",\
+	":01000100C836\n",":010003001EDE\n",":010005008377\n",":0100060001F8\n",":00000001FF\n"};
+    
+	uint8_t* address;
+	uint8_t* i_hex_array1 = iHexToArray(data_str[0]);
+	uint8_t* i_hex_array2 = iHexToArray(data_str[1]);
+	address = iHexGetAddress(4,i_hex_array1,i_hex_array2);
+	
+    uint8_t* data = getOnlyData(i_hex_array2);
+    //printf("data = %x",data);
+	
+	memcpy((void*)address, data, sizeof data);
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data, data, 14);
+  } 
+*/
 
 
 
