@@ -138,7 +138,7 @@ ADDRESSDATA  iHexGetAddressAndData(char* line1,char* line2)
 		i_hex_array1 = iHexToArray(line1);
 		i_hex_array2 = iHexToArray(line2);
 		addressData.address = iHexGetAddress(0,i_hex_array1,i_hex_array2);
-		addressData.data = getOnlyData(i_hex_array2);
+		addressData.data = getOnlyData(i_hex_array1);
 	}
 	else //r_type = 5
 	{
@@ -256,7 +256,7 @@ int iHexGetAddress(int r_type,uint8_t *i_hex_array1,uint8_t *i_hex_array2)
 		case 4://record type = 04
 			address = getAddress32bit(i_hex_array1,i_hex_array2);
 			break; 	
-		case 5://record type = 04
+		case 5://record type = 05
 			address = getAddressStart(i_hex_array1);
 			break; 		
 		default:            
@@ -266,7 +266,19 @@ int iHexGetAddress(int r_type,uint8_t *i_hex_array1,uint8_t *i_hex_array2)
   return address;
 }  
 //*/
-
+void test(char* i_hex_line , char* memory)
+{
+	memory[M];
+	int r_type = recordType(i_hex_line); 
+	uint8_t* i_hex_array = iHexToArray(i_hex_line);
+	
+	for(int i=0 ;i<i_hex_array[0];i++)
+	{
+		memory[i] = i_hex_array[4+i];
+	}
+	
+	//return 0;
+}
 void IHexInterpret(char* i_hex_line , char* memory)
 {
 	memory[M];
@@ -276,3 +288,8 @@ void IHexInterpret(char* i_hex_line , char* memory)
 	
 }
  
+ void iHexLoadToMemory(char* file_name , char* memory)
+ {
+	 
+	 
+ }

@@ -27,5 +27,5 @@ uint8_t* getOnlyData(uint8_t *i_hex_array);
 
 
 ADDRESSDATA  iHexGetAddressAndData(char* line1,char* line2);
-
+void test(char* i_hex_line , char* memory);
 #endif // _INTEL_HEX_H

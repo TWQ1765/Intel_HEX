@@ -402,6 +402,7 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
 		};
 	uint8_t i_hex_data2[] ={0x23,0x0E,0x12,0x00};
 	uint8_t i_hex_data5[] ={0xc8};
+	uint8_t i_hex_data6[] ={0x1e};
 	uint8_t i_hex_data9[] ={0x1e};
 	
 	ADDRESSDATA addressData1;//test for r_type=4
@@ -416,8 +417,8 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
 	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data5, addressData1.data,1);
 	
 	TEST_ASSERT_EQUAL_INT32(0x0003, addressData2.address); 
-	//TEST_ASSERT_EQUAL_UINT8(i_hex_data6, addressData2.data);//
-	
+	TEST_ASSERT_EQUAL_UINT8(i_hex_data6, addressData2.data);//
+	printf("addressData2.data=%x\n",addressData1.data);
 	//TEST_ASSERT_EQUAL(0x1e, addressData3.address); //
 	TEST_ASSERT_EQUAL_UINT8(0, addressData3.data);
   } 
@@ -425,7 +426,17 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
 
 //----------------------------------------------------------------------------------------------------
 
-
+void test_test_trying_test(void)
+{
+	char *i_hex = ":10000004560E08EC00F0020E020E020E06EF00F093";
+	char memory_test[]={\
+    0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
+    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
+	char*memory; 
+	test( i_hex , memory);
+	
+	TEST_ASSERT_EQUAL_INT8(memory_test[4], memory[0]);
+}
 
 
 
