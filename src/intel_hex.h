@@ -26,6 +26,6 @@ int getAddressStart(uint8_t *i_hex_array);
 uint8_t* getOnlyData(uint8_t *i_hex_array);
 
 
-ADDRESSDATA  iHexLoadHexFileToMemory(char* line1,char* line2);
+ADDRESSDATA  iHexGetAddressAndData(char* line1,char* line2);
 
 #endif // _INTEL_HEX_H

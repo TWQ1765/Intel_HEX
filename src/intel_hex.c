@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <stdarg.h>
 
+#define M (1024*1024) 
+
 ///*//test Hex is right or not. ex.):10000000560E08EC00F0020E020E020E06EF00F094\n
 int iHexVerifyLine(char * line)
 {
@@ -117,7 +119,7 @@ int8_t* allRecordTypeToMemory(char* line1,char* line2)
  *
  *-----------------------------------------------*/ 
 //*/// load all data from all element******************WE ARE HERE
-ADDRESSDATA  iHexLoadHexFileToMemory(char* line1,char* line2)
+ADDRESSDATA  iHexGetAddressAndData(char* line1,char* line2)
 {
 	ADDRESSDATA addressData;//* addressData
 	
@@ -159,9 +161,10 @@ ADDRESSDATA  iHexLoadHexFileToMemory(char* line1,char* line2)
 ///*// get address 16bit 
 int  getAddress16bit(uint8_t *i_hex_array)
  {
-  printf("Hex_array[1] = %x",i_hex_array[2]<<8); 
-  int address = (i_hex_array[1]<<8) + i_hex_array[2];
-  return address;  
+	uint8_t upper_address[]={0x00000000};
+	printf("Hex_array[1] = %x",i_hex_array[2]<<8); 
+	int address = upper_address[0] + (i_hex_array[1]<<8) + i_hex_array[2];
+	return address;  
  } 
 //*/
 
@@ -170,8 +173,8 @@ int  getAddress32bit(uint8_t *i_hex_array1,uint8_t *i_hex_array2)
  {
 	int  address = (i_hex_array1[4]<<24) + (i_hex_array1[5]<<16) + \
 				(i_hex_array2[1]<<8) + i_hex_array2[2];
-  //int test_address = (i_hex_array1[5]<<16) + (i_hex_array2[2]<<0);
-  //printf("test_address = %x\n",test_address); //test Shifting only
+  int test_address = (i_hex_array1[5]<<16) + (i_hex_array2[2]<<0);
+  printf("test_address = %x\n",test_address); //test Shifting only
   return address;  
  } 
 //*/
@@ -242,7 +245,7 @@ uint8_t* iHexToArray(char *line)
 int iHexGetAddress(int r_type,uint8_t *i_hex_array1,uint8_t *i_hex_array2)
 {
   int address;
-	switch(r_type)//switch(*r_type)
+	switch(r_type)
 	{
 		case 0://record type = 0
 			address = getAddress16bit(i_hex_array1);
@@ -264,4 +267,12 @@ int iHexGetAddress(int r_type,uint8_t *i_hex_array1,uint8_t *i_hex_array2)
 }  
 //*/
 
-
+void IHexInterpret(char* i_hex_line , char* memory)
+{
+	memory[M];
+	int r_type = recordType(i_hex_line); 
+	uint8_t* i_hex_array = iHexToArray(i_hex_line);
+	
+	
+}
+ 
