@@ -96,9 +96,9 @@ void test_getiHexLine_get_1st_Ihex_expect_and_return_true(void)
     char* file ="doc/Blinky.X.production.hex";
     int line_num = 0; // changing this value to test if -VE number will clash
                       // number over will return NULL
-    char* selecte_data = iHexSelectLoad(file, line_num);
+    char* selecte_ihex = iHexSelectLoad(file, line_num);
     
-    TEST_ASSERT_EQUAL_STRING(data_str[0], selecte_data);
+    TEST_ASSERT_EQUAL_STRING(data_str[0], selecte_ihex);
   } 
 //*/
 
@@ -417,7 +417,7 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
 	TEST_ASSERT_EQUAL_UINT8_ARRAY(i_hex_data5, addressData1.data,1);
 	
 	TEST_ASSERT_EQUAL_INT32(0x0003, addressData2.address); 
-	TEST_ASSERT_EQUAL_UINT8(i_hex_data6, addressData2.data);//
+	//TEST_ASSERT_EQUAL_UINT8(i_hex_data6, addressData2.data);//
 	printf("addressData2.data=%x\n",addressData1.data);
 	//TEST_ASSERT_EQUAL(0x1e, addressData3.address); //
 	TEST_ASSERT_EQUAL_UINT8(0, addressData3.data);
@@ -426,21 +426,45 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
 
 //----------------------------------------------------------------------------------------------------
 
-void test_trying_test(void)
+void test_IHexInterpret_test_given_Intel_Hex_expect_store_data_to_memory_address_true(void)
 {
 	char *i_hex = ":10000700560E08EC00F0020E020E020E06EF00F093";
-	char memory_test[]={\
-    0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
-    0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
+	char memory_test[]= {	\
+    0x10,0x00,0x00,			\
+	0x00,0x56,0x0E,			\
+	0x08,0xEC,0x00,			\
+	0xF0,0x02,0x0E,			\
+	0x02,0x0E,0x02,			\
+	0x0E,0x06,0xEF,			\
+	0x00,0xF0,0x93			\
+	};
 	char memory[1024*1024]; 
 	uint8_t address = 0x07;
-	test( i_hex , memory);
+	IHexInterpret_test( i_hex , memory);
 	
 	TEST_ASSERT_EQUAL_INT8(memory_test[4],0x56 );
 	TEST_ASSERT_EQUAL_INT8(memory_test[4], memory[address+0]);
 }
 
-
+void test_IHexInterpret_given_Intel_Hex_expect_store_data_to_memory_address_true(void)
+{
+	char *i_hex1 = ":020000040000FA";
+	char *i_hex2 = ":1000004560E08EC00F0020E020E020E06EF00F093";
+	char memory_test[]= {	\
+	0x56,0x0E,				\
+	0x08,0xEC,0x00,			\
+	0xF0,0x02,0x0E,			\
+	0x02,0x0E,0x02,			\
+	0x0E,0x06,0xEF,			\
+	0x00,0xF0,0x93			\
+	};
+	char memory[1024*1024]; 
+	uint8_t address = 0x00;
+	IHexInterpret( i_hex1 ,i_hex2 , memory);
+	
+	TEST_ASSERT_EQUAL_INT8(memory_test[0],0x56 );
+	TEST_ASSERT_EQUAL_INT8(memory_test[0], memory[address+0]);
+}
 
 
 /*//Try read only all line from file **************WE ARE HERE
@@ -453,10 +477,6 @@ void test_trying_test(void)
     uint8_t array_data[]= {\
     0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
     0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
-	
-	
-    
-    
 	
     TEST_ASSERT_EQUAL_UINT8_ARRAY(array_data, i_hex_array, 21);
   } 

@@ -35,12 +35,11 @@ int iHexVerifyLine(char * line)
 }  
 //*/ 
 
-//* //function open file-------the main code
+//* //function open file
 FILE* handler(char *file)//return as pointer type FILE 'FILE *'
 {
   FILE *file_handler;              //pointer fileHandler
   file_handler = fopen(file , "r");
-  //fclose(file);
   return file_handler;             // pointer return
 }
 //*/
@@ -62,13 +61,13 @@ char* getiHexLine( FILE *file_handler)
 char* iHexSelectLoad(char *file, int line_num) // warning*****change char* -> int*
 {
   FILE* file_handler = handler(file);
-  char *select_data;// =(char *)malloc(sizeof(char)*buf_size); 
+  char *selecte_ihex;// =(char *)malloc(sizeof(char)*buf_size); 
 	
     for (int i =0 ; i <= line_num ; i++) //chage line_num to *line_num
     {
-      select_data = getiHexLine(file_handler);
+      selecte_ihex = getiHexLine(file_handler);
     }
-  return select_data;
+  return selecte_ihex;
 }
 //*/
 
@@ -266,7 +265,7 @@ int iHexGetAddress(int r_type,uint8_t *i_hex_array1,uint8_t *i_hex_array2)
   return address;
 }  
 //*/
-void test(char* i_hex_line , char* memory)
+void IHexInterpret_test(char* i_hex_line , char* memory)
 {
 	memory[M];
 	int r_type = recordType(i_hex_line); 
@@ -278,19 +277,59 @@ void test(char* i_hex_line , char* memory)
 		memory[address+i]=data[i];
 	}
 	
-	//return 0;
 }
-void IHexInterpret(char* i_hex_line , char* memory)
+
+//need iHexVerifyLine() to verify i_hex 1st
+void IHexInterpret(char* i_hex_line1 , char* i_hex_line2, char* memory)
 {
 	memory[M];
-	int r_type = recordType(i_hex_line); 
-	uint8_t* i_hex_array = iHexToArray(i_hex_line);
+	int r_type1 = recordType(i_hex_line1);
+	int r_type2 = recordType(i_hex_line2);
 	
+	uint8_t* i_hex_array1 = iHexToArray(i_hex_line1);
+	uint8_t* i_hex_array2 = iHexToArray(i_hex_line2);
+	
+	uint8_t* data;
+	int address;
+	if (r_type1==4 || (r_type2+r_type1 == 4))
+	{	
+		data = getOnlyData(i_hex_array2);
+		address = iHexGetAddress(r_type1,i_hex_array1,i_hex_array2);
+		for (int i=0 ; i<i_hex_line2[0] ; i++)
+		{
+			memory[address+i]=data[i];
+		}
+	}
+	else if(r_type1==0 || (r_type2+r_type1 == 0))
+	{
+		data = getOnlyData(i_hex_array1);
+		address = iHexGetAddress(r_type1,i_hex_array1,i_hex_array2);
+		for (int i=0 ; i<i_hex_line1[0] ; i++)
+		{
+			memory[address+i]=data[i];
+		}
+	}
+	else
+	{
+		address = iHexGetAddress(r_type1,i_hex_array1,i_hex_array2);
+	}
 	
 }
- 
+
+ //main 
  void iHexLoadToMemory(char* file_name , char* memory)
  {
 	 
+	 char *i_hex_line0 = iHexSelectLoad(file_name,0);
+	 char *i_hex_line1 = iHexSelectLoad(file_name,1);
+	 memory[M];
+	 int i = 0;
+	 while(iHexVerifyLine(i_hex_line0))
+	 {
+		char *i_hex_line0 = iHexSelectLoad(file_name,i);
+		char *i_hex_line1 = iHexSelectLoad(file_name,i+1);
+		i++;
+		IHexInterpret(i_hex_line0 ,  i_hex_line1, memory);
+	 } 
 	 
  }
