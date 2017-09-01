@@ -271,10 +271,11 @@ void test(char* i_hex_line , char* memory)
 	memory[M];
 	int r_type = recordType(i_hex_line); 
 	uint8_t* i_hex_array = iHexToArray(i_hex_line);
-	
-	for(int i=0 ;i<i_hex_array[0];i++)
+	uint8_t* data = getOnlyData(i_hex_array);
+	int address = getAddress16bit(i_hex_array);
+	for (int i=0 ; i<i_hex_line[0] ; i++)
 	{
-		memory[i] = i_hex_array[4+i];
+		memory[address+i]=i_hex_array[i];
 	}
 	
 	//return 0;

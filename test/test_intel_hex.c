@@ -426,7 +426,7 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
 
 //----------------------------------------------------------------------------------------------------
 
-void test_test_trying_test(void)
+void test_trying_test(void)
 {
 	char *i_hex = ":10000004560E08EC00F0020E020E020E06EF00F093";
 	char memory_test[]={\
@@ -435,7 +435,8 @@ void test_test_trying_test(void)
 	char*memory; 
 	test( i_hex , memory);
 	
-	TEST_ASSERT_EQUAL_INT8(memory_test[4], memory[0]);
+	//TEST_ASSERT_EQUAL_INT8(memory_test[4], memory[0]);
+	TEST_ASSERT_EQUAL_INT8(memory_test[4],0x56 );
 }
 
 
