@@ -275,7 +275,7 @@ void test(char* i_hex_line , char* memory)
 	int address = getAddress16bit(i_hex_array);
 	for (int i=0 ; i<i_hex_line[0] ; i++)
 	{
-		memory[address+i]=i_hex_array[i];
+		memory[address+i]=data[i];
 	}
 	
 	//return 0;

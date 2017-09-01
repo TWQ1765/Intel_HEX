@@ -428,15 +428,16 @@ void test_iHexGetAddress_given_00300001_expect_true(void)
 
 void test_trying_test(void)
 {
-	char *i_hex = ":10000004560E08EC00F0020E020E020E06EF00F093";
+	char *i_hex = ":10000700560E08EC00F0020E020E020E06EF00F093";
 	char memory_test[]={\
     0x10,0x00,0x00,0x00,0x56,0x0E,0x08,0xEC,0x00,0xF0,\
     0x02,0x0E,0x02,0x0E,0x02,0x0E,0x06,0xEF,0x00,0xF0,0x93};
-	char*memory; 
+	char memory[1024*1024]; 
+	uint8_t address = 0x07;
 	test( i_hex , memory);
 	
-	//TEST_ASSERT_EQUAL_INT8(memory_test[4], memory[0]);
 	TEST_ASSERT_EQUAL_INT8(memory_test[4],0x56 );
+	TEST_ASSERT_EQUAL_INT8(memory_test[4], memory[address+0]);
 }
 
 
